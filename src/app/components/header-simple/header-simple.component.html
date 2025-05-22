@@ -1,0 +1,27 @@
+<header class="bg-white shadow-md">
+  <!-- Wrapper de Angular Material para toolbar -->
+  <mat-toolbar class="w-full mx-auto px-4">
+    <!-- Seccion Izquierda - Logo + Nombre sitio -->
+    <div class="flex items-center gap-2">
+      <img 
+        src="assets/logo/logo.png" 
+        alt="Logo" 
+        class="h-12 w-12 object-contain"
+      >
+      <span class="text-xl font-bold text-gray-800">Reservio</span>
+    </div>
+
+    <!-- Espacio para empujar botón login a la derecha -->
+    <span class="flex-1"></span>
+
+    <!-- Boton login (Angular Material) -->
+    <button 
+      mat-raised-button 
+      color="primary"
+      class="!bg-blue-600 hover:!bg-blue-700 transition-colors"
+    >
+      <mat-icon>login</mat-icon>
+      Iniciar Sesión/Crear Cuenta
+    </button>
+  </mat-toolbar>
+</header>
