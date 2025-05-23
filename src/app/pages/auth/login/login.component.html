@@ -1,1 +1,44 @@
-<p>login works!</p>
+<section class="min-h-screen bg-cover bg-center flex items-center justify-center relative bg-[url('/assets/fondo_login.avif')] ...">
+  <!--contenedor  -->
+  <div class="relative z-10 w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
+    <!-- titulo -->
+    <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Iniciar sesión</h2>
+
+    <!-- formulario -->
+    <form>
+      <!-- correo -->
+      <div class="mb-4">
+        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Correo</label>
+        <input id="email" type="email"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          placeholder="" />
+      </div>
+
+      <!-- contraseña -->
+      <div class="mb-4">
+        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+        <input id="password" type="password"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          placeholder="" />
+      </div>
+
+      <!-- recuerdame -->
+      <div class="flex items-center mb-4">
+        <input id="remember" type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded" checked />
+        <label for="remember" class="ml-2 text-sm ">Recordar</label>
+      </div>
+
+      <!-- sub -->
+      <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition"
+        routerLink="/">
+        Iniciar sesión
+      </button>
+
+      <!-- enlace -->
+      <p class="mt-6 text-sm text-center text-gray-500">
+        ¿Olvidaste tu contraseña?
+        <a routerLink="/login/forgot-pass" class="text-indigo-600 hover:underline font-medium">Recupérala</a>
+      </p>
+    </form>
+  </div>
+</section>
