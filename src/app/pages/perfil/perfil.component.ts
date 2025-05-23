@@ -14,4 +14,10 @@ export class PerfilComponent {
     telefono: '123-456-7890',
     creado: new Date('2024-01-01'),
   };
+
+  selectedTabIndex = 0;
+
+  onTabChange(index: number) {
+    this.selectedTabIndex = index;
+  }
 }
