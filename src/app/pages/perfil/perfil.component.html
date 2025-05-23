@@ -1,0 +1,121 @@
+<!-- Fondo superior -->
+<div class="relative h-60 w-full bg-cover bg-center" style="background-image: url('/assets/fondo_login.avif');">
+  <div class="absolute inset-0 bg-black/50"></div>
+</div>
+
+<!-- Card del perfil -->
+<div class="relative z-10 mx-4 -mt-16 mb-4 rounded-xl border p-6 shadow-md bg-white">
+  <div class="flex flex-col lg:flex-row justify-between items-center gap-4">
+    <div class="flex items-center gap-4">
+      <mat-icon fontIcon="account_circle" class="text-[80px] text-gray-500"></mat-icon>
+      <div>
+        <h2 class="text-xl font-bold text-gray-800">Juan Davis</h2>
+        <p class="text-sm text-gray-500">JuanD&#64;gmail.com</p>
+      </div>
+    </div>
+
+    <!-- Tabs separadas a la derecha -->
+    <div class="mt-4 lg:mt-0">
+      <nav class="flex gap-2">
+        <button mat-button [ngClass]="{
+            'bg-blue-500 text-white': selectedTabIndex === 0,
+            'bg-gray-100 text-gray-700': selectedTabIndex !== 0
+          }" class="rounded-full px-4 py-1 transition" (click)="onTabChange(0)">
+            Perfil
+        </button>
+        <button mat-button [color]="selectedTabIndex === 1 ? 'primary' : ''" (click)="onTabChange(1)">
+          Historial
+        </button>
+        <button mat-button [color]="selectedTabIndex === 2 ? 'primary' : ''" (click)="onTabChange(2)">
+          Notificaciones
+        </button>
+        <button mat-button [color]="selectedTabIndex === 3 ? 'primary' : ''" (click)="onTabChange(3)">
+          Ajustes
+        </button>
+      </nav>
+    </div>
+    
+  </div>
+</div>
+
+<!-- Contenido de los tabs  -->
+
+
+<div class="px-4">
+    <!-- Contenido del Perfil de usuario  -->
+    <div *ngIf="selectedTabIndex === 0" class="bg-white shadow-md rounded-xl p-6 border">
+        <h3 class="text-lg font-semibold text-gray-700 mb-2">Perfil de usuario</h3>
+        <ul class="list-disc pl-5 text-sm text-gray-600 space-y-1">
+            <li> Nombre: Juan Davis</li><li>Correo electrónico: JuanD&#64;gmail.com</li>
+            <li>Teléfono: +57 300 1234567</li>
+            <li>Dirección: Calle 123 #45-67</li>
+            <li>Fecha de nacimiento: 01/01/1990</li>
+            <li>Fecha de registro: 01/01/2020</li>
+        </ul>
+    </div>
+    <!-- Contenido del Historial de actividad  -->
+    <div *ngIf="selectedTabIndex === 1" class="bg-white shadow-md rounded-xl p-6 border">
+        <h3 class="text-lg font-semibold text-gray-700 mb-2">Historial de actividad</h3>
+        <ul class="list-disc pl-5 text-sm text-gray-600 space-y-1">
+            <!-- card de ejemplo -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+    
+                    <img src="https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg" alt="Imagen 1"
+                        class="w-full h-40 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold mb-2">Título 1</h3>
+                        <p class="text-gray-600">Esta es una descripción breve de la tarjeta 1.</p>
+                    </div>
+                </div>
+    
+                <!-- Card 2 -->
+                <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+                    <img src="https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg" alt="Imagen 2"
+                        class="w-full h-40 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold mb-2">Título 2</h3>
+                        <p class="text-gray-600">Esta es una descripción breve de la tarjeta 2.</p>
+                    </div>
+                </div>
+    
+                <!-- Card 3 -->
+                <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+                    <img src="https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg" alt="Imagen 3"
+                        class="w-full h-40 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold mb-2">Título 3</h3>
+                        <p class="text-gray-600">Esta es una descripción breve de la tarjeta 3.</p>
+                    </div>
+                </div>
+    
+                <!-- Card 4 -->
+                <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+                    <img src="https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg" alt="Imagen 4"
+                        class="w-full h-40 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold mb-2">Título 4</h3>
+                        <p class="text-gray-600">Esta es una descripción breve de la tarjeta 4.</p>
+                    </div>
+                </div>
+            </div>
+        </ul>
+    </div>
+    <!-- Contenido Últimas notificaciones  -->
+    <div *ngIf="selectedTabIndex === 2" class="bg-white shadow-md rounded-xl p-6 border">
+        <h3 class="text-lg font-semibold text-gray-700 mb-2">Últimas notificaciones</h3>
+        <div class="space-y-2 text-sm text-gray-700">
+            <li>Notificación 1</li>
+        </div>
+    </div>
+    <!-- Contenido Opciones de cuenta  -->
+    <div *ngIf="selectedTabIndex === 3" class="bg-white shadow-md rounded-xl p-6 border">
+        <h3 class="text-lg font-semibold text-gray-700 mb-2">Opciones de cuenta</h3>
+        <div class="flex flex-col gap-2">
+            <li>Editar perfil</li>
+            <li>Cambiar contraseña</li>
+            <li>Eliminar cuenta</li>
+        </div>
+    </div>
+</div>
