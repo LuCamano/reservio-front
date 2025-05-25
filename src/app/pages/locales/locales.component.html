@@ -1,0 +1,25 @@
+<div class="p-6 bg-gray-100 min-h-screen">
+    <h1 class="text-6xl font-semibold font-sans mb-20 text-center">Locales a tu diposicion</h1>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 px-30">
+        <div *ngFor="let local of locales"
+            class="bg-white shadow-lg rounded-none overflow-hidden hover:shadow-xl transition-shadow duration-300">
+            <img [src]="local.imagenUrl" alt="Imagen del local" class="h-48 w-full object-cover bg-contain">
+
+            <div class="p-4">
+                <h2 class="text-xl font-semibold mb-2">{{ local.nombre }}</h2>
+                <p class="text-sm text-gray-600"> {{ local.ubicacion }}</p>
+                <p class="text-sm text-gray-600"> Capacidad: {{ local.capacidad }} personas</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+                    <div></div>
+                    <button
+                        class="mt-4 w-auto bg-blue-500 hover:bg-blue-700 text-white py-2 rounded-none transition-colors px-2 ">
+                        Detalles
+                    </button>
+                    <div></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

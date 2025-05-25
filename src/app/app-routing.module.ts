@@ -18,6 +18,10 @@ const routes: Routes = [
     path: 'login',
     loadChildren: () => import("./pages/auth/auth.module").then(m => m.AuthModule)
   },
+  {
+    path: 'locales',
+    loadChildren: () => import("./pages/locales/locales.module").then(m => m.LocalesModule)
+  }
 ];
 
 @NgModule({
