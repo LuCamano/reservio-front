@@ -20,4 +20,10 @@ export class PerfilComponent {
   onTabChange(index: number) {
     this.selectedTabIndex = index;
   }
+
+  preferencias = {
+    modoOscuro: false,
+    notificaciones: true
+  };
+
 }
