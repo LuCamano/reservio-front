@@ -1,0 +1,91 @@
+<div class="p-6 bg-gray-100 min-h-screen">
+  <h1 class="text-6xl font-semibold font-sans mb-20 text-center">Locales a tu diposicion</h1>
+
+  <!-- Filtros compactos -->
+  <div class="bg-white rounded-xl shadow-md p-4 mb-8">
+    <form [formGroup]="filtrosForm" (ngSubmit)="aplicarFiltros()">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+        <!-- Precio por hora -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Precio máximo</label>
+          <div class="relative">
+            <input type="number" formControlName="precioMax" placeholder="Máximo $/h"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <span class="absolute right-3 top-2.5 text-gray-400"></span>
+          </div>
+        </div>
+
+        <!-- Capacidad -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Capacidad mínima</label>
+          <input type="number" formControlName="capacidadMin" placeholder="Mínimo personas"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+        </div>
+
+        <!-- Fecha -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Fecha</label>
+          <input type="date" formControlName="fecha"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+        </div>
+
+        <!-- Región -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Región</label>
+          <select formControlName="region" (change)="actualizarComunas()"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <option [ngValue]="null">Todas las regiones</option>
+            <option *ngFor="let region of regiones" [value]="region.id">{{ region.nombre }}</option>
+          </select>
+        </div>
+
+        <!-- Comuna -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Comuna</label>
+          <select formControlName="comuna"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <option [ngValue]="null">Todas las comunas</option>
+            <option *ngFor="let comuna of comunasFiltradas" [value]="comuna.id">{{ comuna.nombre }}</option>
+          </select>
+        </div>
+
+      </div>
+
+      <!-- botones -->
+      <div class="flex justify-end mt-4 gap-2">
+
+        <button type="button" (click)="limpiarFiltros()"
+          class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center">
+          <span class="material-icons text-base mr-1">restart_alt</span>
+          Limpiar
+        </button>
+
+        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center">
+          <span class="material-icons text-base mr-1">search</span>
+          Buscar
+        </button>
+
+      </div>
+    </form>
+  </div>
+
+  <!-- Locales -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+    @for (local of localesFiltrados; track $index) {
+    <div class="bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition-shadow">
+      <img [src]="local.imagenUrl" alt="Imagen del local" class="h-48 w-full object-cover bg-contain">
+      <div class="p-4">
+        <h3 class="text-xl font-bold mb-2">{{local.nombre}}</h3>
+          <p class="text-sm">Comuna: {{local.comuna}}</p>
+          <p class="text-sm">Capacidad: {{local.capacidad}} personas</p>
+          <p class="text-sm mb-2">Precio por hora: {{local.precioH}}/h</p>
+        <button class="w-full py-2 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors">
+          Ver detalles
+        </button>
+      </div>
+    </div>
+    }
+
+  </div>
+</div>

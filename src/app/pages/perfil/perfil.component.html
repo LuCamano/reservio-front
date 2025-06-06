@@ -1,0 +1,251 @@
+<!-- Fondo superior -->
+<div class="relative h-60 w-full bg-cover bg-center" style="background-image: url('/assets/fondo_login.avif');">
+    <div class="absolute inset-0 bg-black/50"></div>
+</div>
+
+<!-- Card del perfil -->
+<div class="relative z-10 mx-15 -mt-10 mb-4 rounded-xl border p-7 shadow-md bg-white">
+    <div class="flex flex-col lg:flex-row justify-between items-center gap-4">
+        <div class="flex items-center gap-4">
+            <mat-icon fontIcon="account_circle" class="text-[80px] text-gray-500"></mat-icon>
+            <div>
+                <h2 class="text-xl font-bold text-gray-800">Juan Davis</h2>
+                <p class="text-sm text-gray-500">JuanD&#64;gmail.com</p>
+            </div>
+        </div>
+
+        <!-- Tabs responsivos: 2 por fila en móvil, fila única en pantallas medianas o grandes -->
+        <div class="mt-4 lg:mt-0">
+            <nav class="flex flex-wrap md:flex-nowrap">
+                <div class="w-1/2 p-1 md:w-auto md:flex-1">
+                    <button (click)="onTabChange(0)"
+                        [ngClass]="selectedTabIndex === 0 ? 'bg-blue-600 text-white shadow' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                        class="w-full text-center rounded-full px-4 py-2 text-sm font-medium transition duration-300">
+                        Perfil
+                    </button>
+                </div>
+
+                <div class="w-1/2 p-1 md:w-auto md:flex-1">
+                    <button (click)="onTabChange(1)"
+                        [ngClass]="selectedTabIndex === 1 ? 'bg-blue-600 text-white shadow' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                        class="w-full text-center rounded-full px-4 py-2 text-sm font-medium transition duration-300">
+                        Historial
+                    </button>
+                </div>
+
+                <div class="w-1/2 p-1 md:w-auto md:flex-1">
+                    <button (click)="onTabChange(2)"
+                        [ngClass]="selectedTabIndex === 2 ? 'bg-blue-600 text-white shadow' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                        class="w-full text-center rounded-full px-4 py-2 text-sm font-medium transition duration-300">
+                        Propiedades
+                    </button>
+                </div>
+            </nav>
+        </div>
+
+    </div>
+</div>
+
+<!-- Contenido de los tabs  -->
+<div class="px-20 py-4">
+    <!-- Contenido del Perfil de usuario  -->
+    <div *ngIf="selectedTabIndex === 0" class="px-4 md:px-10 xl:px-40">
+        <h1 class="text-4xl font-medium text-gray-700 mb-1 text-center">Información personal</h1>
+        <p class="text-lg text-gray-700 mb-6 text-center">Información sobre ti y tus preferencias</p>
+    
+        <!-- Información básica -->
+        <div class="border rounded-xl p-6 shadow-sm">
+            <h2 class="text-2xl font-semibold mb-1">Información básica</h2>
+            <p class="text-sm text-gray-600 mb-4">Aquí puedes editar tus datos personales.</p>
+    
+            <div class="flex items-center justify-between border-t pt-4">
+                <div>
+                    <p class="text-sm text-gray-500">Foto de perfil</p>
+                    <p class="text-gray-700">Agrega una foto de perfil.</p>
+                </div>
+                <div
+                    class="w-14 h-14 rounded-full bg-green-700 text-white flex items-center justify-center text-xl font-bold">
+                    P
+                </div>
+            </div>
+    
+            <div class="mt-4 border-t pt-4">
+                <p class="text-sm text-gray-500">Nombre completo</p>
+                <p class="text-gray-800 font-medium">Juan Davis</p>
+            </div>
+    
+            <div class="mt-4 border-t pt-4">
+                <p class="text-sm text-gray-500">Rut</p>
+                <p class="text-gray-800 font-medium">12.345.678-9</p>
+            </div>
+    
+            <div class="mt-4 border-t pt-4">
+                <p class="text-sm text-gray-500">Fecha de nacimiento</p>
+                <p class="text-gray-800 font-medium">01/01/2000</p>
+            </div>
+        </div>
+
+        <!-- Informacion de contacto -->
+        <div class="border rounded-xl p-6 shadow-sm mt-6">
+            <h2 class="text-2xl font-semibold mb-1">Informacion de contacto</h2>
+            <p class="text-sm text-gray-600 mb-4">Aquí puedes editar tus datos personales.</p>
+
+            <div class="mt-4 border-t pt-4">
+                <p class="text-sm text-gray-500">Correo electronico</p>
+                <p class="text-gray-800 font-medium">juan&#64;gmail.com</p>
+            </div>
+        </div>
+        
+        <!-- Opciones de cuenta -->
+        <div class="flex flex-col lg:flex-row mt-6 space-y-6 lg:space-y-0 lg:space-x-6">
+    
+            <!-- Columna 1 -->
+            <div class="w-full lg:flex-1 border rounded-xl p-6 shadow-sm">
+                <h2 class="text-2xl font-semibold mb-1">Opciones de cuenta</h2>
+                <p class="text-sm text-gray-600 mb-4">Aquí puedes modificar tu cuenta.</p>
+    
+                <!-- Cambiar contraseña -->
+                <div class="mt-4 border-t pt-4 flex items-center justify-between">
+                    <p class="text-sm text-gray-500">Cambiar contraseña</p>
+                    <button class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">
+                        Actualizar contraseña
+                    </button>
+                </div>
+    
+                <!-- Cambiar tipo de cuenta -->
+                <div class="mt-4 border-t pt-4 flex items-center justify-between">
+                    <p class="text-sm text-gray-500">Quiero ser propietario</p>
+                    <button class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">
+                        Actualizar cuenta
+                    </button>
+                </div>
+    
+                <!-- Eliminar cuenta -->
+                <div class="mt-4 border-t pt-4 flex items-center justify-between">
+                    <p class="text-sm text-gray-500">Eliminar cuenta</p>
+                    <button class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition">
+                        Eliminar
+                    </button>
+                </div>
+            </div>
+    
+            <!-- Columna 2 -->
+            <div class="w-full lg:flex-1 border rounded-xl p-6 shadow-sm">
+                <h2 class="text-2xl font-semibold mb-1">Opciones de accesibilidad</h2>
+                <p class="text-sm text-gray-600 mb-4">Aquí puedes personalizar tu cuenta.</p>
+    
+                <!-- Modo oscuro -->
+                <div class="mt-4 border-t pt-4 flex items-center justify-between">
+                    <p class="text-sm text-gray-500">Modo oscuro</p>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="sr-only peer" [(ngModel)]="preferencias.modoOscuro">
+                        <div class="w-11 h-6 bg-gray-300 rounded-full peer-checked:bg-blue-600 transition-colors"></div>
+                        <div
+                            class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5">
+                        </div>
+                    </label>
+                </div>
+    
+                <!-- Notificaciones -->
+                <div class="mt-4 border-t pt-4 flex items-center justify-between">
+                    <p class="text-sm text-gray-500">Recibir notificaciones</p>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="sr-only peer" [(ngModel)]="preferencias.notificaciones">
+                        <div class="w-11 h-6 bg-gray-300 rounded-full peer-checked:bg-blue-600 transition-colors"></div>
+                        <div
+                            class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5">
+                        </div>
+                    </label>
+                </div>
+    
+                <!-- Tamaño de letra -->
+                <div class="mt-4 border-t pt-4 flex items-center justify-between">
+                    <p class="text-sm text-gray-500">Tamaño de letra</p>
+                    <div class="relative w-40">
+                        <select
+                            class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-2 pr-10 text-sm text-gray-700 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="normal">Normal</option>
+                            <option value="grande">Grande</option>
+                            <option value="extra">Extra Grande</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Contenido del Historial de actividad  -->
+    <div *ngIf="selectedTabIndex === 1" class="bg-white shadow-md rounded-xl p-6 border">
+        <h3 class="text-lg font-semibold text-gray-700 mb-2">Historial de actividad</h3>
+
+        <!-- card de ejemplo -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Card 1 -->
+            <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+
+                <img src="https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg" alt="Imagen 1"
+                    class="w-full h-40 object-cover">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold mb-2">Título 1</h3>
+                    <p class="text-gray-600">Esta es una descripción breve de la tarjeta 1.</p>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+                <img src="https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg" alt="Imagen 2"
+                    class="w-full h-40 object-cover">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold mb-2">Título 2</h3>
+                    <p class="text-gray-600">Esta es una descripción breve de la tarjeta 2.</p>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+                <img src="https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg" alt="Imagen 3"
+                    class="w-full h-40 object-cover">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold mb-2">Título 3</h3>
+                    <p class="text-gray-600">Esta es una descripción breve de la tarjeta 3.</p>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+                <img src="https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg" alt="Imagen 4"
+                    class="w-full h-40 object-cover">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold mb-2">Título 4</h3>
+                    <p class="text-gray-600">Esta es una descripción breve de la tarjeta 4.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- Contenido de propiedades si en propietario  -->
+    <div *ngIf="selectedTabIndex === 2" class="bg-white shadow-md rounded-xl p-6 border">
+        <h3 class="text-lg font-semibold text-gray-700 mb-2">Tus Propiedades</h3>
+        <div class="space-y-2 text-sm text-gray-700">
+            <!-- card de ejemplo -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+
+                    <img src="https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg" alt="Imagen 1"
+                        class="w-full h-40 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold mb-2">Propiedad 1</h3>
+                        <p class="text-gray-600">Esta es una descripción breve de la propiedad 1.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
