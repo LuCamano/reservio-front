@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=1500&q=80'
   ];
   currentImage = 0;
-  private intervalId: any;
+  private intervalId: ReturnType<typeof setInterval>;
 
   ngOnInit() {
     this.intervalId = setInterval(() => {
