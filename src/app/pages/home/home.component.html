@@ -1,6 +1,5 @@
 <app-header-simple></app-header-simple>
 
-
 <section class="relative w-full h-[450px] md:h-[600px] flex items-center justify-center overflow-hidden">
   <img 
     [src]="heroImages[currentImage]"
@@ -28,7 +27,7 @@
 </section>
 
 <!-- Sección 'Como Funciona' -->
-<section class="w-full bg-white py-40">
+<section class="w-full bg-gray-50 py-40">
   <div class="max-w-6xl mx-auto px-4">
     <h2 class="text-4xl font-bold text-center mb-10">¿Cómo Funciona?</h2>
     <div class="flex flex-col md:flex-row justify-between items-center gap-8">
@@ -69,10 +68,70 @@
     </div>
     <!-- Botón debajo de la sección -->
     <div class="flex justify-center mt-20">
-      <button class="bg-blue-700 hover:bg-blue-700 text-white font-semibold py-4 px-10 rounded-lg text-xl shadow-lg transition-colors duration-200">
+      <button class="bg-indigo-700 hover:bg-blue-700 text-white font-semibold py-4 px-10 rounded-lg text-xl shadow-lg transition-colors duration-200">
         ¡Comienza a Buscar!
       </button>
     </div>
   </div>
 </section>
 
+<!-- Sección 'Locales recomendados' -->
+<section class="w-full bg-gray-50 py-5 pb-24">
+  <div class="max-w-6xl mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-10">Locales recomendados</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Local 1 -->
+      <div class="bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition-shadow">
+        <img src="assets/homeassets/local1.jpg" alt="Imagen del local" class="h-48 w-full object-cover bg-contain">
+        <div class="p-4">
+          <h3 class="text-xl font-bold mb-2">Salón Central</h3>
+          <p class="text-sm">Comuna: Los Angeles</p>
+          <p class="text-sm">Capacidad: 150 personas</p>
+          <p class="text-sm mb-2">Precio por hora: $80.000/h</p>
+          <button class="w-full py-2 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors">
+            Ver detalles
+          </button>
+        </div>
+      </div>
+      <!-- Local 2 -->
+      <div class="bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition-shadow">
+        <img src="assets/homeassets/local2.jpg" alt="Imagen del local" class="h-48 w-full object-cover bg-contain">
+        <div class="p-4">
+          <h3 class="text-xl font-bold mb-2">Auditorio Vista</h3>
+          <p class="text-sm">Comuna: Concepcion</p>
+          <p class="text-sm">Capacidad: 80 personas</p>
+          <p class="text-sm mb-2">Precio por hora: $60.000/h</p>
+          <button class="w-full py-2 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors">
+            Ver detalles
+          </button>
+        </div>
+      </div>
+      <!-- Local 3 -->
+      <div class="bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition-shadow">
+        <img src="assets/homeassets/local3.jpg" alt="Imagen del local" class="h-48 w-full object-cover bg-contain">
+        <div class="p-4">
+          <h3 class="text-xl font-bold mb-2">Terraza Norte</h3>
+          <p class="text-sm">Comuna: Las Condes</p>
+          <p class="text-sm">Capacidad: 50 personas</p>
+          <p class="text-sm mb-2">Precio por hora: $45.000/h</p>
+          <button class="w-full py-2 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors">
+            Ver detalles
+          </button>
+        </div>
+      </div>
+      <!-- Local 4 -->
+      <div class="bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition-shadow">
+        <img src="assets/homeassets/local4.jpg" alt="Imagen del local" class="h-48 w-full object-cover bg-contain">
+        <div class="p-4">
+          <h3 class="text-xl font-bold mb-2">Salón Misterioso</h3>
+          <p class="text-sm">Comuna: ???</p>
+          <p class="text-sm">Capacidad: ??? personas?</p>
+          <p class="text-sm mb-2">Precio por hora: ???</p>
+          <button class="w-full py-2 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors">
+            Ver detalles
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
