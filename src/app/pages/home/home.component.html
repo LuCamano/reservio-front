@@ -1,20 +1,137 @@
-<main class="min-h-screen bg-gray-50">
-  <!-- Header esta sobre este contenido -->
-  <div class="max-w-7xl mx-auto px-4 py-8">
-    <h1 class="text-4xl font-bold text-gray-800 mb-4">Bienvenido a Reservio</h1>
-    <p class="text-lg text-gray-600">
-      ¡Encuentra el local perfecto para tu evento!
-    </p>
-    
-    <!-- Ejemplo -->
-    <div class="mt-8">
-      <button 
-        mat-raised-button 
-        color="primary"
-        class="!bg-blue-600 hover:!bg-blue-700"
-      >
-        Botón de Ejemplo equisd
+<app-header-simple></app-header-simple>
+
+<section class="relative w-full h-[450px] md:h-[600px] flex items-center justify-center overflow-hidden">
+  <img 
+    [src]="heroImages[currentImage]"
+    alt="Evento" 
+    class="absolute inset-0 w-full h-full object-cover brightness-75 transition-all duration-700"
+  />
+  <div class="relative z-10 flex flex-col items-center w-full px-4">
+    <div class="text-center text-white">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4 drop-shadow-lg">Bienvenido a Reservio</h1>
+      <p class="text-lg md:text-2xl font-medium drop-shadow-lg mb-6">
+        ¡Encuentra el local perfecto para tu evento!
+      </p>
+    </div>
+    <!-- Formulario de búsqueda -->
+    <div class="w-full max-w-xl">
+      <mat-form-field appearance="outline" class="w-full bg-white bg-opacity-90 rounded-lg shadow-lg">
+        <mat-label>¿Donde será tu evento?</mat-label>
+        <input matInput placeholder="Ej: Salón, Auditorio, Ciudad..." />
+        <button mat-icon-button matSuffix aria-label="Buscar">
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+  </div>
+</section>
+
+<!-- Sección 'Como Funciona' -->
+<section class="w-full bg-gray-50 py-40">
+  <div class="max-w-6xl mx-auto px-4">
+    <h2 class="text-4xl font-bold text-center mb-10">¿Cómo Funciona?</h2>
+    <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+      <!-- ...pasos existentes... -->
+      <div class="flex-1 text-center">
+        <!-- Paso 1 -->
+        <div class="mb-2 text-lg font-bold text-blue-500">Paso 1</div>
+        <div class="flex justify-center mb-4">
+          <div class="w-32 h-32 flex items-center justify-center bg-gray-700 rounded-lg">
+            <img src="assets/homeassets/paso1.png" alt="Buscar un local" class="w-20 h-20 object-contain" />
+          </div>
+        </div>
+        <h3 class="text-xl font-semibold mb-2">Busca un local</h3>
+        <p class="text-gray-600">Encuentra el espacio ideal para tu evento, viendo detalles como capacidad, precio, ubicación, y más.</p>
+      </div>
+      <div class="flex-1 text-center">
+        <!-- Paso 2 -->
+        <div class="mb-2 text-lg font-bold text-blue-500">Paso 2</div>
+        <div class="flex justify-center mb-4">
+          <div class="w-32 h-32 flex items-center justify-center bg-gray-700 rounded-lg">
+            <img src="assets/homeassets/paso2.png" alt="Enviar solicitud de arriendo" class="w-20 h-20 object-contain" />
+          </div>
+        </div>
+        <h3 class="text-xl font-semibold mb-2">Envia solicitud de arriendo</h3>
+        <p class="text-gray-600">Envía una solicitud rápida y sencilla al dueño del local, con información general acerca de tu evento.</p>
+      </div>
+      <div class="flex-1 text-center">
+        <!-- Paso 3 -->
+        <div class="mb-2 text-lg font-bold text-blue-500">Paso 3</div>
+        <div class="flex justify-center mb-4">
+          <div class="w-32 h-32 flex items-center justify-center bg-gray-700 rounded-lg">
+            <img src="assets/homeassets/paso3.png" alt="Conectarse con el dueño" class="w-20 h-20 object-contain" />
+          </div>
+        </div>
+        <h3 class="text-xl font-semibold mb-2">Conéctate con el dueño</h3>
+        <p class="text-gray-600">El dueño del local revisará tu solicitud, y si es aprobada, pasarás a realizar el pago.</p>
+      </div>
+    </div>
+    <!-- Botón debajo de la sección -->
+    <div class="flex justify-center mt-20">
+      <button class="bg-indigo-700 hover:bg-blue-700 text-white font-semibold py-4 px-10 rounded-lg text-xl shadow-lg transition-colors duration-200">
+        ¡Comienza a Buscar!
       </button>
     </div>
   </div>
-</main>
+</section>
+
+<!-- Sección 'Locales recomendados' -->
+<section class="w-full bg-gray-50 py-5 pb-24">
+  <div class="max-w-6xl mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-10">Locales recomendados</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Local 1 -->
+      <div class="bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition-shadow">
+        <img src="assets/homeassets/local1.jpg" alt="Imagen del local" class="h-48 w-full object-cover bg-contain">
+        <div class="p-4">
+          <h3 class="text-xl font-bold mb-2">Salón Central</h3>
+          <p class="text-sm">Comuna: Los Angeles</p>
+          <p class="text-sm">Capacidad: 150 personas</p>
+          <p class="text-sm mb-2">Precio por hora: $80.000/h</p>
+          <button class="w-full py-2 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors">
+            Ver detalles
+          </button>
+        </div>
+      </div>
+      <!-- Local 2 -->
+      <div class="bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition-shadow">
+        <img src="assets/homeassets/local2.jpg" alt="Imagen del local" class="h-48 w-full object-cover bg-contain">
+        <div class="p-4">
+          <h3 class="text-xl font-bold mb-2">Auditorio Vista</h3>
+          <p class="text-sm">Comuna: Concepcion</p>
+          <p class="text-sm">Capacidad: 80 personas</p>
+          <p class="text-sm mb-2">Precio por hora: $60.000/h</p>
+          <button class="w-full py-2 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors">
+            Ver detalles
+          </button>
+        </div>
+      </div>
+      <!-- Local 3 -->
+      <div class="bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition-shadow">
+        <img src="assets/homeassets/local3.jpg" alt="Imagen del local" class="h-48 w-full object-cover bg-contain">
+        <div class="p-4">
+          <h3 class="text-xl font-bold mb-2">Terraza Norte</h3>
+          <p class="text-sm">Comuna: Las Condes</p>
+          <p class="text-sm">Capacidad: 50 personas</p>
+          <p class="text-sm mb-2">Precio por hora: $45.000/h</p>
+          <button class="w-full py-2 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors">
+            Ver detalles
+          </button>
+        </div>
+      </div>
+      <!-- Local 4 -->
+      <div class="bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition-shadow">
+        <img src="assets/homeassets/local4.jpg" alt="Imagen del local" class="h-48 w-full object-cover bg-contain">
+        <div class="p-4">
+          <h3 class="text-xl font-bold mb-2">Salón Misterioso</h3>
+          <p class="text-sm">Comuna: ???</p>
+          <p class="text-sm">Capacidad: ??? personas?</p>
+          <p class="text-sm mb-2">Precio por hora: ???</p>
+          <button class="w-full py-2 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors">
+            Ver detalles
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
