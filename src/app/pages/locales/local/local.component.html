@@ -1,5 +1,5 @@
 <!-- Sección del local -->
-<div class="grid grid-cols-12 gap-2 pt-10 px-3">
+<section class="grid grid-cols-12 gap-2 pt-10 px-3">
   <div class="col-span-1"></div>
   <div class="col-span-12 md:col-span-10 bg-white rounded-t-xl overflow-hidden border border-gray-300 shadow">
     <img [src]="local.imagenUrl"
@@ -24,10 +24,10 @@
     
   </div>
   <div class="col-span-1"></div>
-</div>
+</section>
 
 <!-- Información adicional y contactos -->
-<div class="flex flex-col md:flex-row gap-4 py-5">
+<section class="flex flex-col md:flex-row gap-4 py-5">
   <!-- Margen izquierdo -->
   <div class="hidden md:block w-1/12"></div>
 
@@ -55,10 +55,10 @@
 
   <!-- Margen derecho -->
   <div class="hidden md:block w-1/12"></div>
-</div>
+</section>
 
 <!-- Imagen del mapa y ubicación -->
-<div class="grid grid-cols-12 gap-2 pb-10 px-5 bg-gray-100">
+<section class="grid grid-cols-12 gap-2 pb-10 px-5 bg-gray-100">
   <div class="col-span-1"></div>
   <div class="col-span-12 md:col-span-10">
     <div class="p-4">
@@ -73,4 +73,66 @@
     
   </div>
   <div class="col-span-1"></div>
-</div>
+</section>
+
+<section class="bg-white py-10 px-5">
+  <div class="max-w-6xl mx-auto text-center">
+    <h2 class="text-3xl font-bold mb-4">Opiniones de los usuarios</h2>
+    <p class="text-xl text-gray-600 mb-10">
+      ⭐⭐⭐⭐ <span class="text-2xl font-semibold text-gray-800 ml-2">4.4</span> Puntuación media
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+      <!-- Más útil -->
+      <div class="bg-white p-6 rounded-xl shadow-lg">
+        <h3 class="text-xl font-semibold mb-2">Los más útiles</h3>
+        <p class="text-sm text-gray-500 mb-4">2 de 2 personas encontraron útil esta opinión</p>
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-lg">👤</div>
+          <div>
+            <p class="font-medium">usuario_123</p>
+            <p class="text-xs text-gray-500">Hace 10 meses</p>
+          </div>
+        </div>
+        <div class="text-yellow-500 mb-2 text-sm">⭐⭐⭐☆☆</div>
+        <p class="text-gray-700 text-sm">
+          El local tiene buen ambiente. Aunque al final del día estaba un poco lleno.
+        </p>
+      </div>
+
+      <!-- Más valorado -->
+      <div class="bg-white p-6 rounded-xl shadow-lg">
+        <h3 class="text-xl font-semibold mb-2">Los más valorados</h3>
+        <p class="text-sm text-gray-500 mb-4">5/5 estrellas</p>
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-lg">👤</div>
+          <div>
+            <p class="font-medium">sandra_locales</p>
+            <p class="text-xs text-gray-500">Hace 6 meses</p>
+          </div>
+        </div>
+        <div class="text-yellow-500 mb-2 text-sm">⭐⭐⭐⭐⭐</div>
+        <p class="text-gray-700 text-sm">
+          Ideal para pasar el rato con amigos. La atención es excelente y puedes volver varias veces.
+        </p>
+      </div>
+
+      <!-- Último -->
+      <div class="bg-white p-6 rounded-xl shadow-lg">
+        <h3 class="text-xl font-semibold mb-2">Último</h3>
+        <p class="text-sm text-gray-500 mb-4">Hace 6 meses</p>
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-lg">👤</div>
+          <div>
+            <p class="font-medium">sandra_locales</p>
+            <p class="text-xs text-gray-500">Hace 6 meses</p>
+          </div>
+        </div>
+        <div class="text-yellow-500 mb-2 text-sm">⭐⭐⭐⭐⭐</div>
+        <p class="text-gray-700 text-sm">
+          Ideal para pasar el rato con amigos. La atención es excelente y puedes volver varias veces.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
