@@ -4,6 +4,7 @@ import { HeaderSimpleComponent } from './header-simple/header-simple.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -15,7 +16,8 @@ import {MatButtonModule} from '@angular/material/button';
     CommonModule,
     MatToolbarModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    RouterModule
   ],
   exports: [
     HeaderSimpleComponent
