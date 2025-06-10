@@ -1,5 +1,6 @@
 <app-header-simple></app-header-simple>
 
+
 <section class="relative w-full h-[450px] md:h-[600px] flex items-center justify-center overflow-hidden">
   <img 
     [src]="heroImages[currentImage]"
@@ -26,8 +27,36 @@
   </div>
 </section>
 
-<main class="min-h-screen bg-gray-50">
-  <div class="max-w-7xl mx-auto px-4 py-8">
-    <!-- Espacio para mas contenido -->
+<!-- Sección 'Como Funciona' -->
+<section class="w-full bg-white py-12">
+  <div class="max-w-6xl mx-auto px-4">
+    <h2 class="text-4xl font-bold text-center mb-10">¿Cómo Funciona?</h2>
+    <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+      <div class="flex-1 text-center">
+        <!-- Icono Buscar un local -->
+        <div class="flex justify-center mb-4">
+          <mat-icon class="text-5xl text-blue-500" fontIcon="search"></mat-icon>
+        </div>
+        <h3 class="text-xl font-semibold mb-2">Buscar un local</h3>
+        <p class="text-gray-600">Encuentra el espacio ideal para tu evento usando nuestro buscador.</p>
+      </div>
+      <div class="flex-1 text-center">
+        <!-- Icono Enviar solicitud de arriendo -->
+        <div class="flex justify-center mb-4">
+          <mat-icon class="text-5xl text-blue-500" fontIcon="send"></mat-icon>
+        </div>
+        <h3 class="text-xl font-semibold mb-2">Enviar solicitud de arriendo</h3>
+        <p class="text-gray-600">Envía una solicitud rápida y sencilla al dueño del local.</p>
+      </div>
+      <div class="flex-1 text-center">
+        <!-- Icono Conectarse con el dueño -->
+        <div class="flex justify-center mb-4">
+          <mat-icon class="text-5xl text-blue-500" fontIcon="person"></mat-icon>
+        </div>
+        <h3 class="text-xl font-semibold mb-2">Conectarse con el dueño</h3>
+        <p class="text-gray-600">Comunícate y coordina todos los detalles directamente con el propietario.</p>
+      </div>
+    </div>
   </div>
-</main>
+</section>
+
