@@ -1,20 +1,97 @@
 <app-header-simple></app-header-simple>
 
-<div class="container mx-auto px-4 py-8">
-  <h2 class="text-2xl font-bold mb-4">Mis Propiedades</h2>
-  <div class="bg-white shadow-md rounded-lg p-6">
-    <div class="flex justify-between items-center mb-4">
-      <h3 class="text-xl font-semibold text-gray-700">Listado de Propiedades</h3>
-      <button mat-raised-button color="primary">
-        <mat-icon>add</mat-icon>
-        Agregar Propiedad
-      </button>
+<main class="flex-grow flex flex-col items-center justify-center bg-gray-50 w-full">
+    <div class="container mx-auto px-4 py-8">
+        <h2 class="text-2xl font-bold mb-4">Mis Propiedades</h2>
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <div class="flex items-center gap-4 mb-6 justify-between">
+                <div class="flex items-center gap-4">
+                    <button mat-icon-button aria-label="Settings">
+                        <mat-icon>settings</mat-icon>
+                    </button>
+                    <mat-form-field appearance="outline" class="w-64">
+                        <mat-icon matPrefix>search</mat-icon>
+                        <input matInput placeholder="Buscar">
+                    </mat-form-field>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button mat-icon-button aria-label="Filter list">
+                        <mat-icon>filter_list</mat-icon>
+                    </button>
+                    <button mat-icon-button aria-label="Download data">
+                        <mat-icon>cloud_download</mat-icon>
+                    </button>
+                    <button mat-icon-button aria-label="Upload data">
+                        <mat-icon>cloud_upload</mat-icon>
+                    </button>
+
+                    <button mat-raised-button color="primary">
+                        <mat-icon>add</mat-icon>
+                        Agregar Propiedad
+                    </button>
+                </div>
+            </div>
+
+            <mat-table [dataSource]="dataSource" class="mat-elevation-z2 w-full">
+
+                <!-- Select Column -->
+                <ng-container matColumnDef="select">
+                    <mat-header-cell *matHeaderCellDef class="text-gray-700 font-semibold bg-gray-100 border-b border-gray-200">
+                        <mat-checkbox></mat-checkbox>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row" class="text-gray-800 border-b border-gray-100">
+                        <mat-checkbox></mat-checkbox>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef class="text-gray-700 font-semibold bg-gray-100 border-b border-gray-200"> Propiedades </mat-header-cell>
+                    <mat-cell *matCellDef="let row" class="text-gray-800 border-b border-gray-100">
+                        <div>{{row.name}}</div>
+                        <div class="text-sm text-gray-500">{{row.subContent}}</div>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Details Column -->
+                <ng-container matColumnDef="details">
+                    <mat-header-cell *matHeaderCellDef class="text-gray-700 font-semibold bg-gray-100 border-b border-gray-200"> Detalles </mat-header-cell>
+                    <mat-cell *matCellDef="let row" class="text-gray-800 border-b border-gray-100">
+                        <a href="#" class="text-blue-600 hover:underline">{{row.detailsLinkText}}</a>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Estado (Status) Column -->
+                <ng-container matColumnDef="estado">
+                    <mat-header-cell *matHeaderCellDef class="text-gray-700 font-semibold bg-gray-100 border-b border-gray-200"> Estado </mat-header-cell>
+                    <mat-cell *matCellDef="let row" class="text-gray-800 border-b border-gray-100">
+                        <span [ngClass]="{'bg-green-200 text-green-800': row.status === 'Completado', 'bg-yellow-200 text-yellow-800': row.status === 'Solicitud Pendiente', 'bg-red-200 text-red-800': row.status === 'Rechazado'}"
+                              class="px-2 py-1 text-xs font-semibold rounded-full">
+                            {{row.status}}
+                        </span>
+                    </mat-cell>
+                </ng-container>
+                <!-- Actions Column -->
+                <ng-container matColumnDef="acciones">
+                    <mat-header-cell *matHeaderCellDef class="text-gray-700 font-semibold bg-gray-100 border-b border-gray-200"> Acciones </mat-header-cell>
+                    <mat-cell *matCellDef="let row" class="text-gray-800 border-b border-gray-100">
+                        <div class="flex items-center gap-2">
+                            <button mat-icon-button><mat-icon>edit</mat-icon></button>
+                            <button mat-icon-button><mat-icon>delete</mat-icon></button>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns" class="bg-gray-100"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;" class="hover:bg-gray-50"></mat-row>
+            </mat-table>
+
+            <!-- Pagination placeholder -->
+            <div class="flex justify-end items-center mt-4 text-sm text-gray-600">
+                <span>1 - 10 de 52</span>
+                <button mat-icon-button><mat-icon>chevron_left</mat-icon></button>
+                <button mat-icon-button><mat-icon>chevron_right</mat-icon></button>
+            </div>
+        </div>
     </div>
-    <mat-list>
-      <mat-list-item>Propiedad 1: Ejemplo de Local</mat-list-item>
-      <mat-list-item>Propiedad 2: Otro Lugar para Eventos</mat-list-item>
-      <mat-list-item>Propiedad 3: Salón para Fiestas</mat-list-item>
-      <!-- Add more placeholder items as needed -->
-    </mat-list>
-  </div>
-</div>
+</main>

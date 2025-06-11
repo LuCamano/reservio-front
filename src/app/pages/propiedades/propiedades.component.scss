@@ -1,0 +1,21 @@
+.mat-table {
+  background-color: #fff; /* White background for the table */
+}
+
+.mat-header-row {
+  background-color: #fff; /* White background for the header row */
+  border-bottom: 1px solid #eee; /* Light gray border at the bottom of the header */
+}
+
+.mat-row {
+  background-color: #fff; /* White background for data rows */
+  border-bottom: 1px solid #eee; /* Light gray border at the bottom of data rows */
+}
+
+.mat-header-cell {
+  color: #333; /* Dark gray text for header cells */
+}
+
+.mat-cell {
+  color: #333; /* Dark gray text for data cells */
+}
