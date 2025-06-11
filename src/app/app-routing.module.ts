@@ -21,6 +21,10 @@ const routes: Routes = [
   {
     path: 'locales',
     loadChildren: () => import("./pages/locales/locales.module").then(m => m.LocalesModule)
+  },
+  {
+    path: 'propiedades',
+    loadChildren: () => import("./pages/propiedades/propiedades.module").then(m => m.PropiedadesModule)
   }
 ];
 
