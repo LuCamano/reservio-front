@@ -8,4 +8,13 @@ import { Component } from '@angular/core'
 })
 export class HeaderSimpleComponent {
 
+  isMenuOpen = false;
+
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  closeMenu() {
+    this.isMenuOpen = false;
+  }
 }

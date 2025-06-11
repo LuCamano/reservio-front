@@ -1,0 +1,20 @@
+/* Add styles for the side navigation menu */
+.sidenav {
+  width: 250px; /* Adjust width as needed */
+}
+
+/* Hide the menu button on larger screens */
+.menu-button {
+  display: none;
+}
+
+/* Show the menu button and hide regular navigation buttons on smaller screens */
+@media (max-width: 500px) { /* Adjust breakpoint as needed */
+  .menu-button {
+    display: flex;
+  }
+  .nav-links {
+    display: none;
+  }
+}
+
