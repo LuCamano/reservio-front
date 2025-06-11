@@ -3,20 +3,27 @@ import { CommonModule } from '@angular/common';
 import { ComponentsModule } from '../../components/components.module';
 import { PropiedadesRoutingModule } from './propiedades-routing.module';
 import { PropiedadesComponent } from './propiedades.component';
+
 // Import Angular Material modules:
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
-    PropiedadesComponent
+    PropiedadesComponent,
   ],
   imports: [
     CommonModule,
     PropiedadesRoutingModule,
-    ComponentsModule
+    ComponentsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatListModule,
+    MatIconModule,
+    MatCheckboxModule
   ]
 })
 export class PropiedadesModule { }
