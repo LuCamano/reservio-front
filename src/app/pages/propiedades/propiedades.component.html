@@ -34,7 +34,7 @@
 
             <mat-table [dataSource]="dataSource" class="mat-elevation-z2 w-full">
 
-                <!-- Select Column -->
+                <!-- Columna select -->
                 <ng-container matColumnDef="select">
                     <mat-header-cell *matHeaderCellDef class="text-gray-700 font-semibold bg-gray-100 border-b border-gray-200">
                         <mat-checkbox></mat-checkbox>
@@ -44,7 +44,7 @@
                     </mat-cell>
                 </ng-container>
 
-                <!-- Name Column -->
+                <!-- Columna nombres -->
                 <ng-container matColumnDef="name">
                     <mat-header-cell *matHeaderCellDef class="text-gray-700 font-semibold bg-gray-100 border-b border-gray-200"> Propiedades </mat-header-cell>
                     <mat-cell *matCellDef="let row" class="text-gray-800 border-b border-gray-100">
@@ -53,7 +53,7 @@
                     </mat-cell>
                 </ng-container>
 
-                <!-- Details Column -->
+                <!-- Columna detalles -->
                 <ng-container matColumnDef="details">
                     <mat-header-cell *matHeaderCellDef class="text-gray-700 font-semibold bg-gray-100 border-b border-gray-200"> Detalles </mat-header-cell>
                     <mat-cell *matCellDef="let row" class="text-gray-800 border-b border-gray-100">
@@ -61,7 +61,7 @@
                     </mat-cell>
                 </ng-container>
 
-                <!-- Estado (Status) Column -->
+                <!-- Columna estado -->
                 <ng-container matColumnDef="estado">
                     <mat-header-cell *matHeaderCellDef class="text-gray-700 font-semibold bg-gray-100 border-b border-gray-200"> Estado </mat-header-cell>
                     <mat-cell *matCellDef="let row" class="text-gray-800 border-b border-gray-100">
@@ -71,7 +71,7 @@
                         </span>
                     </mat-cell>
                 </ng-container>
-                <!-- Actions Column -->
+                <!-- Columna acciones -->
                 <ng-container matColumnDef="acciones">
                     <mat-header-cell *matHeaderCellDef class="text-gray-700 font-semibold bg-gray-100 border-b border-gray-200"> Acciones </mat-header-cell>
                     <mat-cell *matCellDef="let row" class="text-gray-800 border-b border-gray-100">
@@ -86,7 +86,7 @@
                 <mat-row *matRowDef="let row; columns: displayedColumns;" class="hover:bg-gray-50"></mat-row>
             </mat-table>
 
-            <!-- Pagination placeholder -->
+            <!-- Paginacion -->
             <div class="flex justify-end items-center mt-4 text-sm text-gray-600">
                 <span>1 - 10 de 52</span>
                 <button class="p-1 rounded-full hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"><mat-icon>chevron_left</mat-icon></button>
