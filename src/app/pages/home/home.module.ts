@@ -10,6 +10,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 
+import { FormsModule, ReactiveFormsModule} from '@angular/forms';
+
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {AsyncPipe} from '@angular/common';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+
+
 @NgModule({
   declarations: [
     HomeComponent
@@ -19,9 +26,16 @@ import { MatButtonModule } from '@angular/material/button';
     HomeRoutingModule,
     ComponentsModule,
     MatFormFieldModule,
+    FormsModule,
     MatInputModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
+    MatSlideToggleModule,
+    AsyncPipe,
   ]
 })
 export class HomeModule { }
