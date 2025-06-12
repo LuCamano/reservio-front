@@ -5,12 +5,14 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import { RouterModule } from '@angular/router';
+import { SidebarAdmComponent } from './sidebar-adm/sidebar-adm.component';
 
 
 
 @NgModule({
   declarations: [
-    HeaderSimpleComponent
+    HeaderSimpleComponent,
+    SidebarAdmComponent
   ],
   imports: [
     CommonModule,
@@ -20,7 +22,8 @@ import { RouterModule } from '@angular/router';
     RouterModule
   ],
   exports: [
-    HeaderSimpleComponent
+    HeaderSimpleComponent,
+    SidebarAdmComponent
   ]
 })
 export class ComponentsModule {
