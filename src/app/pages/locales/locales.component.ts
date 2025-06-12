@@ -156,5 +156,4 @@ export class LocalesComponent implements OnInit {
       { id: 5, nombre: 'Salon de los valientes', region: '¿?', comuna: '¿?', capacidad: 9999, precioH: 0, disponible: true, imagenUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Backrooms_model.jpg/1200px-Backrooms_model.jpg' },
     ];
   }
-   
 }
