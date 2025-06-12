@@ -7,9 +7,10 @@ import { Component } from '@angular/core';
   styleUrl: './sidebar-adm.component.scss'
 })
 export class SidebarAdmComponent {
-  isSidebarOpen = true;
+  isSidenavOpen = true;
 
-  toggleSidebar() {
-    this.isSidebarOpen = !this.isSidebarOpen;
+  toggleSidenav() {
+    this.isSidenavOpen = !this.isSidenavOpen;
+    // Aquí deberías emitir un evento o usar un servicio para comunicar a app.component.ts
   }
 }
