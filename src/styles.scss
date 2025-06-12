@@ -4,3 +4,7 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+.mat-mdc-raised-button:not(:disabled) {
+  background-color: #000000 !important; // Azul Tailwind (por ejemplo)
+  color: white !important;
+}
