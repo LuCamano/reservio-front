@@ -10,7 +10,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { FormsModule } from '@angular/forms';
-import { ComponentsModule } from "../../components/components.module";
+import { ComponentsModule } from '../../components/components.module';
 
 @NgModule({
   declarations: [
