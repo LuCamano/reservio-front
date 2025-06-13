@@ -51,8 +51,8 @@
 <div class="px-20 py-4">
     <!-- Contenido del Perfil de usuario  -->
     <div *ngIf="selectedTabIndex === 0" class="px-4 md:px-10 xl:px-40">
-        <h1 class="text-4xl font-medium text-gray-700 mb-1 text-center">Información personal</h1>
-        <p class="text-lg text-gray-700 mb-6 text-center">Información sobre ti y tus preferencias</p>
+        <h1 class="text-4xl font-medium text-gray-700 mb-1 text-start">Información personal</h1>
+        <p class="text-lg text-gray-700 mb-6 text-start">Información sobre ti y tus preferencias</p>
 
         <!-- Información básica -->
         <div class="border rounded-xl p-6 shadow-sm">
@@ -231,42 +231,58 @@
         </div>
 
     </div>
+
     <!-- Contenido de propiedades si en propietario  -->
+    <div *ngIf="selectedTabIndex === 2" class="bg-white min-h-screen py-10 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8">Mis propiedades</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div *ngFor="let local of locales"
+                    class="bg-white shadow-sm hover:shadow-lg transition-shadow rounded-2xl border border-gray-200 overflow-hidden">
+                    <img [src]="local.imagenUrl" [alt]="local.nombre" class="w-full h-48 object-cover" />
+                    <div class="p-5">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-lg font-semibold text-gray-900">{{ local.nombre }}</h3>
+                        </div>
 
-    <div *ngIf="selectedTabIndex === 2" class="bg-white shadow-md rounded-xl p-6 border">
-  <h3 class="text-lg font-semibold text-gray-700 mb-4">Tus Propiedades</h3>
-  <ul class="space-y-4 text-gray-700">
-    <!-- Item 1 -->
-    <li class="flex flex-col sm:flex-row sm:items-center sm:justify-between bg-white rounded-2xl shadow-md overflow-hidden px-4">
-      <div class="flex flex-col sm:flex-row sm:items-center">
-        <img
-          src="https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg"
-          alt="Imagen 1"
-          class="w-full sm:w-32 h-40 sm:h-24 object-cover sm:rounded-l-2xl"
-        />
-        <div class="p-4 flex flex-col justify-center">
-          <h4 class="text-lg font-semibold mb-1">Propiedad 1</h4>
-          <p class="text-sm text-gray-600">Esta es una descripción breve de la propiedad 1.</p>
-        </div>
-      </div>
-      <!-- Icono visible solo en pantallas sm+ -->
-      <mat-icon class="hidden sm:inline-flex text-gray-500 sm:ml-4">keyboard_arrow_right</mat-icon>
-    </li>
+                        <p class="text-sm text-gray-600 mb-1">
+                            <span class="font-medium">Región:</span> {{ local.region }}
+                        </p>
+                        <p class="text-sm text-gray-600 mb-1">
+                            <span class="font-medium">Comuna:</span> {{ local.comuna }}
+                        </p>
+                        <p class="text-sm text-gray-600 mb-1">
+                            <span class="font-medium">Capacidad:</span> {{ local.capacidad }} personas
+                        </p>
+                        <p class="text-sm text-gray-600 mb-1">
+                            <span class="font-medium">Precio/Hora:</span> ${{ local.precioH | number:'1.0-0' }}
+                        </p>
+                        <p class="text-sm text-gray-600 mb-4" *ngIf="local.direccion">
+                            <span class="font-medium">Dirección:</span> {{ local.direccion }}
+                        </p>
 
-    
-      <!-- Item 2 -->
-            <li
-                class="flex flex-col sm:flex-row sm:items-center sm:justify-between bg-white rounded-2xl shadow-md overflow-hidden px-4">
-                <div class="flex flex-col sm:flex-row sm:items-center">
-                    <img src="https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg" alt="Imagen 2"
-                        class="w-full sm:w-32 h-40 sm:h-24 object-cover sm:rounded-l-2xl" />
-                    <div class="p-4 flex flex-col justify-center">
-                        <h4 class="text-lg font-semibold mb-1">Propiedad 2</h4>
-                        <p class="text-sm text-gray-600">Esta es una descripción breve de la propiedad 2.</p>
+                        <div class="text-right">
+                            <button
+                                class="text-sm px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                                Ver Detalles
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <mat-icon class="hidden sm:inline-flex text-gray-500 sm:ml-4">keyboard_arrow_right</mat-icon>
-            </li>
-  </ul>
+                <div
+                    class="bg-white shadow-sm hover:shadow-lg transition-shadow rounded-2xl border border-dashed border-gray-300 flex flex-col justify-center items-center text-center p-8 cursor-pointer hover:border-blue-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-600 mb-4" fill="Normal" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Añadir nueva propiedad</h3>
+                    <p class="text-sm text-gray-600 mb-4">Crea una nueva propiedad y comienza a ganar dinero.</p>
+                    <button class="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition">
+                        Agregar propiedad
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
+    
 </div>
