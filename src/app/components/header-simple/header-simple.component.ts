@@ -7,5 +7,5 @@ import { Component } from '@angular/core'
   styleUrl: './header-simple.component.scss'
 })
 export class HeaderSimpleComponent {
-
+  menuAbierto = false;
 }

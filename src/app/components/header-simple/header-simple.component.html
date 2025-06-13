@@ -9,8 +9,8 @@
       >
       <span class="text-2xl font-extrabold text-blue-700 tracking-tight">Reservio</span>
     </a>
-    <!-- Navegación principal -->
-    <div class="flex items-center gap-3 md:gap-6">
+    <!-- Navegación principal (escritorio) -->
+    <div class="hidden md:flex items-center gap-3 md:gap-6">
       <button
         class="px-5 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-base transition-colors shadow-sm"
         routerLink="/locales"
@@ -32,7 +32,57 @@
         Mi Perfil
       </button>
     </div>
+    <!-- Menú hamburguesa (móvil) -->
+    <button
+      class="md:hidden flex items-center justify-center p-2 rounded-lg hover:bg-gray-100 transition"
+      (click)="menuAbierto = !menuAbierto"
+      aria-label="Abrir menú"
+      type="button"
+    >
+      <span class="material-icons text-3xl text-blue-700">{{ menuAbierto ? 'close' : 'menu' }}</span>
+    </button>
   </nav>
+  <!-- Menú móvil desplegable -->
+  <div
+    class="md:hidden fixed inset-0 bg-black/40 z-40 transition-opacity"
+    *ngIf="menuAbierto"
+    (click)="menuAbierto = false"
+  ></div>
+  <div
+    class="md:hidden fixed top-0 right-0 w-64 h-full bg-white shadow-lg z-50 transition-transform duration-300"
+    [ngClass]="menuAbierto ? 'translate-x-0' : 'translate-x-full'"
+    *ngIf="menuAbierto"
+  >
+    <div class="flex flex-col gap-4 p-6">
+      <a routerLink="/" class="flex items-center gap-2 mb-6" (click)="menuAbierto = false">
+        <img src="assets/logohome.png" alt="Logo Reservio" class="h-10 w-10 object-contain">
+        <span class="text-xl font-extrabold text-blue-700">Reservio</span>
+      </a>
+      <button
+        class="w-full px-4 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-base transition-colors shadow-sm text-left"
+        routerLink="/locales"
+        (click)="menuAbierto = false"
+      >
+        Ver Locales
+      </button>
+      <button
+        class="w-full px-4 py-3 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-semibold text-base transition-colors shadow-sm flex items-center gap-2 text-left"
+        routerLink="/login"
+        (click)="menuAbierto = false"
+      >
+        <span class="material-icons text-lg">person</span>
+        Iniciar Sesión / Crear Cuenta
+      </button>
+      <button
+        class="w-full px-4 py-3 rounded-lg bg-white border border-blue-600 text-blue-700 hover:bg-blue-50 font-semibold text-base transition-colors flex items-center gap-2 text-left"
+        routerLink="/perfil"
+        (click)="menuAbierto = false"
+      >
+        <span class="material-icons text-lg">account_circle</span>
+        Mi Perfil
+      </button>
+    </div>
+  </div>
 </header>
 
 <!-- Material Icons CDN (agrega esto en tu index.html si no está) -->
