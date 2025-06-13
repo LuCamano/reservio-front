@@ -10,8 +10,9 @@
         <div class="flex items-center gap-4">
             <mat-icon fontIcon="account_circle" class="text-[80px] text-gray-500"></mat-icon>
             <div>
-                <h2 class="text-xl font-bold text-gray-800">Juan Davis</h2>
-                <p class="text-sm text-gray-500">JuanD&#64;gmail.com</p>
+                <h2 class="text-xl font-bold text-gray-800">{{ usuario.nombres }} {{ usuario.appaterno }}
+                    {{ usuario.apmaterno }}</h2>
+                <p class="text-sm text-gray-500">{{ usuario.email }}</p>
             </div>
         </div>
 
@@ -66,23 +67,26 @@
                 </div>
                 <div
                     class="w-14 h-14 rounded-full bg-green-700 text-white flex items-center justify-center text-xl font-bold">
-                    P
+                    {{ usuario!.nombres ? usuario.nombres.charAt(0) : 'U' }}
                 </div>
             </div>
 
             <div class="mt-4 border-t pt-4">
                 <p class="text-sm text-gray-500">Nombre completo</p>
-                <p class="text-gray-800 font-medium">Juan Davis</p>
+                <p class="text-gray-800 font-medium">{{ usuario.nombres }} {{ usuario.appaterno }}
+                    {{ usuario!.apmaterno }}</p>
             </div>
 
             <div class="mt-4 border-t pt-4">
                 <p class="text-sm text-gray-500">Rut</p>
-                <p class="text-gray-800 font-medium">12.345.678-9</p>
+                <p class="text-gray-800 font-medium">{{ usuario.rut }}</p>
             </div>
 
             <div class="mt-4 border-t pt-4">
                 <p class="text-sm text-gray-500">Fecha de nacimiento</p>
-                <p class="text-gray-800 font-medium">01/01/2000</p>
+                <p class="text-gray-800 font-medium">
+                    {{ usuario!.fecha_nacimiento ? (usuario.fecha_nacimiento | date:'dd/MM/yyyy') : '' }}
+                </p>
             </div>
         </div>
 
@@ -93,7 +97,7 @@
 
             <div class="mt-4 border-t pt-4">
                 <p class="text-sm text-gray-500">Correo electronico</p>
-                <p class="text-gray-800 font-medium">juan&#64;gmail.com</p>
+                <p class="text-gray-800 font-medium">{{ usuario.email }}</p>
             </div>
         </div>
 
