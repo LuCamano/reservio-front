@@ -20,3 +20,17 @@ export interface Local {
     disponible: boolean;
     imagenUrl: string;
 }
+
+export interface Usuario{
+    id: string;
+    email: string;
+    rut: string;
+    nombre: string;
+    apaterno: string;
+    amaterno: string;
+    fechaNacimiento: Date;
+    tipo: string; // 'Usuario Comun' | 'Propieterio' | 'Administrador'
+    contraseña: string;
+    fechacreacion: Date;
+    activo: boolean;
+}

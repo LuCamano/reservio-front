@@ -1,36 +1,42 @@
 <header class="bg-white shadow-md top-0 z-50">
   <nav class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
-    <!-- Logo y nombre -->
-    <a routerLink="/" class="flex items-center gap-3 group">
-      <img 
-        src="assets/logohome.png" 
-        alt="Logo Reservio" 
-        class="h-14 w-14 object-contain transition-transform group-hover:scale-105"
-      >
-      <span class="text-2xl font-extrabold text-blue-700 tracking-tight">Reservio</span>
-    </a>
-    <!-- Navegación principal (escritorio) -->
-    <div class="hidden md:flex items-center gap-3 md:gap-6">
+    <!-- Logo, nombre y Ver Locales -->
+    <div class="flex items-center gap-3 md:gap-6">
+      <a routerLink="/" class="flex items-center gap-3 group">
+        <img 
+          src="assets/logo.png" 
+          alt="Logo Reservio" 
+          class="h-13 w-13 object-contain transition-transform group-hover:scale-105"
+        >
+        <span class="text-4xl font-bold text-sky-700 tracking-tight">Reservio</span>
+      </a>
       <button
-        class="px-5 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-base transition-colors shadow-sm"
+        class="hidden md:inline-flex px-5 py-2 text-blue-500 font-medium text-2x1 transition-colors ml-2"
         routerLink="/locales"
       >
         Ver Locales
       </button>
-      <button
-        class="px-5 py-2 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-semibold text-base transition-colors shadow-sm flex items-center gap-2"
-        routerLink="/login"
-      >
-        <span class="material-icons text-lg">person</span>
-        Iniciar Sesión / Crear Cuenta
-      </button>
-      <button
-        class="px-5 py-2 rounded-lg bg-white border border-blue-600 text-blue-700 hover:bg-blue-50 font-semibold text-base transition-colors flex items-center gap-2"
-        routerLink="/perfil"
-      >
-        <span class="material-icons text-lg">account_circle</span>
-        Mi Perfil
-      </button>
+    </div>
+    <!-- Botones de sesión (escritorio) -->
+    <div class="hidden md:flex items-center gap-3 md:gap-6">
+      <ng-container *ngIf="!usuario">
+        <button
+          class="px-5 py-2 text-blue-500 font-semibold text-base transition-colors flex items-center gap-2"
+          routerLink="/login"
+        >
+          <span class="material-icons text-lg">person</span>
+          Iniciar Sesión / Crear Cuenta
+        </button>
+      </ng-container>
+      <ng-container *ngIf="usuario">
+        <button
+          class="px-5 py-2 rounded-lg bg-white border border-blue-50 hover:bg-blue-50 font-semibold text-base transition-colors flex items-center gap-2"
+          routerLink="/perfil"
+        >
+          <span class="material-icons text-lg">account_circle</span>
+          Mi Perfil
+        </button>
+      </ng-container>
     </div>
     <!-- Menú hamburguesa (móvil) -->
     <button
@@ -53,34 +59,40 @@
     [ngClass]="menuAbierto ? 'translate-x-0' : 'translate-x-full'"
     *ngIf="menuAbierto"
   >
-    <div class="flex flex-col gap-4 p-6">
-      <a routerLink="/" class="flex items-center gap-2 mb-6" (click)="menuAbierto = false">
-        <img src="assets/logohome.png" alt="Logo Reservio" class="h-10 w-10 object-contain">
-        <span class="text-xl font-extrabold text-blue-700">Reservio</span>
+    <div class="flex flex-col p-0">
+      <a routerLink="/" class="flex items-center gap-2 px-6 py-6 mb-2" (click)="menuAbierto = false">
+        <img src="assets/logo.png" alt="Logo Reservio" class="h-16 w-16 object-contain">
+        <span class="text-xl font-extrabold text-sky-700">Reservio</span>
       </a>
-      <button
-        class="w-full px-4 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-base transition-colors shadow-sm text-left"
+      <hr class="border-gray-200">
+      <a
         routerLink="/locales"
         (click)="menuAbierto = false"
+        class="px-6 py-4 text-base text-gray-800 font-semibold hover:text-blue-700 transition-colors"
       >
         Ver Locales
-      </button>
-      <button
-        class="w-full px-4 py-3 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-semibold text-base transition-colors shadow-sm flex items-center gap-2 text-left"
-        routerLink="/login"
-        (click)="menuAbierto = false"
-      >
-        <span class="material-icons text-lg">person</span>
-        Iniciar Sesión / Crear Cuenta
-      </button>
-      <button
-        class="w-full px-4 py-3 rounded-lg bg-white border border-blue-600 text-blue-700 hover:bg-blue-50 font-semibold text-base transition-colors flex items-center gap-2 text-left"
-        routerLink="/perfil"
-        (click)="menuAbierto = false"
-      >
-        <span class="material-icons text-lg">account_circle</span>
-        Mi Perfil
-      </button>
+      </a>
+      <hr class="border-gray-200">
+      <ng-container *ngIf="!usuario">
+        <a
+          routerLink="/login"
+          (click)="menuAbierto = false"
+          class="px-6 py-4 text-base text-gray-800 font-semibold flex items-center gap-2 hover:text-blue-700 transition-colors"
+        >
+          <span class="material-icons text-lg">person</span>
+          Iniciar Sesión / Crear Cuenta
+        </a>
+      </ng-container>
+      <ng-container *ngIf="usuario">
+        <a
+          routerLink="/perfil"
+          (click)="menuAbierto = false"
+          class="px-6 py-4 text-base text-gray-800 font-semibold flex items-center gap-2 hover:text-blue-700 transition-colors"
+        >
+          <span class="material-icons text-lg">account_circle</span>
+          Mi Perfil
+        </a>
+      </ng-container>
     </div>
   </div>
 </header>

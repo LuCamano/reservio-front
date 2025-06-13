@@ -1,4 +1,6 @@
-import { Component } from '@angular/core'
+import { Component } from '@angular/core';
+import { ConnectionService } from '../../services/connection.service';
+import { Usuario } from '../../models/models.interface';
 
 @Component({
   selector: 'app-header-simple',
@@ -8,4 +10,9 @@ import { Component } from '@angular/core'
 })
 export class HeaderSimpleComponent {
   menuAbierto = false;
+  usuario: Usuario | null = null;
+
+  constructor(private connectionService: ConnectionService) {
+    this.usuario = this.connectionService.getSesionUsuario();
+  }
 }
