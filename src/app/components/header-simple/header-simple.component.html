@@ -34,10 +34,10 @@
           <span class="material-icons text-lg">account_circle</span>
           Mi Perfil
         </a>
-        <a href="#" class="text-red-500 flex items-center hover:text-red-700" (click)="logout()">
+        <button class="text-red-500 flex items-center hover:text-red-700" (click)="logout()">
           <span class="material-icons text-lg text-red-500">logout</span>
           Cerrar Sesión
-        </a>
+        </button>
       </ng-container>
     </div>
     <!-- Menú hamburguesa (móvil) -->
@@ -94,14 +94,13 @@
           <span class="material-icons text-lg">account_circle</span>
           Mi Perfil
         </a>
-        <a
-          href="#"
+        <button
           class="px-6 py-4 text-base text-red-500 font-semibold flex items-center gap-2 hover:text-red-700 transition-colors"
           (click)="logout()"
         >
           <span class="material-icons text-lg">logout</span>
           Cerrar Sesión
-        </a>
+        </button>
       </ng-container>
     </div>
   </div>
