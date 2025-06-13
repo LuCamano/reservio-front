@@ -48,8 +48,14 @@ export class AddPropiedadComponent {
     if (this.localForm.valid) {
       // Obtener usuario actual
       const usuarioActual = this.connectionService.getSesionUsuario();
-      const emailUsuario = usuarioActual?.email || '';
+      if (!usuarioActual) {
+        // Redirigir al usuario a la página de inicio de sesión si no hay sesión activa
+        alert('Debe iniciar sesión para agregar una propiedad.');
+        this.router.navigate(['/login']);
+        return;
+      }
 
+      const emailUsuario = usuarioActual.email;
       const nuevoLocal: Local = {
         id: crypto.randomUUID(),
         ...this.localForm.value,
