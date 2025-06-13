@@ -43,6 +43,8 @@ export class LocalesComponent implements OnInit {
   comunas: Comuna[] = [];
   comunasFiltradas: Comuna[] = [];
 
+  vista: 'grilla' | 'lista' = 'grilla';
+
   ngOnInit(): void {
     this.filtrosForm = this.fb.group({
       precioMax: [null],

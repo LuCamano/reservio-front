@@ -1,6 +1,6 @@
 <app-header-simple></app-header-simple>
 
-<div class="bg-gray-100 min-h-screen px-4 md:px-50 pt-20 pb-20">
+<div class="bg-gray-100 min-h-screen px-4 md:px-80 pt-20 pb-20">
 
 
   <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -67,25 +67,31 @@
     <!-- Div Locales -->
     <div class="md:col-span-3 flex flex-col h-full">
 
-      <!-- Paginación superior -->
-      <div class="flex justify-end mb-2 text-sm text-gray-600">
-        <span class="hidden sm:flex items-center">
-          <span>Max. Items por pagina: 20</span>
-          <span class="mx-3 h-5 border-l border-gray-300 inline-block align-middle"></span>
-          <span>1 - 10 de 52</span>
-        </span>
-        <button class="p-1 rounded-full hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300 ml-2">
-          <mat-icon>chevron_left</mat-icon>
+      <!-- Opciones de vista -->
+      <div class="flex items-center justify-end mb-6 gap-2">
+        <span class="text-gray-600 text-sm mr-2">Ver como:</span>
+        <button
+          class="p-2 rounded-lg border transition-colors"
+          [ngClass]="vista === 'grilla' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'"
+          (click)="vista = 'grilla'"
+          aria-label="Ver como grilla"
+        >
+          <span class="material-icons">grid_view</span>
         </button>
-        <button class="p-1 rounded-full hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300 ml-1">
-          <mat-icon>chevron_right</mat-icon>
+        <button
+          class="p-2 rounded-lg border transition-colors"
+          [ngClass]="vista === 'lista' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'"
+          (click)="vista = 'lista'"
+          aria-label="Ver como lista"
+        >
+          <span class="material-icons">view_list</span>
         </button>
       </div>
 
       <!-- Lista de locales -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         @for (local of localesFiltrados; track $index) {
-        <div class="bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition-shadow text-base">
+        <div class="bg-white rounded-xl overflow-hidden hover:shadow-lg border-gray-300 border transition-shadow text-base">
           <img [src]="local.imagenUrl" alt="Imagen del local" class="h-44 w-full object-cover bg-contain">
           <div class="p-5">
             <h3 class="text-lg font-bold mb-2">{{local.nombre}}</h3>
@@ -101,7 +107,7 @@
       </div>
 
       <!-- Paginación inferior -->
-      <div class="flex justify-end items-center mb-2 text-sm text-gray-600">
+      <div class="flex justify-end items-center mb-2 text-sm text-gray-600 pt-20">
         <span class="hidden sm:flex items-center">
           <span>Max. Items por pagina: 20</span>
           <span class="mx-3 h-5 border-l border-gray-300 inline-block align-middle"></span>
