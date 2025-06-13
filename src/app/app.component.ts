@@ -23,7 +23,8 @@ export class AppComponent implements OnInit {
       precioH: 12000,
       direccion: 'Avenida Prat 123',
       disponible: true,
-      imagenUrl: 'https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg'
+      imagenUrl: 'https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg',
+      usuario: 'reservio@reservio.cl'
     },
     {
       id: '2',
@@ -35,7 +36,8 @@ export class AppComponent implements OnInit {
       precioH: 9000,
       direccion: 'Camino al Lago 456',
       disponible: false,
-      imagenUrl: 'https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg'
+      imagenUrl: 'https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg',
+      usuario: 'reservio@reservio.cl'
     },
     {
       id: '3',
@@ -47,7 +49,8 @@ export class AppComponent implements OnInit {
       precioH: 15000,
       direccion: 'Avenida Libertador 789',
       disponible: true,
-      imagenUrl: 'https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg'
+      imagenUrl: 'https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg',
+      usuario: 'reservio@reservio.cl'
     }
   ];
 

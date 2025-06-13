@@ -9,11 +9,13 @@ import { ConnectionService } from '../../services/connection.service';
   styleUrl: './perfil.component.scss'
 })
 export class PerfilComponent implements OnInit {
+  private svgLocales = inject(ConnectionService);
   usuario!: Usuario;
-  svgLocales = inject(ConnectionService);
-
+  
   selectedTabIndex = 0;
   historialTabIndex = 0; // 0: recibidas, 1: realizadas
+
+  locales: Local[] = [];
 
   reservasRecibidas: Reserva[] = [];
   reservasRealizadas: Reserva[] = [];
@@ -32,10 +34,11 @@ export class PerfilComponent implements OnInit {
     this.historialTabIndex = index;
   }
 
-  async getDatos(){
+  getDatos(){
     try {
-      this.locales = await this.svgLocales.getLocales();
-      console.log(this.locales);
+      this.locales = this.svgLocales.getLocales().filter(local => {
+        return local.usuario === this.usuario.email;
+      });
     } catch (error) {
       console.error('Error al obtener los datos de los locales:', error);
     }
@@ -58,7 +61,6 @@ export class PerfilComponent implements OnInit {
     notificaciones: true
   };
 
-  locales: Local[] = [];
 
   solicitarPropietario() {
     if (confirm('¿Estás seguro que deseas convertirte en propietario? Esto te permitirá agregar y administrar propiedades.')) {
