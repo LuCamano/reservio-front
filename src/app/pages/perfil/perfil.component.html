@@ -194,52 +194,66 @@
 
     <!-- Contenido del Historial de actividad  -->
     <div *ngIf="selectedTabIndex === 1" class="bg-white shadow-md rounded-xl p-6 border">
-        <h3 class="text-lg font-semibold text-gray-700 mb-2">Historial de actividad</h3>
+        <h3 class="text-lg font-semibold text-gray-700 mb-2">Historial de Reservas</h3>
+        <!-- Tabs internas -->
+        <div class="flex gap-2 mb-6">
+            <button
+                (click)="onHistorialTabChange(0)"
+                [ngClass]="historialTabIndex === 0 ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                class="px-4 py-2 rounded-full font-medium transition"
+            >
+                Reservas recibidas
+            </button>
+            <button
+                (click)="onHistorialTabChange(1)"
+                [ngClass]="historialTabIndex === 1 ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                class="px-4 py-2 rounded-full font-medium transition"
+            >
+                Reservas realizadas
+            </button>
+        </div>
 
-        <!-- card de ejemplo -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <!-- Card 1 -->
-            <div class="bg-white rounded-2xl shadow-md overflow-hidden">
-
-                <img src="https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg" alt="Imagen 1"
-                    class="w-full h-40 object-cover">
-                <div class="p-4">
-                    <h3 class="text-lg font-semibold mb-2">Título 1</h3>
-                    <p class="text-gray-600">Esta es una descripción breve de la tarjeta 1.</p>
-                </div>
+        <!-- Reservas recibidas -->
+        <div *ngIf="historialTabIndex === 0">
+            <div *ngIf="reservasRecibidas.length === 0" class="text-gray-500 text-center py-8">
+                No tienes reservas recibidas en tus propiedades.
             </div>
-
-            <!-- Card 2 -->
-            <div class="bg-white rounded-2xl shadow-md overflow-hidden">
-                <img src="https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg" alt="Imagen 2"
-                    class="w-full h-40 object-cover">
-                <div class="p-4">
-                    <h3 class="text-lg font-semibold mb-2">Título 2</h3>
-                    <p class="text-gray-600">Esta es una descripción breve de la tarjeta 2.</p>
-                </div>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="bg-white rounded-2xl shadow-md overflow-hidden">
-                <img src="https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg" alt="Imagen 3"
-                    class="w-full h-40 object-cover">
-                <div class="p-4">
-                    <h3 class="text-lg font-semibold mb-2">Título 3</h3>
-                    <p class="text-gray-600">Esta es una descripción breve de la tarjeta 3.</p>
-                </div>
-            </div>
-
-            <!-- Card 4 -->
-            <div class="bg-white rounded-2xl shadow-md overflow-hidden">
-                <img src="https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg" alt="Imagen 4"
-                    class="w-full h-40 object-cover">
-                <div class="p-4">
-                    <h3 class="text-lg font-semibold mb-2">Título 4</h3>
-                    <p class="text-gray-600">Esta es una descripción breve de la tarjeta 4.</p>
+            <div *ngFor="let reserva of reservasRecibidas" class="border rounded-lg p-4 mb-4 shadow-sm">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                    <div>
+                        <div class="font-bold text-lg">{{ reserva.propiedad.nombre }}</div>
+                        <div class="text-sm text-gray-600">Cliente: {{ reserva.cliente.nombres }} {{ reserva.cliente.appaterno }} ({{ reserva.cliente.email }})</div>
+                        <div class="text-sm text-gray-600">Estado: <span class="font-semibold">{{ reserva.estado }}</span></div>
+                    </div>
+                    <div class="mt-2 md:mt-0 text-sm text-gray-700">
+                        <div>Desde: {{ reserva.inicio | date:'dd/MM/yyyy HH:mm' }}</div>
+                        <div>Hasta: {{ reserva.fin | date:'dd/MM/yyyy HH:mm' }}</div>
+                        <div>Horas: {{ reserva.cant_horas }}</div>
+                    </div>
                 </div>
             </div>
         </div>
 
+        <!-- Reservas realizadas -->
+        <div *ngIf="historialTabIndex === 1">
+            <div *ngIf="reservasRealizadas.length === 0" class="text-gray-500 text-center py-8">
+                No has realizado reservas aún.
+            </div>
+            <div *ngFor="let reserva of reservasRealizadas" class="border rounded-lg p-4 mb-4 shadow-sm">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                    <div>
+                        <div class="font-bold text-lg">{{ reserva.propiedad.nombre }}</div>
+                        <div class="text-sm text-gray-600">Propietario: {{ reserva.propiedad.usuario }}</div>
+                        <div class="text-sm text-gray-600">Estado: <span class="font-semibold">{{ reserva.estado }}</span></div>
+                    </div>
+                    <div class="mt-2 md:mt-0 text-sm text-gray-700">
+                        <div>Desde: {{ reserva.inicio | date:'dd/MM/yyyy HH:mm' }}</div>
+                        <div>Hasta: {{ reserva.fin | date:'dd/MM/yyyy HH:mm' }}</div>
+                        <div>Horas: {{ reserva.cant_horas }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Contenido de propiedades si en propietario  -->
