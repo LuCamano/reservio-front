@@ -46,5 +46,6 @@ export class PerfilComponent  implements OnInit {
 
   locales: Local[] = [];
   
+  
 
 }

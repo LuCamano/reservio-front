@@ -11,10 +11,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { FormsModule } from '@angular/forms';
 import { ComponentsModule } from '../../components/components.module';
+import { VerPropiedadComponent } from './ver-propiedad/ver-propiedad.component';
+import { AddPropiedadComponent } from './add-propiedad/add-propiedad.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    PerfilComponent
+    PerfilComponent,
+    VerPropiedadComponent,
+    AddPropiedadComponent
   ],
   imports: [
     CommonModule,
@@ -26,7 +31,8 @@ import { ComponentsModule } from '../../components/components.module';
     MatIconModule,
     MatCardModule,
     FormsModule,
-    ComponentsModule
+    ComponentsModule,
+    ReactiveFormsModule
 ]
 })
 export class PerfilModule { }

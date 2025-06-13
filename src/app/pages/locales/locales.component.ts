@@ -24,6 +24,7 @@ export class LocalesComponent implements OnInit {
     region: new FormControl(null),
     comuna: new FormControl(null)
   });
+  
   locales: Local[] = [];
   localesFiltrados: Local[] = [];
   regiones: Region[] = [];

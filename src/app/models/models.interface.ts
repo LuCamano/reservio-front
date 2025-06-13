@@ -15,6 +15,7 @@ export interface Local {
     region: string;
     comuna: string;
     capacidad: number;
+    descripcion: string;
     precioH: number;
     direccion?: string;
     disponible: boolean;
@@ -25,12 +26,12 @@ export interface Usuario{
     id: string;
     email: string;
     rut: string;
-    nombre: string;
-    apaterno: string;
-    amaterno: string;
-    fechaNacimiento: Date;
-    tipo: string; // 'Usuario Comun' | 'Propieterio' | 'Administrador'
-    contraseña: string;
-    fechacreacion: Date;
+    nombres: string;
+    appaterno: string;
+    apmaterno: string;
+    fecha_nacimiento: Date;
+    password?: string; 
+    tipo: string;
+    fecha_creacion: Date;
     activo: boolean;
 }

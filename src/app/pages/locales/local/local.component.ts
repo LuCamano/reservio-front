@@ -1,7 +1,9 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Renderer2 } from '@angular/core';
 import { Local } from '../../../models/models.interface';
+import { ConnectionService } from '../../../services/connection.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-local',
@@ -10,26 +12,16 @@ import { Local } from '../../../models/models.interface';
   styleUrl: './local.component.scss'
 })
 export class LocalComponent implements OnDestroy {
-  local = {
-    nombre: 'Café Central',
-    cod_postal: '12345',
-    region: 'Ciudad',
-    comuna: 'Comuna',
-    capacidad: 100,
-    precioH: 9302,
-    direccion: 'Av. Siempre Viva 123, Springfield',
-    telefono: '(123) 456-7890',
-    correo:'juan@gmail.com',
-    descripcion: 'Un acogedor café ubicado en el corazón de la ciudad, ideal para disfrutar de un ambiente tranquilo y cálido. Ofrecemos una cuidada selección de cafés de especialidad, tés artesanales y una deliciosa variedad de postres caseros, preparados diariamente con ingredientes frescos. Nuestro espacio cuenta con cómodas mesas, conexión Wi-Fi gratuita y una pequeña biblioteca para quienes deseen relajarse leyendo o trabajar en un entorno inspirador. Además, organizamos eventos culturales como lecturas, música en vivo y talleres los fines de semana. Perfecto para reuniones informales, citas o simplemente para disfrutar de un buen momento con una taza caliente entre manos.',
-    imagenUrl: 'https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg',
-    imagenMap: 'https://lh3.googleusercontent.com/YOXD2PhKTGyasUdmsGwH-9md1HjSBuQ_6s-6e46IfXGIrearmeqgfWDfleEq-JN9ld8TCISJaffrusemhMw7U8sB-EP0xxqkn8lp=rw-e365-w1375'
-  };
+  local: Local | null = null;
+
+  idLocal!: string;
+  svLocal = inject(ConnectionService);
 
   mostrarModalReserva = false;
   mostrarAlerta = false;
   reservaForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private renderer: Renderer2) {
+  constructor(private fb: FormBuilder, private renderer: Renderer2,private route: ActivatedRoute) {
     this.reservaForm = this.fb.group({
       descripcion: ['', Validators.required],
       personas: [1, [Validators.required, Validators.min(1)]],
@@ -62,4 +54,19 @@ export class LocalComponent implements OnDestroy {
     // Asegurarse de que el cuerpo no tenga la clase 'overflow-hidden' al destruir el componente
     this.renderer.removeClass(document.body, 'overflow-hidden');
   }
+
+  ngOnInit(): void {
+    // Aquí puedes inicializar cualquier lógica que necesites al cargar el componente
+    this.idLocal = this.route.snapshot.paramMap.get('id')!;
+    this.getLocal(this.idLocal);
+  }
+
+  async getLocal(id: string) {
+  const local = await this.svLocal.getLocalById(id);
+  if (local) {
+    this.local = local;
+  } else {
+    this.local = null;  // o muestra un error o valor por defecto
+  }
+}
 }
