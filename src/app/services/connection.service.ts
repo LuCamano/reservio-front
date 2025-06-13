@@ -46,6 +46,17 @@ export class ConnectionService {
     return usuario ? JSON.parse(usuario) : undefined;
   }
 
+  getUsuarios(): Usuario[] {
+    const usuarios = localStorage.getItem('usuarios');
+    return usuarios ? JSON.parse(usuarios) : [];
+  }
+
+  registrarUsuario(usuario: Usuario): void {
+    const usuarios = this.getUsuarios();
+    usuarios.push(usuario);
+    localStorage.setItem('usuarios', JSON.stringify(usuarios));
+  }
+
   // Elimina la sesión del usuario (logout)
   limpiarSesionUsuario(): void {
     localStorage.removeItem('sesionUsuario');

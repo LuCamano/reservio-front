@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ConnectionService } from './services/connection.service';
-import { Local } from './models/models.interface';
+import { Local, Usuario } from './models/models.interface';
 
 @Component({
   selector: 'app-root',
@@ -51,11 +51,30 @@ export class AppComponent implements OnInit {
     }
   ];
 
+  usuariosTest: Usuario[] = [
+    {
+      id: '1',
+      email: 'reservio@reservio.cl',
+      password: '123456',
+      rut: '11.111.111-1',
+      nombres: 'Usuario',
+      appaterno: 'Prueba',
+      apmaterno: 'Reservio',
+      fecha_nacimiento: new Date('2020-01-01'),
+      tipo: 'Usuario común',
+      activo: true,
+      fecha_creacion: new Date('2020-01-01')
+    }
+  ];
+
   ngOnInit() {
     // Aquí puedes inicializar cualquier lógica que necesites al cargar el componente
     localStorage.clear();
     this.localesTest.forEach(local => {
       this.svc.addLocal(local);
+    });
+    this.usuariosTest.forEach(usuario => {
+      this.svc.registrarUsuario(usuario);
     });
   }
 
