@@ -27,6 +27,10 @@ export class LocalesComponent implements OnInit {
   comunas: Comuna[] = [];
   comunasFiltradas: Comuna[] = [];
 
+  vista: 'grilla' | 'lista' = 'grilla';
+
+  ordenarPor: string = 'precioAsc';
+
   ngOnInit(): void {
     
     this.comunasFiltradas = [...this.comunas];
@@ -87,6 +91,17 @@ export class LocalesComponent implements OnInit {
     this.filtrosForm.get('comuna')?.setValue(null);
   }
   
+  ordenarLocales() {
+    switch (this.ordenarPor) {
+      case 'precioAsc':
+        this.localesFiltrados.sort((a, b) => a.precioH - b.precioH);
+        break;
+      case 'precioDesc':
+        this.localesFiltrados.sort((a, b) => b.precioH - a.precioH);
+        break;
+    }
+  }
+  
   private getToday(): string {
     return new Date().toISOString().split('T')[0];
   }
@@ -126,11 +141,11 @@ export class LocalesComponent implements OnInit {
     
     // Datos de los locales
     this.locales = [
-      { id: 1, nombre: 'Salón Central', region: 'Región Metropolitana', comuna: 'Santiago', capacidad: 100, precioH: 15, disponible: true ,imagenUrl: 'https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg' },
-      { id: 2, nombre: 'Salón Costero', region: 'Valparaíso', comuna: 'Valparaíso', capacidad: 90, precioH: 22, disponible: true, imagenUrl: 'https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg' },
-      { id: 3, nombre: 'Concepción', region: 'Biobío', comuna: 'Concepción', capacidad: 150, precioH: 17, disponible: true , imagenUrl: 'https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg' },
-      { id: 4, nombre: 'Tomé', region: 'Biobío', comuna: 'Tomé', capacidad: 110, precioH: 16, disponible: true, imagenUrl: 'https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg' },
-      { id: 5, nombre: 'Salon de los valientes', region: '¿?', comuna: '¿?', capacidad: 9999, precioH: 0, disponible: true, imagenUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Backrooms_model.jpg/1200px-Backrooms_model.jpg' },
+      { id: "1", nombre: 'Salón Central', region: 'Región Metropolitana', comuna: 'Santiago', capacidad: 100, precioH: 13953, disponible: true ,imagenUrl: 'https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg' },
+      { id: "2", nombre: 'Salón Costero', region: 'Valparaíso', comuna: 'Valparaíso', capacidad: 90, precioH: 20465, disponible: true, imagenUrl: 'https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg' },
+      { id: "3", nombre: 'Concepción', region: 'Biobío', comuna: 'Concepción', capacidad: 150, precioH: 15813, disponible: true , imagenUrl: 'https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg' },
+      { id: "4", nombre: 'Tomé', region: 'Biobío', comuna: 'Tomé', capacidad: 110, precioH: 14883, disponible: true, imagenUrl: 'https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg' },
+      { id: "5", nombre: 'Salon de los valientes', region: '¿?', comuna: '¿?', capacidad: 9999, precioH: 0, disponible: true, imagenUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Backrooms_model.jpg/1200px-Backrooms_model.jpg' },
     ];
   }
 }

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { LocalesRoutingModule } from './locales-routing.module';
 import { LocalesComponent } from './locales.component';
 import { MatIconModule } from '@angular/material/icon';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { LocalComponent } from './local/local.component';
 import { ComponentsModule } from "../../components/components.module";
 
@@ -19,6 +19,7 @@ import { ComponentsModule } from "../../components/components.module";
     LocalesRoutingModule,
     MatIconModule,
     ReactiveFormsModule,
+    FormsModule,
     ComponentsModule
 ]
 })
