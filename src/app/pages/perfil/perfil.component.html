@@ -234,23 +234,27 @@
     <!-- Contenido de propiedades si en propietario  -->
 
     <div *ngIf="selectedTabIndex === 2" class="bg-white shadow-md rounded-xl p-6 border">
-        <h3 class="text-lg font-semibold text-gray-700 mb-4">Tus Propiedades</h3>
-        <ul class="space-y-4 text-gray-700">
-            <!-- Item 1 -->
-            <li
-                class="flex flex-col sm:flex-row sm:items-center sm:justify-between bg-white rounded-2xl shadow-md overflow-hidden px-4">
-                <div class="flex flex-col sm:flex-row sm:items-center">
-                    <img src="https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg" alt="Imagen 1"
-                        class="w-full sm:w-32 h-40 sm:h-24 object-cover sm:rounded-l-2xl" />
-                    <div class="p-4 flex flex-col justify-center">
-                        <h4 class="text-lg font-semibold mb-1">Propiedad 1</h4>
-                        <p class="text-sm text-gray-600">Esta es una descripción breve de la propiedad 1.</p>
-                    </div>
-                </div>
-                <mat-icon class="hidden sm:inline-flex text-gray-500 sm:ml-4">keyboard_arrow_right</mat-icon>
-            </li>
+  <h3 class="text-lg font-semibold text-gray-700 mb-4">Tus Propiedades</h3>
+  <ul class="space-y-4 text-gray-700">
+    <!-- Item 1 -->
+    <li class="flex flex-col sm:flex-row sm:items-center sm:justify-between bg-white rounded-2xl shadow-md overflow-hidden px-4">
+      <div class="flex flex-col sm:flex-row sm:items-center">
+        <img
+          src="https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg"
+          alt="Imagen 1"
+          class="w-full sm:w-32 h-40 sm:h-24 object-cover sm:rounded-l-2xl"
+        />
+        <div class="p-4 flex flex-col justify-center">
+          <h4 class="text-lg font-semibold mb-1">Propiedad 1</h4>
+          <p class="text-sm text-gray-600">Esta es una descripción breve de la propiedad 1.</p>
+        </div>
+      </div>
+      <!-- Icono visible solo en pantallas sm+ -->
+      <mat-icon class="hidden sm:inline-flex text-gray-500 sm:ml-4">keyboard_arrow_right</mat-icon>
+    </li>
 
-            <!-- Item 2 -->
+    
+      <!-- Item 2 -->
             <li
                 class="flex flex-col sm:flex-row sm:items-center sm:justify-between bg-white rounded-2xl shadow-md overflow-hidden px-4">
                 <div class="flex flex-col sm:flex-row sm:items-center">
@@ -263,7 +267,6 @@
                 </div>
                 <mat-icon class="hidden sm:inline-flex text-gray-500 sm:ml-4">keyboard_arrow_right</mat-icon>
             </li>
-        </ul>
+  </ul>
     </div>
-
 </div>
