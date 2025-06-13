@@ -1,4 +1,4 @@
-import { Component, OnInit, Injectable, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ConnectionService } from './services/connection.service';
 import { Local } from './models/models.interface';
 
