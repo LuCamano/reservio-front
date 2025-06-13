@@ -26,7 +26,6 @@
                         Perfil
                     </button>
                 </div>
-
                 <div class="w-1/2 p-1 md:w-auto md:flex-1">
                     <button (click)="onTabChange(1)"
                         [ngClass]="selectedTabIndex === 1 ? 'bg-blue-600 text-white shadow' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
@@ -34,8 +33,7 @@
                         Historial
                     </button>
                 </div>
-
-                <div class="w-1/2 p-1 md:w-auto md:flex-1">
+                <div class="w-1/2 p-1 md:w-auto md:flex-1" *ngIf="usuario.tipo === 'Propietario'">
                     <button (click)="onTabChange(2)"
                         [ngClass]="selectedTabIndex === 2 ? 'bg-blue-600 text-white shadow' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
                         class="w-full text-center rounded-full px-4 py-2 text-sm font-medium transition duration-300">
@@ -118,10 +116,18 @@
                 </div>
 
                 <!-- Cambiar tipo de cuenta -->
-                <div class="mt-4 border-t pt-4 flex items-center justify-between">
+                <div class="mt-4 border-t pt-4 flex items-center justify-between" *ngIf="usuario.tipo !== 'Propietario'">
                     <p class="text-sm text-gray-500">Quiero ser propietario</p>
-                    <button class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">
+                    <button class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+                        (click)="solicitarPropietario()">
                         Actualizar cuenta
+                    </button>
+                </div>
+                <div class="mt-4 border-t pt-4 flex items-center justify-between" *ngIf="usuario.tipo === 'Propietario'">
+                    <p class="text-sm text-gray-500">Eres propietario</p>
+                    <button class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+                        (click)="dejarDeSerPropietario()">
+                        Quiero dejar de ser propietario
                     </button>
                 </div>
 
