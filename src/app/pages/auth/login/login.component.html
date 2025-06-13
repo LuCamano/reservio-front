@@ -3,12 +3,7 @@
   <div class="absolute inset-0 bg-black/30"></div>
   <!-- contenedor  -->
   <div class="relative z-10 w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
-    <!-- Botón Atrás -->
-    <a routerLink="/"
-      class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium mb-4 transition">
-      <span class="material-icons text-base">arrow_back</span>
-      Atrás
-    </a>
+    
     <!-- titulo -->
     <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Iniciar sesión</h2>
 
@@ -49,6 +44,16 @@
         ¿Olvidaste tu contraseña?
         <a routerLink="/login/forgot-pass" class="text-indigo-600 hover:underline font-medium">Recupérala</a>
       </p>
+      <p class="mt-2 text-sm text-center text-gray-500">
+        ¿Usuario nuevo?
+        <a routerLink="/login/register" class="text-indigo-600 hover:underline font-medium">Regístrate</a>
+      </p>
     </form>
+    <!-- Botón Atrás -->
+    <a routerLink="/"
+      class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium mb-4 transition">
+      <span class="material-icons text-base">arrow_back</span>
+      Atrás
+    </a>
   </div>
 </section>
