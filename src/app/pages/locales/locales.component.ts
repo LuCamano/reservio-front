@@ -1,6 +1,7 @@
-import { Component,OnInit  } from '@angular/core';
+import { Component,inject,OnInit  } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Comuna, Local, Region } from '../../models/models.interface';
+import { ConnectionService } from '../../services/connection.service';
 
 @Component({
   selector: 'app-locales',
@@ -13,6 +14,8 @@ export class LocalesComponent implements OnInit {
   constructor() {
     this.inicializarDatos();
   }
+
+  svgLocales = inject(ConnectionService);
 
   filtrosForm: FormGroup = new FormGroup({
     precioMax: new FormControl(null),
@@ -140,12 +143,17 @@ export class LocalesComponent implements OnInit {
     ];
     
     // Datos de los locales
-    this.locales = [
-      { id: "1", nombre: 'Salón Central', region: 'Región Metropolitana', comuna: 'Santiago', capacidad: 100, precioH: 13953, disponible: true ,imagenUrl: 'https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg' },
-      { id: "2", nombre: 'Salón Costero', region: 'Valparaíso', comuna: 'Valparaíso', capacidad: 90, precioH: 20465, disponible: true, imagenUrl: 'https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg' },
-      { id: "3", nombre: 'Concepción', region: 'Biobío', comuna: 'Concepción', capacidad: 150, precioH: 15813, disponible: true , imagenUrl: 'https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg' },
-      { id: "4", nombre: 'Tomé', region: 'Biobío', comuna: 'Tomé', capacidad: 110, precioH: 14883, disponible: true, imagenUrl: 'https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg' },
-      { id: "5", nombre: 'Salon de los valientes', region: '¿?', comuna: '¿?', capacidad: 9999, precioH: 0, disponible: true, imagenUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Backrooms_model.jpg/1200px-Backrooms_model.jpg' },
-    ];
+    this.getDatos();
   }
+
+  async getDatos(){
+    try {
+      this.locales = await this.svgLocales.getLocales();
+      console.log(this.locales);
+    } catch (error) {
+      console.error('Error al obtener los datos de los locales:', error);
+    }
+  }
+  
+
 }
