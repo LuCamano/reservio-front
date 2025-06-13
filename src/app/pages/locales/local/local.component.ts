@@ -16,7 +16,7 @@ export class LocalComponent implements OnDestroy {
     region: 'Ciudad',
     comuna: 'Comuna',
     capacidad: 100,
-    precioH: 10,
+    precioH: 9302,
     direccion: 'Av. Siempre Viva 123, Springfield',
     telefono: '(123) 456-7890',
     correo:'juan@gmail.com',
@@ -46,16 +46,15 @@ export class LocalComponent implements OnDestroy {
       duracion: 1,
       tipoDuracion: 'horas'
     });
-    // Mostrar alerta al cerrar el modal
-    this.mostrarAlerta = true;
-    setTimeout(() => this.mostrarAlerta = false, 4000); // Oculta la alerta después de 4 segundos
     this.renderer.removeClass(document.body, 'overflow-hidden');
   }
 
+  // Solo aquí mostramos la alerta de éxito
   enviarReserva() {
     if (this.reservaForm.valid) {
-      // Manejar la reserva aquí
       this.cerrarModalReserva();
+      this.mostrarAlerta = true;
+      setTimeout(() => this.mostrarAlerta = false, 4000);
     }
   }
 
