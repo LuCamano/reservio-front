@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Renderer2 } from '@angular/core';
 
 @Component({
   selector: 'app-local',
@@ -6,7 +8,7 @@ import { Component } from '@angular/core';
   templateUrl: './local.component.html',
   styleUrl: './local.component.scss'
 })
-export class LocalComponent {
+export class LocalComponent implements OnDestroy {
   local = {
     nombre: 'Café Central',
     cod_postal: '12345',
@@ -21,4 +23,43 @@ export class LocalComponent {
     imagenUrl: 'https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg',
     imagenMap: 'https://lh3.googleusercontent.com/YOXD2PhKTGyasUdmsGwH-9md1HjSBuQ_6s-6e46IfXGIrearmeqgfWDfleEq-JN9ld8TCISJaffrusemhMw7U8sB-EP0xxqkn8lp=rw-e365-w1375'
   };
+
+  mostrarModalReserva = false;
+  mostrarAlerta = false;
+  reservaForm: FormGroup;
+
+  constructor(private fb: FormBuilder, private renderer: Renderer2) {
+    this.reservaForm = this.fb.group({
+      descripcion: ['', Validators.required],
+      personas: [1, [Validators.required, Validators.min(1)]],
+      duracion: [1, [Validators.required, Validators.min(1)]],
+      tipoDuracion: ['horas', Validators.required]
+    });
+  }
+
+  cerrarModalReserva() {
+    this.mostrarModalReserva = false;
+    this.reservaForm.reset({
+      descripcion: '',
+      personas: 1,
+      duracion: 1,
+      tipoDuracion: 'horas'
+    });
+    // Mostrar alerta al cerrar el modal
+    this.mostrarAlerta = true;
+    setTimeout(() => this.mostrarAlerta = false, 4000); // Oculta la alerta después de 4 segundos
+    this.renderer.removeClass(document.body, 'overflow-hidden');
+  }
+
+  enviarReserva() {
+    if (this.reservaForm.valid) {
+      // Manejar la reserva aquí
+      this.cerrarModalReserva();
+    }
+  }
+
+  ngOnDestroy() {
+    // Asegurarse de que el cuerpo no tenga la clase 'overflow-hidden' al destruir el componente
+    this.renderer.removeClass(document.body, 'overflow-hidden');
+  }
 }

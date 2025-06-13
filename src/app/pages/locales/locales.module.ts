@@ -19,7 +19,6 @@ import { ComponentsModule } from "../../components/components.module";
     LocalesRoutingModule,
     MatIconModule,
     ReactiveFormsModule,
-    MatIconModule,
     ComponentsModule
 ]
 })
