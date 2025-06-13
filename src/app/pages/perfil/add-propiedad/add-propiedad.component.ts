@@ -34,7 +34,7 @@ export class AddPropiedadComponent {
     descripcion: new FormControl('', [Validators.required]) 
   });
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private connectionService: ConnectionService) { }
 
   ngOnInit(): void {
     // Filtrar comunas cuando cambia la región
@@ -46,9 +46,20 @@ export class AddPropiedadComponent {
 
   onSubmit(): void {
     if (this.localForm.valid) {
+      // Obtener usuario actual
+      const usuarioActual = this.connectionService.getSesionUsuario();
+      if (!usuarioActual) {
+        // Redirigir al usuario a la página de inicio de sesión si no hay sesión activa
+        alert('Debe iniciar sesión para agregar una propiedad.');
+        this.router.navigate(['/login']);
+        return;
+      }
+
+      const emailUsuario = usuarioActual.email;
       const nuevoLocal: Local = {
         id: crypto.randomUUID(),
-        ...this.localForm.value
+        ...this.localForm.value,
+        usuario: emailUsuario // Guardar el email del propietario
       };
       this.svLocal.addLocal(nuevoLocal);
       this.router.navigate(['/perfil']);

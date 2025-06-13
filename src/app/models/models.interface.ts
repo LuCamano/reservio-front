@@ -20,6 +20,7 @@ export interface Local {
     direccion?: string;
     disponible: boolean;
     imagenUrl: string;
+    usuario?: string; // Propietario
 }
 
 export interface Usuario{
