@@ -38,4 +38,29 @@ export class PerfilComponent implements OnInit {
   };
 
   locales: Local[] = [];
+
+  solicitarPropietario() {
+    if (confirm('¿Estás seguro que deseas convertirte en propietario? Esto te permitirá agregar y administrar propiedades.')) {
+      this.usuario.tipo = 'Propietario';
+      this.svgLocales.setSesionUsuario(this.usuario);
+    }
+  }
+
+  dejarDeSerPropietario() {
+    if (confirm('¿Estás seguro que deseas dejar de ser propietario? Todas las propiedades asociadas a tu cuenta serán eliminadas del sistema.')) {
+      // Elimina todas las propiedades asociadas al usuario (puedes filtrar por usuario si tienes esa lógica)
+      // Si las propiedades tienen un campo de usuarioId, aquí deberías filtrar por ese campo.
+      // Si no, simplemente elimina todas las propiedades (o ajusta según tu modelo).
+      // Aquí asumimos que todas las propiedades son del usuario actual:
+      this.locales = [];
+      localStorage.setItem('locales', JSON.stringify([]));
+
+      // Cambia el tipo de usuario
+      this.usuario.tipo = 'Usuario común';
+      this.svgLocales.setSesionUsuario(this.usuario);
+
+      // Opcional: vuelve a la pestaña de perfil
+      this.selectedTabIndex = 0;
+    }
+  }
 }

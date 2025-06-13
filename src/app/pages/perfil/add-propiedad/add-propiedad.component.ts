@@ -30,7 +30,8 @@ export class AddPropiedadComponent {
     precioH: new FormControl(null, [Validators.required, Validators.min(0)]),
     direccion: new FormControl(''), // opcional
     disponible: new FormControl(true),
-    imagenUrl: new FormControl('', [Validators.required]) // o null si no es obligatorio
+    imagenUrl: new FormControl('', [Validators.required]),
+    descripcion: new FormControl('', [Validators.required]) 
   });
 
   constructor(private router: Router) { }
