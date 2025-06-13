@@ -15,7 +15,7 @@ export class LocalesComponent implements OnInit {
     this.inicializarDatos();
   }
 
-  svgLocales = inject(ConnectionService);
+  private svgLocales = inject(ConnectionService);
 
   filtrosForm: FormGroup = new FormGroup({
     precioMax: new FormControl(null),

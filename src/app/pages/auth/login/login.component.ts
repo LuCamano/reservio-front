@@ -22,24 +22,15 @@ export class LoginComponent {
   onSubmit() {
     // Aquí deberías validar el usuario contra tu backend o una lista local.
     // Para ejemplo, creamos un usuario de prueba:
-    if (this.email === 'reservio@reservio.cl' && this.password === '123456') {
-      const usuario: Usuario = {
-        id: '1',
-        email: this.email,
-        rut: '11.111.111-1',
-        nombres: 'Demo',
-        appaterno: 'Usuario',
-        apmaterno: '',
-        fecha_nacimiento: new Date(2000, 0, 1),
-        tipo: 'Usuario Comun',
-        password: this.password,
-        fecha_creacion: new Date(),
-        activo: true
-      };
+    const usuarios: Usuario[] = this.connectionService.getUsuarios();
+    const usuario = usuarios.find(u => u.email === this.email && u.password === this.password);
+    if (usuario) {
+      // Si el usuario es encontrado, guardamos la sesión y redirigimos
       this.connectionService.setSesionUsuario(usuario);
-      this.router.navigate(['/home']);
+      this.router.navigate(['/']);
     } else {
-      this.error = 'Correo o contraseña incorrectos';
+      // Si no se encuentra, mostramos un error
+      this.error = 'Email o contraseña incorrectos';
     }
   }
 }

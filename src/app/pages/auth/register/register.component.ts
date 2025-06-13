@@ -120,10 +120,10 @@ export class RegisterComponent {
     };
 
     // Guardar usuario en localStorage (sesión iniciada)
-    this.connectionService.setSesionUsuario(usuario);
+    this.connectionService.registrarUsuario(usuario);
 
     // Redirigir al home
-    this.router.navigate(['/home']);
+    this.router.navigate(['/login']);
   }
 }
 
