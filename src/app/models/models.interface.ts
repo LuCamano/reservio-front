@@ -35,3 +35,14 @@ export interface Usuario{
     fecha_creacion: Date;
     activo: boolean;
 }
+
+export interface Reserva {
+    id: string;
+    inicio: Date;
+    fin: Date;
+    cant_horas: number;
+    estado: 'pendiente' | 'confirmada' | 'cancelada';
+    cliente: Usuario;
+    propiedad: Local;
+    fecha_creacion: Date;
+}
