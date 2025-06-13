@@ -10,32 +10,32 @@
         >
         <span class="text-4xl font-bold text-sky-700 tracking-tight">Reservio</span>
       </a>
-      <button
+      <a
         class="hidden md:inline-flex px-5 py-2 text-blue-500 font-medium text-lg transition-colors ml-2"
         routerLink="/locales"
       >
         Ver Locales
-      </button>
+      </a>
     </div>
     <!-- Botones de sesión (escritorio) -->
     <div class="hidden md:flex items-center gap-3 md:gap-6">
       <ng-container *ngIf="!usuario">
-        <button
+        <a
           class="px-5 py-2 text-blue-500 font-semibold text-base transition-colors flex items-center gap-2"
           routerLink="/login"
         >
           <span class="material-icons text-lg">person</span>
           Iniciar Sesión / Crear Cuenta
-        </button>
+        </a>
       </ng-container>
       <ng-container *ngIf="usuario">
-        <button
+        <a
           class="px-5 py-2 text-blue-500 font-semibold text-base transition-colors flex items-center gap-2"
           routerLink="/perfil"
         >
           <span class="material-icons text-lg">account_circle</span>
           Mi Perfil
-        </button>
+      </a>
       </ng-container>
     </div>
     <!-- Menú hamburguesa (móvil) -->

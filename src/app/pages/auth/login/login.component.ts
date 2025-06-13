@@ -27,13 +27,13 @@ export class LoginComponent {
         id: '1',
         email: this.email,
         rut: '11.111.111-1',
-        nombre: 'Demo',
-        apaterno: 'Usuario',
-        amaterno: '',
-        fechaNacimiento: new Date(2000, 0, 1),
+        nombres: 'Demo',
+        appaterno: 'Usuario',
+        apmaterno: '',
+        fecha_nacimiento: new Date(2000, 0, 1),
         tipo: 'Usuario Comun',
-        contraseña: this.password,
-        fechacreacion: new Date(),
+        password: this.password,
+        fecha_creacion: new Date(),
         activo: true
       };
       this.connectionService.setSesionUsuario(usuario);
