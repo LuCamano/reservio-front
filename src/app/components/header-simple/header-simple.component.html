@@ -1,45 +1,101 @@
-<header class="bg-white shadow-md">
-  <!-- Wrapper de Angular Material para toolbar -->
-  <mat-toolbar class="w-full mx-auto px-4 py-4">
-    <!-- Seccion Izquierda - Logo + Nombre sitio -->
-    <a routerLink="/" class="flex items-center gap-2 cursor-pointer">
-      <img 
-        src="assets/logohome.png" 
-        alt="Logo" 
-        class="h-20 w-20 object-contain"
+<header class="bg-white shadow-md top-0 z-50">
+  <nav class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
+    <!-- Logo, nombre y Ver Locales -->
+    <div class="flex items-center gap-3 md:gap-6">
+      <a routerLink="/" class="flex items-center gap-3 group">
+        <img 
+          src="assets/logo.png" 
+          alt="Logo Reservio" 
+          class="h-13 w-15 object-contain transition-transform group-hover:scale-105"
+        >
+        <span class="text-4xl font-bold text-sky-700 tracking-tight">Reservio</span>
+      </a>
+      <button
+        class="hidden md:inline-flex px-5 py-2 text-blue-500 font-medium text-2xl transition-colors ml-2"
+        routerLink="/locales"
       >
-      <span class="text-xl font-bold text-gray-800">Reservio</span>
-    </a>
-
-    <!-- Botón para ir a Locales -->
+        Ver Locales
+      </button>
+    </div>
+    <!-- Botones de sesión (escritorio) -->
+    <div class="hidden md:flex items-center gap-3 md:gap-6">
+      <ng-container *ngIf="!usuario">
+        <button
+          class="px-5 py-2 text-blue-500 font-semibold text-base transition-colors flex items-center gap-2"
+          routerLink="/login"
+        >
+          <span class="material-icons text-lg">person</span>
+          Iniciar Sesión / Crear Cuenta
+        </button>
+      </ng-container>
+      <ng-container *ngIf="usuario">
+        <button
+          class="px-5 py-2 rounded-lg bg-white border border-blue-50 hover:bg-blue-50 font-semibold text-base transition-colors flex items-center gap-2"
+          routerLink="/perfil"
+        >
+          <span class="material-icons text-lg">account_circle</span>
+          Mi Perfil
+        </button>
+      </ng-container>
+    </div>
+    <!-- Menú hamburguesa (móvil) -->
     <button
-      mat-raised-button
-      color="primary"
-      class="ml-6 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium text-lg transition-colors"
-      routerLink="/locales"
+      class="md:hidden flex items-center justify-center p-2 rounded-lg hover:bg-gray-100 transition"
+      (click)="menuAbierto = !menuAbierto"
+      aria-label="Abrir menú"
+      type="button"
     >
-      Ver Locales
+      <span class="material-icons text-3xl text-blue-700">{{ menuAbierto ? 'close' : 'menu' }}</span>
     </button>
-
-    <!-- Boton login alineado a la derecha -->
-    <span class="flex-1"></span>
-    <button 
-      mat-raised-button 
-      color="primary"
-      class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium text-lg transition-colors flex items-center gap-2"
-      routerLink="/login"
-    >
-      <mat-icon>person</mat-icon>
-      Iniciar Sesión/Crear Cuenta
-    </button>
-    <button 
-      mat-raised-button 
-      color="primary"
-      class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium text-lg transition-colors flex items-center gap-2"
-      routerLink="/perfil"
-    >
-      <mat-icon>person</mat-icon>
-      Mi Perfil
-    </button>
-  </mat-toolbar>
+  </nav>
+  <!-- Menú móvil desplegable -->
+  <div
+    class="md:hidden fixed inset-0 bg-black/40 z-40 transition-opacity"
+    *ngIf="menuAbierto"
+    (click)="menuAbierto = false"
+  ></div>
+  <div
+    class="md:hidden fixed top-0 right-0 w-64 h-full bg-white shadow-lg z-50 transition-transform duration-300"
+    [ngClass]="menuAbierto ? 'translate-x-0' : 'translate-x-full'"
+    *ngIf="menuAbierto"
+  >
+    <div class="flex flex-col p-0">
+      <a routerLink="/" class="flex items-center gap-2 px-6 py-6 mb-2" (click)="menuAbierto = false">
+        <img src="assets/logo.png" alt="Logo Reservio" class="h-16 w-16 object-contain">
+        <span class="text-xl font-extrabold text-sky-700">Reservio</span>
+      </a>
+      <hr class="border-gray-200">
+      <a
+        routerLink="/locales"
+        (click)="menuAbierto = false"
+        class="px-6 py-4 text-base text-gray-800 font-semibold hover:text-blue-700 transition-colors"
+      >
+        Ver Locales
+      </a>
+      <hr class="border-gray-200">
+      <ng-container *ngIf="!usuario">
+        <a
+          routerLink="/login"
+          (click)="menuAbierto = false"
+          class="px-6 py-4 text-base text-gray-800 font-semibold flex items-center gap-2 hover:text-blue-700 transition-colors"
+        >
+          <span class="material-icons text-lg">person</span>
+          Iniciar Sesión / Crear Cuenta
+        </a>
+      </ng-container>
+      <ng-container *ngIf="usuario">
+        <a
+          routerLink="/perfil"
+          (click)="menuAbierto = false"
+          class="px-6 py-4 text-base text-gray-800 font-semibold flex items-center gap-2 hover:text-blue-700 transition-colors"
+        >
+          <span class="material-icons text-lg">account_circle</span>
+          Mi Perfil
+        </a>
+      </ng-container>
+    </div>
+  </div>
 </header>
+
+<!-- Material Icons CDN (agrega esto en tu index.html si no está) -->
+<!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
