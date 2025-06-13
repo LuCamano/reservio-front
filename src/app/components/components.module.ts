@@ -6,13 +6,15 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { SidebarAdmComponent } from './sidebar-adm/sidebar-adm.component';
+import { MapComponent } from './map/map.component';
 
 
 
 @NgModule({
   declarations: [
     HeaderSimpleComponent,
-    SidebarAdmComponent
+    SidebarAdmComponent,
+    MapComponent
   ],
   imports: [
     CommonModule,
@@ -23,7 +25,8 @@ import { SidebarAdmComponent } from './sidebar-adm/sidebar-adm.component';
   ],
   exports: [
     HeaderSimpleComponent,
-    SidebarAdmComponent
+    SidebarAdmComponent,
+    MapComponent
   ]
 })
 export class ComponentsModule {

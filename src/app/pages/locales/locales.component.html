@@ -128,7 +128,7 @@
                 <p class="text-base truncate">Comuna: {{local.comuna}}</p>
                 <p class="text-base truncate">Capacidad: {{local.capacidad}} personas</p>
                 <p class="text-base mb-2 truncate">Precio por hora: ${{local.precioH}}/h</p>
-                <button class="w-full py-3 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors text-base mt-4" routerLink="/locales/{{local.id}}">
+                <button class="w-full py-3 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors text-base mt-4" [routerLink]="['/locales', local.id]">
                   Ver detalles
                 </button>
               </div>

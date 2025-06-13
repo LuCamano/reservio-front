@@ -20,7 +20,8 @@ import { ComponentsModule } from "../../components/components.module";
     MatIconModule,
     ReactiveFormsModule,
     FormsModule,
-    ComponentsModule
+    ComponentsModule,
+    
 ]
 })
 export class LocalesModule { }
