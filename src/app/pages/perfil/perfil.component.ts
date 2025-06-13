@@ -28,27 +28,27 @@ export class PerfilComponent {
   };
 
   locales: Local[] = [
-  {
-    id: 1,
-    nombre: 'Casa en la Playa',
-    region: 'Valparaíso',
-    comuna: 'Viña del Mar',
-    capacidad: 6,
-    precioH: 12000,
-    direccion: ' Avenida Prat 123 ',
-    disponible: true,
-    imagenUrl: 'https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg'
-  },
-  {
-    id: 2,
-    nombre: 'Cabaña en el Bosque',
-    region: 'Araucanía',
-    comuna: 'Pucón',
-    capacidad: 4,
-    precioH: 9000,
-    direccion: 'Camino al Lago 456',
-    disponible: false,
-    imagenUrl: 'https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg'
-  }
-];
+    {
+      id: '1',
+      nombre: 'Casa en la Playa',
+      region: 'Valparaíso',
+      comuna: 'Viña del Mar',
+      capacidad: 6,
+      precioH: 12000,
+      direccion: ' Avenida Prat 123 ',
+      disponible: true,
+      imagenUrl: 'https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg'
+    },
+    {
+      id: '2',
+      nombre: 'Cabaña en el Bosque',
+      region: 'Araucanía',
+      comuna: 'Pucón',
+      capacidad: 4,
+      precioH: 9000,
+      direccion: 'Camino al Lago 456',
+      disponible: false,
+      imagenUrl: 'https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg'
+    }
+  ];
 }
