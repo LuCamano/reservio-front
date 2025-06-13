@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ConnectionService } from '../../services/connection.service';
 import { Usuario } from '../../models/models.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header-simple',
@@ -12,7 +13,12 @@ export class HeaderSimpleComponent {
   menuAbierto = false;
   usuario: Usuario | null = null;
 
-  constructor(private connectionService: ConnectionService) {
+  constructor(private connectionService: ConnectionService, private router: Router) {
     this.usuario = this.connectionService.getSesionUsuario();
+  }
+
+  logout() {
+    this.connectionService.limpiarSesionUsuario();
+    this.router.navigate(['/login']);
   }
 }

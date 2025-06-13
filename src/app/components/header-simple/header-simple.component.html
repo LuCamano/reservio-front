@@ -1,5 +1,5 @@
 <header class="bg-white shadow-md top-0 z-50">
-  <nav class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
+  <nav class="max-w-7xl mx-auto flex justify-between py-3">
     <!-- Logo, nombre y Ver Locales -->
     <div class="flex items-center gap-3 md:gap-6">
       <a routerLink="/" class="flex items-center gap-3 group">
@@ -29,13 +29,15 @@
         </a>
       </ng-container>
       <ng-container *ngIf="usuario">
-        <a
-          class="px-5 py-2 text-blue-500 font-semibold text-base transition-colors flex items-center gap-2"
-          routerLink="/perfil"
-        >
+        <a class="px-5 py-2 text-blue-500 font-semibold text-base transition-colors flex items-center gap-2"
+          routerLink="/perfil">
           <span class="material-icons text-lg">account_circle</span>
           Mi Perfil
-      </a>
+        </a>
+        <a href="#" class="text-red-500 flex items-center hover:text-red-700" (click)="logout()">
+          <span class="material-icons text-lg text-red-500">logout</span>
+          Cerrar Sesión
+        </a>
       </ng-container>
     </div>
     <!-- Menú hamburguesa (móvil) -->
@@ -91,6 +93,14 @@
         >
           <span class="material-icons text-lg">account_circle</span>
           Mi Perfil
+        </a>
+        <a
+          href="#"
+          class="px-6 py-4 text-base text-red-500 font-semibold flex items-center gap-2 hover:text-red-700 transition-colors"
+          (click)="logout()"
+        >
+          <span class="material-icons text-lg">logout</span>
+          Cerrar Sesión
         </a>
       </ng-container>
     </div>
