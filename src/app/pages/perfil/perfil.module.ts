@@ -10,6 +10,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { FormsModule } from '@angular/forms';
+import { ComponentsModule } from "../../components/components.module";
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { FormsModule } from '@angular/forms';
     MatSlideToggleModule,
     MatIconModule,
     MatCardModule,
-    FormsModule 
-  ]
+    FormsModule,
+    ComponentsModule
+]
 })
 export class PerfilModule { }
