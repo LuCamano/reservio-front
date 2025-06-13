@@ -1,6 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Renderer2 } from '@angular/core';
+import { Local } from '../../../models/models.interface';
 
 @Component({
   selector: 'app-local',

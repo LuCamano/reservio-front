@@ -1,28 +1,6 @@
 import { Component,OnInit  } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-
-
-interface Region {
-  id: string;
-  nombre: string;
-}
-
-interface Comuna {
-  id: string;
-  nombre: string;
-  regionId: string;
-}
-
-interface Local {
-  id: number;
-  nombre: string;
-  region: string;
-  comuna: string;
-  capacidad: number;
-  precioH: number;
-  disponible: boolean;
-  imagenUrl: string;
-}
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Comuna, Local, Region } from '../../models/models.interface';
 
 @Component({
   selector: 'app-locales',
@@ -32,25 +10,24 @@ interface Local {
 })
 export class LocalesComponent implements OnInit {
   
-  constructor(private fb: FormBuilder) {
+  constructor() {
     this.inicializarDatos();
   }
 
-  filtrosForm!: FormGroup;
+  filtrosForm: FormGroup = new FormGroup({
+    precioMax: new FormControl(null),
+    capacidadMin: new FormControl(null),
+    fecha: new FormControl(this.getToday()),
+    region: new FormControl(null),
+    comuna: new FormControl(null)
+  });
   locales: Local[] = [];
-  localesFiltrados: any[] = [];
+  localesFiltrados: Local[] = [];
   regiones: Region[] = [];
   comunas: Comuna[] = [];
   comunasFiltradas: Comuna[] = [];
 
   ngOnInit(): void {
-    this.filtrosForm = this.fb.group({
-      precioMax: [null],
-      capacidadMin: [null],
-      fecha: [this.getToday()],
-      region: [null],
-      comuna: [null]
-    });
     
     this.comunasFiltradas = [...this.comunas];
     this.localesFiltrados = [...this.locales];
