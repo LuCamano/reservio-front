@@ -1,45 +1,39 @@
-<header class="bg-white shadow-md">
-  <!-- Wrapper de Angular Material para toolbar -->
-  <mat-toolbar class="w-full mx-auto px-4 py-4">
-    <!-- Seccion Izquierda - Logo + Nombre sitio -->
-    <a routerLink="/" class="flex items-center gap-2 cursor-pointer">
+<header class="bg-white shadow-md top-0 z-50">
+  <nav class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
+    <!-- Logo y nombre -->
+    <a routerLink="/" class="flex items-center gap-3 group">
       <img 
         src="assets/logohome.png" 
-        alt="Logo" 
-        class="h-20 w-20 object-contain"
+        alt="Logo Reservio" 
+        class="h-14 w-14 object-contain transition-transform group-hover:scale-105"
       >
-      <span class="text-xl font-bold text-gray-800">Reservio</span>
+      <span class="text-2xl font-extrabold text-blue-700 tracking-tight">Reservio</span>
     </a>
-
-    <!-- Botón para ir a Locales -->
-    <button
-      mat-raised-button
-      color="primary"
-      class="ml-6 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium text-lg transition-colors"
-      routerLink="/locales"
-    >
-      Ver Locales
-    </button>
-
-    <!-- Boton login alineado a la derecha -->
-    <span class="flex-1"></span>
-    <button 
-      mat-raised-button 
-      color="primary"
-      class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium text-lg transition-colors flex items-center gap-2"
-      routerLink="/login"
-    >
-      <mat-icon>person</mat-icon>
-      Iniciar Sesión/Crear Cuenta
-    </button>
-    <button 
-      mat-raised-button 
-      color="primary"
-      class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium text-lg transition-colors flex items-center gap-2"
-      routerLink="/perfil"
-    >
-      <mat-icon>person</mat-icon>
-      Mi Perfil
-    </button>
-  </mat-toolbar>
+    <!-- Navegación principal -->
+    <div class="flex items-center gap-3 md:gap-6">
+      <button
+        class="px-5 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-base transition-colors shadow-sm"
+        routerLink="/locales"
+      >
+        Ver Locales
+      </button>
+      <button
+        class="px-5 py-2 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-semibold text-base transition-colors shadow-sm flex items-center gap-2"
+        routerLink="/login"
+      >
+        <span class="material-icons text-lg">person</span>
+        Iniciar Sesión / Crear Cuenta
+      </button>
+      <button
+        class="px-5 py-2 rounded-lg bg-white border border-blue-600 text-blue-700 hover:bg-blue-50 font-semibold text-base transition-colors flex items-center gap-2"
+        routerLink="/perfil"
+      >
+        <span class="material-icons text-lg">account_circle</span>
+        Mi Perfil
+      </button>
+    </div>
+  </nav>
 </header>
+
+<!-- Material Icons CDN (agrega esto en tu index.html si no está) -->
+<!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
