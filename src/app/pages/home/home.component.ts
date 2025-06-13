@@ -1,6 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
+import { ConnectionService } from '../../services/connection.service';
+import { Local } from '../../models/models.interface';
 
 
 export interface Ciudad {
@@ -19,6 +21,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     'assets/homeassets/hero/juntaempresa.jpg',
     'assets/homeassets/hero/celebracion.jpg',
   ];
+
+  locales: Local[] = [];
+
   extendedImages: string[] = [];
   currentImage = 0;
   private intervalId?: ReturnType<typeof setInterval>;
@@ -30,6 +35,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.intervalId = setInterval(() => {
       this.nextSlide();
     }, 4000);
+    this.getDatos();
   }
 
   nextSlide() {
@@ -46,6 +52,17 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     clearInterval(this.intervalId);
+  }
+
+  svgLocales = inject(ConnectionService);
+
+  async getDatos(){
+    try {
+      this.locales = await this.svgLocales.getLocales();
+      console.log(this.locales);
+    } catch (error) {
+      console.error('Error al obtener los datos de los locales:', error);
+    }
   }
 
 }
