@@ -147,26 +147,18 @@
       <h2 class="text-2xl font-bold mb-4">Reservar Local</h2>
       <form [formGroup]="reservaForm" (ngSubmit)="enviarReserva()" class="space-y-4">
         <div>
-          <label class="block text-sm font-medium mb-1">Descripción del evento</label>
-          <textarea formControlName="descripcion" rows="2" class="w-full border rounded-lg px-3 py-2"></textarea>
+          <label class="block text-sm font-medium mb-1">Fecha de inicio</label>
+          <input type="datetime-local" formControlName="inicio" class="w-full border rounded-lg px-3 py-2">
         </div>
         <div>
-          <label class="block text-sm font-medium mb-1">Personas esperadas</label>
-          <input type="number" formControlName="personas" min="1" class="w-full border rounded-lg px-3 py-2">
+          <label class="block text-sm font-medium mb-1">Fecha de término</label>
+          <input type="datetime-local" formControlName="fin" class="w-full border rounded-lg px-3 py-2">
         </div>
-        <div class="flex gap-2">
-          <div class="flex-1">
-            <label class="block text-sm font-medium mb-1">Duración</label>
-            <input type="number" formControlName="duracion" min="1" class="w-full border rounded-lg px-3 py-2">
-          </div>
-          <div class="flex-1">
-            <label class="block text-sm font-medium mb-1">Tipo</label>
-            <select formControlName="tipoDuracion" class="w-full border rounded-lg px-3 py-2">
-              <option value="horas">Horas</option>
-              <option value="dias">Días</option>
-            </select>
-          </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Cantidad de horas</label>
+          <input type="number" formControlName="cant_horas" min="1" class="w-full border rounded-lg px-3 py-2">
         </div>
+        <div *ngIf="reservaError" class="text-red-600 text-sm text-center">{{ reservaError }}</div>
         <div class="flex justify-end gap-2 pt-2">
           <button type="button" (click)="cerrarModalReserva()" class="px-4 py-2 rounded-lg border">Cancelar</button>
           <button type="submit" [disabled]="reservaForm.invalid" class="px-4 py-2 rounded-lg bg-indigo-700 text-white hover:bg-indigo-800">Reservar</button>
