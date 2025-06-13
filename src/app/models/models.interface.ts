@@ -10,7 +10,7 @@ export interface Comuna {
 }
 
 export interface Local {
-    id: number;
+    id: string;
     nombre: string;
     region: string;
     comuna: string;
