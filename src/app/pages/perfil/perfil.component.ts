@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Local } from '../../models/models.interface';
+import { ConnectionService } from '../../services/connection.service';
 
 @Component({
   selector: 'app-perfil',
@@ -7,7 +8,7 @@ import { Local } from '../../models/models.interface';
   templateUrl: './perfil.component.html',
   styleUrl: './perfil.component.scss'
 })
-export class PerfilComponent {
+export class PerfilComponent  implements OnInit {
   user = {
     nombre: 'Juan Pérez',
     correo: 'juan.perez@example.com',
@@ -16,39 +17,34 @@ export class PerfilComponent {
     creado: new Date('2024-01-01'),
   };
 
+  svgLocales = inject(ConnectionService);
+
   selectedTabIndex = 0;
 
   onTabChange(index: number) {
     this.selectedTabIndex = index;
   }
 
+  ngOnInit(): void {
+    // Aquí puedes inicializar cualquier lógica que necesites al cargar el componente
+    this.getDatos();
+  }
+
+  async getDatos(){
+    try {
+      this.locales = await this.svgLocales.getLocales();
+      console.log(this.locales);
+    } catch (error) {
+      console.error('Error al obtener los datos de los locales:', error);
+    }
+  }
+  
   preferencias = {
     modoOscuro: false,
     notificaciones: true
   };
 
-  locales: Local[] = [
-    {
-      id: '1',
-      nombre: 'Casa en la Playa',
-      region: 'Valparaíso',
-      comuna: 'Viña del Mar',
-      capacidad: 6,
-      precioH: 12000,
-      direccion: ' Avenida Prat 123 ',
-      disponible: true,
-      imagenUrl: 'https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg'
-    },
-    {
-      id: '2',
-      nombre: 'Cabaña en el Bosque',
-      region: 'Araucanía',
-      comuna: 'Pucón',
-      capacidad: 4,
-      precioH: 9000,
-      direccion: 'Camino al Lago 456',
-      disponible: false,
-      imagenUrl: 'https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg'
-    }
-  ];
+  locales: Local[] = [];
+  
+
 }
