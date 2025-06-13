@@ -15,7 +15,7 @@ export class PerfilComponent implements OnInit {
   selectedTabIndex = 0;
 
   ngOnInit(): void {
-    this.usuario = this.svgLocales.getSesionUsuario();
+    this.usuario = this.svgLocales.getSesionUsuario()!;
     this.getDatos();
   }
 

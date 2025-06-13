@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Local } from '../models/models.interface';
+import { Local, Usuario } from '../models/models.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -41,9 +41,9 @@ export class ConnectionService {
   }
 
   // Obtiene la sesión del usuario (devuelve null si no hay sesión)
-  getSesionUsuario(): any | null {
+  getSesionUsuario(): Usuario | undefined {
     const usuario = localStorage.getItem('sesionUsuario');
-    return usuario ? JSON.parse(usuario) : null;
+    return usuario ? JSON.parse(usuario) : undefined;
   }
 
   // Elimina la sesión del usuario (logout)

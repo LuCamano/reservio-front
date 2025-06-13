@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class HeaderSimpleComponent {
   menuAbierto = false;
-  usuario: Usuario | null = null;
+  usuario?: Usuario;
 
   constructor(private connectionService: ConnectionService, private router: Router) {
     this.usuario = this.connectionService.getSesionUsuario();

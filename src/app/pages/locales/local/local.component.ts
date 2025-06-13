@@ -1,9 +1,9 @@
 import { Component, inject, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Renderer2 } from '@angular/core';
-import { Local } from '../../../models/models.interface';
+import { Local, Usuario } from '../../../models/models.interface';
 import { ConnectionService } from '../../../services/connection.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-local',
@@ -21,7 +21,7 @@ export class LocalComponent implements OnDestroy {
   mostrarAlerta = false;
   reservaForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private renderer: Renderer2,private route: ActivatedRoute) {
+  constructor(private fb: FormBuilder, private renderer: Renderer2,private route: ActivatedRoute, private router: Router) {
     this.reservaForm = this.fb.group({
       descripcion: ['', Validators.required],
       personas: [1, [Validators.required, Validators.min(1)]],
@@ -62,11 +62,20 @@ export class LocalComponent implements OnDestroy {
   }
 
   async getLocal(id: string) {
-  const local = await this.svLocal.getLocalById(id);
-  if (local) {
-    this.local = local;
-  } else {
-    this.local = null;  // o muestra un error o valor por defecto
+    const local = await this.svLocal.getLocalById(id);
+    if (local) {
+      this.local = local;
+    } else {
+      this.local = null;  // o muestra un error o valor por defecto
+    }
   }
-}
+
+  reservar() {
+    if (this.svLocal.haySesionActiva()) {
+      this.mostrarModalReserva = true;
+      this.renderer.addClass(document.body, 'overflow-hidden'); // Agrega clase para evitar scroll
+    } else {
+      this.router.navigate(['/login']);
+    }
+  }
 }
