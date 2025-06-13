@@ -1,5 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { map, Observable, startWith } from 'rxjs';
 
+
+export interface Ciudad {
+  name: string;
+  Locales: string;
+}
 @Component({
   selector: 'app-home',
   standalone: false,
@@ -8,20 +15,37 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   heroImages = [
-    'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1500&q=80',
-    'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=1500&q=80',
-    'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=1500&q=80'
+    'assets/homeassets/hero/conciertopequeno.jpg',
+    'assets/homeassets/hero/juntaempresa.jpg',
+    'assets/homeassets/hero/celebracion.jpg',
   ];
+  extendedImages: string[] = [];
   currentImage = 0;
   private intervalId?: ReturnType<typeof setInterval>;
+  animating = true;
 
   ngOnInit() {
+    // Duplicamos la primera imagen al final
+    this.extendedImages = [...this.heroImages, this.heroImages[0]];
     this.intervalId = setInterval(() => {
-      this.currentImage = (this.currentImage + 1) % this.heroImages.length;
-    }, 5000);
+      this.nextSlide();
+    }, 4000);
+  }
+
+  nextSlide() {
+    this.currentImage++;
+    this.animating = true;
+    // Si llegamos al duplicado, esperamos la animación y saltamos sin animación
+    if (this.currentImage === this.heroImages.length) {
+      setTimeout(() => {
+        this.animating = false;
+        this.currentImage = 0;
+      }, 700); // Debe coincidir con duration-700 de Tailwind
+    }
   }
 
   ngOnDestroy() {
     clearInterval(this.intervalId);
   }
+
 }

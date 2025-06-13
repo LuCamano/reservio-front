@@ -1,11 +1,23 @@
 <app-header-simple></app-header-simple>
 
+<!--Seccion Hero-->
 <section class="relative w-full h-[450px] md:h-[600px] flex items-center justify-center overflow-hidden">
-  <img 
-    [src]="heroImages[currentImage]"
-    alt="Evento" 
-    class="absolute inset-0 w-full h-full object-cover brightness-75 transition-all duration-700"
-  />
+  <!-- Carrusel de imágenes de fondo -->
+  <div class="absolute inset-0 w-full h-full">
+    <div
+      class="flex h-full"
+      [ngClass]="{'transition-transform duration-700': animating}"
+      [style.transform]="'translateX(-' + (currentImage * 100) + '%)'"
+    >
+      <img
+        *ngFor="let img of extendedImages"
+        [src]="img"
+        alt="Evento"
+        class="h-full object-cover brightness-75 flex-shrink-0"
+        style="width: 100%;"
+      />
+    </div>
+  </div>
   <div class="relative z-10 flex flex-col items-center w-full px-4">
     <div class="text-center text-white">
       <h1 class="text-4xl md:text-5xl font-bold mb-4 drop-shadow-lg">Bienvenido a Reservio</h1>
@@ -14,14 +26,29 @@
       </p>
     </div>
     <!-- Formulario de búsqueda -->
-    <div class="w-full max-w-xl">
-      <mat-form-field appearance="outline" class="w-full bg-white bg-opacity-90 rounded-lg shadow-lg">
-        <mat-label>¿Donde será tu evento?</mat-label>
-        <input matInput placeholder="Ej: Salón, Auditorio, Ciudad..." />
-        <button mat-icon-button matSuffix aria-label="Buscar">
-          <mat-icon>search</mat-icon>
+    <div class="w-full max-w-2xl">
+      <div class="flex bg-white rounded-xl shadow-lg overflow-hidden outline outline-1">
+        <input
+          type="text"
+          placeholder="¿Donde será tu evento?"
+          class="flex-1 px-5 py-4 text-lg focus:outline-none rounded-l-xl"
+        />
+        <button
+          class="bg-blue-600 hover:bg-blue-700 text-white px-7 py-4 text-lg font-semibold rounded-r-xl transition"
+          routerLink="/locales"
+        >
+          <span class="material-icons align-middle mr-1">search</span>
+          Buscar
         </button>
-      </mat-form-field>
+      </div>
+    </div>
+    <!-- Indicadores del carrusel -->
+    <div class="flex gap-2 mt-8">
+      <span
+        *ngFor="let img of heroImages; let i = index"
+        class="w-3 h-3 rounded-full"
+        [ngClass]="i === (currentImage % heroImages.length) ? 'bg-blue-600' : 'bg-white'"
+      ></span>
     </div>
   </div>
 </section>
@@ -36,7 +63,7 @@
         <!-- Paso 1 -->
         <div class="mb-2 text-lg font-bold text-blue-500">Paso 1</div>
         <div class="flex justify-center mb-4">
-          <div class="w-32 h-32 flex items-center justify-center bg-gray-700 rounded-lg">
+          <div class="w-32 h-32 flex items-center justify-center bg-gray-600 rounded-lg">
             <img src="assets/homeassets/paso1.png" alt="Buscar un local" class="w-20 h-20 object-contain" />
           </div>
         </div>
@@ -47,7 +74,7 @@
         <!-- Paso 2 -->
         <div class="mb-2 text-lg font-bold text-blue-500">Paso 2</div>
         <div class="flex justify-center mb-4">
-          <div class="w-32 h-32 flex items-center justify-center bg-gray-700 rounded-lg">
+          <div class="w-32 h-32 flex items-center justify-center bg-gray-600 rounded-lg">
             <img src="assets/homeassets/paso2.png" alt="Enviar solicitud de arriendo" class="w-20 h-20 object-contain" />
           </div>
         </div>
@@ -58,7 +85,7 @@
         <!-- Paso 3 -->
         <div class="mb-2 text-lg font-bold text-blue-500">Paso 3</div>
         <div class="flex justify-center mb-4">
-          <div class="w-32 h-32 flex items-center justify-center bg-gray-700 rounded-lg">
+          <div class="w-32 h-32 flex items-center justify-center bg-gray-600 rounded-lg">
             <img src="assets/homeassets/paso3.png" alt="Conectarse con el dueño" class="w-20 h-20 object-contain" />
           </div>
         </div>
@@ -68,7 +95,7 @@
     </div>
     <!-- Botón debajo de la sección -->
     <div class="flex justify-center mt-20">
-      <button class="bg-indigo-700 hover:bg-blue-700 text-white font-semibold py-4 px-10 rounded-lg text-xl shadow-lg transition-colors duration-200">
+      <button class="bg-indigo-700 hover:bg-indigo-800 text-white font-semibold py-4 px-10 rounded-lg text-xl shadow-lg transition-colors duration-200" routerLink="/locales">
         ¡Comienza a Buscar!
       </button>
     </div>
@@ -88,7 +115,7 @@
           <p class="text-sm">Comuna: Los Angeles</p>
           <p class="text-sm">Capacidad: 150 personas</p>
           <p class="text-sm mb-2">Precio por hora: $80.000/h</p>
-          <button class="w-full py-2 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors">
+          <button class="w-full py-2 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors" routerLink="locales/local">
             Ver detalles
           </button>
         </div>
@@ -101,7 +128,7 @@
           <p class="text-sm">Comuna: Concepcion</p>
           <p class="text-sm">Capacidad: 80 personas</p>
           <p class="text-sm mb-2">Precio por hora: $60.000/h</p>
-          <button class="w-full py-2 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors">
+          <button class="w-full py-2 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors" routerLink="locales/local">
             Ver detalles
           </button>
         </div>
@@ -114,7 +141,7 @@
           <p class="text-sm">Comuna: Las Condes</p>
           <p class="text-sm">Capacidad: 50 personas</p>
           <p class="text-sm mb-2">Precio por hora: $45.000/h</p>
-          <button class="w-full py-2 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors">
+          <button class="w-full py-2 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors" routerLink="locales/local">
             Ver detalles
           </button>
         </div>
@@ -127,7 +154,7 @@
           <p class="text-sm">Comuna: ???</p>
           <p class="text-sm">Capacidad: ??? personas?</p>
           <p class="text-sm mb-2">Precio por hora: ???</p>
-          <button class="w-full py-2 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors">
+          <button class="w-full py-2 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors" routerLink="locales/local">
             Ver detalles
           </button>
         </div>

@@ -1,0 +1,45 @@
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+/* Cambiar color del label */
+.custom-label {
+  color: #ffffff; /* azul Tailwind */
+}
+
+/* Input */
+.custom-input {
+  color: #1e3a8a; /* azul oscuro */
+}
+
+/* Opciones del autocomplete */
+.custom-option {
+  color: #ffffff; /* gris muy oscuro */
+  font-size: 14px;
+  padding: 6px 12px;
+}
+
+.custom-option:hover {
+  background-color: #606162; /* azul claro */
+}
+
+/* Imagen en opciones si usas alguna */
+.example-option-img {
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+[dir='rtl'] .example-option-img {
+  margin-right: 0;
+  margin-left: 8px;
+}
+
+::ng-deep .mat-option {
+  background-color: #ffffff;
+}
