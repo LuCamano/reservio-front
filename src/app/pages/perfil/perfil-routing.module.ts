@@ -9,7 +9,7 @@ const routes: Routes = [
     path: '', component: PerfilComponent
   },
   {
-    path: 'ver-propiedad', component: VerPropiedadComponent
+    path: 'ver-propiedad/:id', component: VerPropiedadComponent
   },
   {
     path: 'add-propiedad', component: AddPropiedadComponent

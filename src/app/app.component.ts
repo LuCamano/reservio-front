@@ -50,7 +50,7 @@ export class AppComponent implements OnInit {
       direccion: 'Avenida Libertador 789',
       disponible: true,
       imagenUrl: 'https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg',
-      usuario: 'reservio@reservio.cl'
+      usuario: 'reservio2@reservio.cl'
     }
   ];
 
@@ -64,7 +64,20 @@ export class AppComponent implements OnInit {
       appaterno: 'Prueba',
       apmaterno: 'Reservio',
       fecha_nacimiento: new Date('2020-01-01'),
-      tipo: 'Usuario común',
+      tipo: 'Propietario',
+      activo: true,
+      fecha_creacion: new Date('2020-01-01')
+    },
+    {
+      id: '2',
+      email: 'reservio2@reservio.cl',
+      password: '123456',
+      rut: '11.111.111-1',
+      nombres: 'Usuario',
+      appaterno: 'Prueba',
+      apmaterno: 'Reservio',
+      fecha_nacimiento: new Date('2020-01-01'),
+      tipo: 'Propietario',
       activo: true,
       fecha_creacion: new Date('2020-01-01')
     }
