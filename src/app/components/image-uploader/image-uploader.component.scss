@@ -1,0 +1,39 @@
+/* Estilos específicos del componente */
+.drop-area-active {
+  background-color: #dbeafe !important;
+  border-color: #3b82f6 !important;
+}
+
+.preview-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
+  overflow: auto;
+  gap: 1rem;
+}
+
+.image-preview {
+  transition: all 0.3s ease;
+}
+
+.image-preview:hover {
+  transform: scale(1.03);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.uploading {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Pipe personalizado para truncar texto (añadir en app.module) */
+.truncate {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

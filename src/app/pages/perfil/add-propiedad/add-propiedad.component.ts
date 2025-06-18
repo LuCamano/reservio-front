@@ -1,9 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Local } from '../../../models/models.interface';
 import { ConnectionService } from '../../../services/connection.service';
 import { Router } from '@angular/router';
-
 
 @Component({
   selector: 'app-add-propiedad',

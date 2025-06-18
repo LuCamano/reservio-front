@@ -1,0 +1,132 @@
+<div class="min-h-screen p-4">
+    <div class="max-w-6xl mx-auto">
+        <div class="bg-white rounded-xl shadow-xl overflow-hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 p-6">
+                <!-- Panel de carga -->
+                <div class="space-y-6">
+                    <h2 class="text-xl font-semibold text-gray-800 flex items-center gap-2">
+                        <i class="fas fa-upload text-blue-500"></i>
+                        Cargar Imágenes
+                    </h2>
+
+                    <!-- Área de arrastrar y soltar -->
+                    <div class="border-3 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer bg-gray-50 transition-colors duration-300"
+                        [class.drop-area-active]="isDragging" (dragover)="handleDragOver($event)"
+                        (dragleave)="handleDragLeave()" (drop)="handleDrop($event)" (click)="openFilePicker()">
+                        <i class="fas fa-cloud-upload-alt text-4xl text-blue-500 mb-4"></i>
+                        <h3 class="text-lg font-medium text-gray-800 mb-2">Arrastra y suelta tus imágenes
+                            aquí</h3>
+                        <p class="text-gray-600 mb-4">o</p>
+                        <button
+                            class="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition">
+                            Seleccionar imágenes
+                        </button>
+                        <input #fileInput type="file" class="hidden" multiple accept="image/*"
+                            (change)="handleFileSelect($event)">
+                    </div>
+
+                    <!-- Botones de acción -->
+                    <div class="flex flex-wrap gap-3">
+                        <button
+                            class="flex-1 px-4 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition flex items-center justify-center gap-2"
+                            (click)="uploadImages()" [class.opacity-70]="uploading" [disabled]="uploading">
+                            <i class="fas fa-upload"></i>
+                            <span>{{ uploading ? 'Subiendo...' : 'Subir imágenes' }}</span>
+                        </button>
+                        <button
+                            class="px-4 py-3 bg-gradient-to-r from-gray-500 to-gray-700 text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition flex items-center justify-center gap-2"
+                            (click)="resetForm()">
+                            <i class="fas fa-redo"></i>
+                            Limpiar
+                        </button>
+                    </div>
+
+                    <!-- Información -->
+                    <div class="bg-blue-50 rounded-xl p-4 text-blue-700">
+                        <p class="font-semibold">Información importante:</p>
+                        <ul class="list-disc pl-5 mt-2 space-y-1">
+                            <li>Formatos soportados: JPG, PNG, GIF</li>
+                            <li>Tamaño máximo por imagen: 5MB</li>
+                            <li>Puedes seleccionar múltiples imágenes a la vez</li>
+                            <li>También puedes arrastrar y soltar tus imágenes</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Panel de vista previa -->
+                <div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-semibold text-gray-800 flex items-center gap-2">
+                            <i class="fas fa-eye text-blue-500"></i>
+                            Vista Previa
+                        </h2>
+                        <span class="text-gray-600">{{ images.length }} imágenes</span>
+                    </div>
+
+                    <!-- Contenedor de imágenes -->
+                    <div class="preview-container min-h-[200px] bg-gray-50 rounded-xl p-4"
+                        [class.flex]="images.length === 0" [class.items-center]="images.length === 0"
+                        [class.justify-center]="images.length === 0">
+                        <ng-container *ngIf="images.length === 0; else imagesPreview">
+                            <div class="text-center text-gray-500">
+                                <i class="fas fa-images text-4xl mb-3 text-gray-300"></i>
+                                <p>No hay imágenes seleccionadas</p>
+                            </div>
+                        </ng-container>
+
+                        <ng-template #imagesPreview>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                <div class="image-preview relative rounded-lg overflow-hidden shadow-md"
+                                    *ngFor="let image of images; let i = index">
+                                    <img [src]="image.dataUrl" class="w-full h-full object-cover"
+                                        [alt]="'Imagen ' + (i + 1)">
+                                    <button
+                                        class="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition"
+                                        (click)="removeImage(i)">
+                                        <i class="fas fa-times text-xs"></i>
+                                    </button>
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-1 text-xs truncate"
+                                        [title]="image.name">
+                                        {{ image.name }}
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </div>
+
+                    <!-- Botones de acción -->
+                    <div class="flex flex-wrap gap-3 mt-6">
+                        <button
+                            class="flex-1 px-4 py-3 bg-gradient-to-r from-green-500 to-teal-600 text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition flex items-center justify-center gap-2"
+                            (click)="saveChanges()">
+                            <i class="fas fa-save"></i>
+                            Guardar cambios
+                        </button>
+                        <button
+                            class="px-4 py-3 bg-gradient-to-r from-red-500 to-red-700 text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition flex items-center justify-center gap-2"
+                            (click)="removeAllImages()">
+                            <i class="fas fa-trash"></i>
+                            Eliminar todas
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estado de carga -->
+        <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center transition-opacity duration-300"
+            [class.opacity-0]="!uploading" [class.pointer-events-none]="!uploading" [class.opacity-100]="uploading">
+            <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4 text-center">
+                <div class="uploading mb-6">
+                    <i class="fas fa-cloud-upload-alt text-5xl text-blue-500 animate-pulse"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Subiendo imágenes</h3>
+                <p class="text-gray-600 mb-6">Por favor, espera mientras se suben tus imágenes...</p>
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                    <div class="bg-blue-500 h-2.5 rounded-full" [style.width.%]="uploadProgress"></div>
+                </div>
+                <p class="text-gray-600 mt-2">{{ uploadProgress }}% completado</p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -7,6 +7,7 @@ import {MatButtonModule} from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { SidebarAdmComponent } from './sidebar-adm/sidebar-adm.component';
 import { MapComponent } from './map/map.component';
+import { ImageUploaderComponent } from './image-uploader/image-uploader.component';
 
 
 
@@ -14,7 +15,8 @@ import { MapComponent } from './map/map.component';
   declarations: [
     HeaderSimpleComponent,
     SidebarAdmComponent,
-    MapComponent
+    MapComponent,
+    ImageUploaderComponent
   ],
   imports: [
     CommonModule,
@@ -26,7 +28,8 @@ import { MapComponent } from './map/map.component';
   exports: [
     HeaderSimpleComponent,
     SidebarAdmComponent,
-    MapComponent
+    MapComponent,
+    ImageUploaderComponent
   ]
 })
 export class ComponentsModule {
