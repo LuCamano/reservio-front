@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { SidebarAdmComponent } from './sidebar-adm/sidebar-adm.component';
 import { MapComponent } from './map/map.component';
 import { ImageUploaderComponent } from './image-uploader/image-uploader.component';
+import { HeaderAdmComponent } from './header-adm/header-adm.component';
 
 
 
@@ -16,7 +17,8 @@ import { ImageUploaderComponent } from './image-uploader/image-uploader.componen
     HeaderSimpleComponent,
     SidebarAdmComponent,
     MapComponent,
-    ImageUploaderComponent
+    ImageUploaderComponent,
+    HeaderAdmComponent
   ],
   imports: [
     CommonModule,
@@ -29,7 +31,8 @@ import { ImageUploaderComponent } from './image-uploader/image-uploader.componen
     HeaderSimpleComponent,
     SidebarAdmComponent,
     MapComponent,
-    ImageUploaderComponent
+    ImageUploaderComponent,
+    HeaderAdmComponent
   ]
 })
 export class ComponentsModule {

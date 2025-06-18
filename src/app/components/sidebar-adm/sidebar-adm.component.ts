@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-sidebar-adm',
@@ -13,4 +13,5 @@ export class SidebarAdmComponent {
     this.isSidenavOpen = !this.isSidenavOpen;
     // Aquí deberías emitir un evento o usar un servicio para comunicar a app.component.ts
   }
+  @Output() closeMenu = new EventEmitter<void>();
 }
