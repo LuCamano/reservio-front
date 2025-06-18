@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Local, Usuario, Reserva } from '../../models/models.interface';
 import { ConnectionService } from '../../services/connection.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-perfil',
@@ -10,6 +11,7 @@ import { ConnectionService } from '../../services/connection.service';
 })
 export class PerfilComponent implements OnInit {
   private svgLocales = inject(ConnectionService);
+  private Router = inject(Router); // Asegúrate de que estás inyectando el Router correctamente
   usuario!: Usuario;
   
   selectedTabIndex = 0;
@@ -71,11 +73,18 @@ export class PerfilComponent implements OnInit {
 
   dejarDeSerPropietario() {
     if (confirm('¿Estás seguro que deseas dejar de ser propietario? Todas las propiedades asociadas a tu cuenta serán eliminadas del sistema.')) {
-      this.locales = [];
-      localStorage.setItem('locales', JSON.stringify([]));
       this.usuario.tipo = 'Usuario común';
       this.svgLocales.setSesionUsuario(this.usuario);
       this.selectedTabIndex = 0;
+      // Eliminar todas las propiedades del usuario
+      this.locales.forEach(local => {
+        this.svgLocales.deleteLocal(local.id);
+      });
+      this.locales = [];
     }
+  }
+
+  verDetallesPropiedad(local: Local) {
+    this.Router.navigate(['/perfil/ver-propiedad', local.id]);
   }
 }
