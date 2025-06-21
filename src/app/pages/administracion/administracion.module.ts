@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LocalesAdmComponent } from './locales-adm/locales-adm.component';
 import { UsuariosAdmComponent } from './usuarios-adm/usuarios-adm.component';
+import { GoogleChartsModule } from 'angular-google-charts';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { UsuariosAdmComponent } from './usuarios-adm/usuarios-adm.component';
     MatSidenavModule,
     MatIconModule,
     MatButtonModule,
+    GoogleChartsModule
   ]
 })
 export class AdministracionModule { }
