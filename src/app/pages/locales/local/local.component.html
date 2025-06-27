@@ -66,8 +66,27 @@
     <div class="col-span-12 md:col-span-10">
       <div class="p-4">
         <h2 class="text-2xl font-bold mb-2">{{ local?.direccion }}</h2>
+        <p class="text-sm text-gray-800 mb-4">Test: {{ direccioncompleta }}</p>
+        <p class="text-sm text-gray-800 mb-4">Ubicación del local</p>
+        
       </div>
-      <app-map></app-map>
+      <div *ngIf="isLoading" class="loading">
+        <p>Cargando mapa...</p>
+      </div>
+
+      <div *ngIf="mapError" class="error">
+        <p>No se pudo cargar el mapa para esta ubicación</p>
+      </div>
+
+      <div *ngIf="!isLoading && !mapError">
+        <div class="map-container">
+          <app-map 
+            [lat]="dato_lat" 
+            [lng]="dato_lng"
+            [localName]="local?.nombre!">
+          </app-map>
+        </div>
+      </div>
       
     </div>
     <div class="col-span-1"></div>

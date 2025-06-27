@@ -5,6 +5,8 @@ import { Local, Reserva, Usuario } from '../../../models/models.interface';
 import { ConnectionService } from '../../../services/connection.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import { OpenStreetMapService } from '../../../services/open-street-map.service';
+
 @Component({
   selector: 'app-local',
   standalone: false,
@@ -12,10 +14,17 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './local.component.scss'
 })
 export class LocalComponent implements OnDestroy {
+
+  // Inyectar el servicio OpenStreetMap
+  private MapService = inject(OpenStreetMapService);
+
   local: Local | null = null;
 
   idLocal!: string;
   svLocal = inject(ConnectionService);
+
+  isLoading = true;
+  mapError = false;
 
   mostrarModalReserva = false;
   mostrarAlerta = false;
@@ -23,6 +32,16 @@ export class LocalComponent implements OnDestroy {
 
   reservas: Reserva[] = [];
   reservaError: string = '';
+
+  dato_lng: number = 0;
+  dato_lat: number = 0;
+  nombre_local: string = '';
+  direccioncompleta: string = '';
+
+  // Variables para el modal de reserva
+  idUsuario: string = '';
+  idReserva: string = '';
+  usuario: Usuario | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -36,6 +55,34 @@ export class LocalComponent implements OnDestroy {
       fin: ['', Validators.required],
       cant_horas: [1, [Validators.required, Validators.min(1)]]
     });
+  }
+
+  ngOnInit(): void {
+    this.idLocal = this.route.snapshot.paramMap.get('id')!;
+    this.getLocal(this.idLocal);
+  }
+
+  buscarCoordenadas() {
+    this.direccioncompleta = this.local?.direccion + ', ' + this.local?.comuna + ', ' + this.local?.region + ', chile';
+    this.MapService.getCoordinates(this.direccioncompleta)
+      .subscribe({
+        next: (coords) => {
+          if (coords) {
+            this.dato_lat = coords.lat;
+            this.dato_lng = coords.lng;
+          } else {
+            console.error('muerte en el if 2');
+            this.mapError = true;
+          }
+          this.isLoading = false;
+        },
+        error: (err) => {
+          console.error('Error al obtener coordenadas', err);
+          this.mapError = true;
+          this.isLoading = false;
+        }
+      });
+  
   }
 
   cerrarModalReserva() {
@@ -94,15 +141,11 @@ export class LocalComponent implements OnDestroy {
     this.renderer.removeClass(document.body, 'overflow-hidden');
   }
 
-  ngOnInit(): void {
-    this.idLocal = this.route.snapshot.paramMap.get('id')!;
-    this.getLocal(this.idLocal);
-  }
-
   async getLocal(id: string) {
     const local = await this.svLocal.getLocalById(id);
     if (local) {
       this.local = local;
+      this.buscarCoordenadas();
     } else {
       this.local = null;
     }
