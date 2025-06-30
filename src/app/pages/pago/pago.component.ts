@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
   selector: 'app-pago',
   standalone: false,
   templateUrl: './pago.component.html',
-  styleUrl: './pago.component.scss'
+  styleUrls: ['./pago.component.scss']
 })
 export class PagoComponent implements OnInit {
   reserva: Reserva | null = null;
