@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
       capacidad: 4,
       descripcion: 'Encantadora cabaña rodeada de naturaleza, perfecta para desconectar.',
       precioH: 9000,
-      direccion: '',
+      direccion: 'aysén',
       disponible: false,
       imagenUrl: 'https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg',
       usuario: 'reservio@reservio.cl'
