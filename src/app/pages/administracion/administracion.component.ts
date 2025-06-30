@@ -8,5 +8,9 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
   styleUrl: './administracion.component.scss'
 })
 export class AdministracionComponent {
-  
+  mobileMenuOpen = false;
+
+  toggleMobileMenu() {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+  }
 }
