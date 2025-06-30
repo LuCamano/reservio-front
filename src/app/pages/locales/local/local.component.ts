@@ -71,7 +71,7 @@ export class LocalComponent implements OnDestroy {
             this.dato_lat = coords.lat;
             this.dato_lng = coords.lng;
           } else {
-            console.error('muerte en el if 2');
+            console.error('No coordinates returned from the API');
             this.mapError = true;
           }
           this.isLoading = false;

@@ -6,7 +6,7 @@ import 'leaflet-defaulticon-compatibility';
   selector: 'app-map',
   standalone: false,
   templateUrl: './map.component.html',
-  styleUrl: './map.component.scss'
+  styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements AfterViewInit {
 
