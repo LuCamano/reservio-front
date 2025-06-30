@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { ComponentsModule } from "../../components/components.module";
 import { PagoRoutingModule } from './pago-routing.module';
 import { PagoComponent } from './pago.component';
 
@@ -11,7 +11,8 @@ import { PagoComponent } from './pago.component';
   ],
   imports: [
     CommonModule,
-    PagoRoutingModule
+    PagoRoutingModule,
+    ComponentsModule
   ]
 })
 export class PagoModule { }
