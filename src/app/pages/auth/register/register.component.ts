@@ -32,6 +32,7 @@ export class RegisterComponent {
   appaternoTouched = false;
   apmaternoTouched = false;
   fechaNacimientoTouched = false;
+  edadInvalida: boolean = false;
 
   constructor(
     private connectionService: ConnectionService,
@@ -99,7 +100,9 @@ export class RegisterComponent {
 
     // Validar que la fecha sea válida
     const fechaNacimientoDate = this.fecha_nacimiento ? new Date(this.fecha_nacimiento) : null;
+    console.log('Fecha inválida:', this.fecha_nacimiento);
     if (!fechaNacimientoDate || isNaN(fechaNacimientoDate.getTime())) {
+
       this.error = 'Fecha de nacimiento inválida.';
       return;
     }
@@ -125,5 +128,23 @@ export class RegisterComponent {
     // Redirigir al home
     this.router.navigate(['/login']);
   }
+
+  validarEdad() {
+  const fechaNacimientoDate = this.fecha_nacimiento ? new Date(this.fecha_nacimiento) : null;
+
+  if (!fechaNacimientoDate || isNaN(fechaNacimientoDate.getTime())) {
+    this.edadInvalida = false;
+    return;
+  }
+
+  const hoy = new Date();
+  let edad = hoy.getFullYear() - fechaNacimientoDate.getFullYear();
+  const mes = hoy.getMonth() - fechaNacimientoDate.getMonth();
+  if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNacimientoDate.getDate())) {
+    edad--;
+  }
+
+  this.edadInvalida = edad < 18;
+}
 }
 

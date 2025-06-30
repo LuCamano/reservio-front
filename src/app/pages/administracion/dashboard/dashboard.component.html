@@ -12,7 +12,7 @@
       <p class="text-2xl font-bold text-gray-800">158</p>
     </div>
     <div class="bg-white shadow p-4 rounded-lg">
-      <p class="text-gray-500">Locales Subidos</p>
+      <p class="text-gray-500">Locales Totales</p>
       <p class="text-2xl font-bold text-gray-800">42</p>
     </div>
     <div class="bg-white shadow p-4 rounded-lg">
@@ -25,4 +25,13 @@
     </div>
   </div>
 
+
+<google-chart
+  [type]="chartType"
+  [data]="pieChartData"
+  [columns]="pieChartColumns"
+  [options]="chartOptions"
+  [width]="100"
+  [height]="400">
+</google-chart>
 </main>

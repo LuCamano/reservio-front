@@ -8,3 +8,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background-color: #000000 !important; // Azul Tailwind (por ejemplo)
   color: white !important;
 }
+
+/* Transiciones para menús móviles */
+.mobile-menu {
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Mejoras para tarjetas en móviles */
+@media (max-width: 768px) {
+  .card-view .card-item {
+    display: block;
+  }
+}

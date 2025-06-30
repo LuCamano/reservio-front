@@ -3,15 +3,9 @@
 
   <!-- Header -->
   <div class="px-4 py-3 relative flex items-center border-b border-gray-200">
-    <!-- Botón cerrar menú (solo visible en pantallas pequeñas) -->
-    <button aria-label="Cerrar menú" id="iconSidenav"
-      class="absolute right-4 top-3 xl:hidden p-2 rounded hover:bg-gray-100 transition" (click)="toggleSidenav()">
-      <mat-icon class="text-gray-700">close</mat-icon>
-    </button>
-
     <a class="flex items-center space-x-2" routerLink="/admin" title="Ir al admin">
-      <img src="assets/homeassets/local1.jpg" width="28" height="28" alt="logoAdmin" /> 
-      <span class="text-sm font-semibold text-gray-800 select-none">Administracion</span>
+      <img src="assets/logo.png" width="28" height="28" alt="logoAdmin" /> 
+      <span class="text-sm font-semibold text-sky-700 select-none">Administracion</span>
     </a>
   </div>
 
@@ -19,36 +13,25 @@
   <nav class="flex-grow overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 px-4 py-2">
     <ul class="flex flex-col space-y-1">
       <li>
-        <a routerLink="dashboard" routerLinkActive="bg-gradient-to-r from-gray-900 to-gray-700 text-white rounded"
+        <a routerLink="dashboard" routerLinkActive="bg-gradient-to-r from-sky-600 to-sky-800 text-white rounded"
           [routerLinkActiveOptions]="{ exact: true }"
-          class="flex items-center space-x-2 text-gray-800 hover:bg-gray-100 rounded px-3 py-2 transition">
+          class="flex items-center space-x-2 text-gray-800 hover:bg-blue-100 rounded px-3 py-2 transition">
           <mat-icon class="text-gray-600 group-hover:text-gray-900">dashboard</mat-icon>
           <span class="text-xs font-medium">Dashboard</span>
         </a>
       </li>
       <li>
-        <a routerLink="locales" routerLinkActive="bg-gradient-to-r from-gray-900 to-gray-700 text-white rounded"
-          class="flex items-center space-x-2 text-gray-800 hover:bg-gray-100 rounded px-3 py-2 transition">
+        <a routerLink="locales" routerLinkActive="bg-gradient-to-r from-sky-600 to-sky-800 text-white rounded"
+          class="flex items-center space-x-2 text-gray-800 hover:bg-blue-100 rounded px-3 py-2 transition">
           <mat-icon class="text-gray-600">store</mat-icon>
           <span class="text-xs font-medium">Locales</span>
         </a>
       </li>
       <li>
-        <a routerLink="usuarios" routerLinkActive="bg-gradient-to-r from-gray-900 to-gray-700 text-white rounded"
-          class="flex items-center space-x-2 text-gray-800 hover:bg-gray-100 rounded px-3 py-2 transition">
+        <a routerLink="usuarios" routerLinkActive="bg-gradient-to-r from-sky-600 to-sky-800 text-white rounded"
+          class="flex items-center space-x-2 text-gray-800 hover:bg-blue-100 rounded px-3 py-2 transition">
           <mat-icon class="text-gray-600">person</mat-icon>
           <span class="text-xs font-medium">Usuarios</span>
-        </a>
-      </li>
-
-      <li class="mt-4 mb-1 px-3">
-        <h6 class="uppercase text-xxs text-gray-400 opacity-50 select-none">Account pages</h6>
-      </li>
-      <li>
-        <a routerLink="/login" routerLinkActive="bg-gradient-to-r from-gray-900 to-gray-700 text-white rounded"
-          class="flex items-center space-x-2 text-gray-800 hover:bg-gray-100 rounded px-3 py-2 transition">
-          <mat-icon class="text-gray-600">logout</mat-icon>
-          <span class="text-xs font-medium">Cerrar sesión</span>
         </a>
       </li>
     </ul>
@@ -56,9 +39,10 @@
 
   <!-- Footer -->
   <div class="px-4 py-3 border-t border-gray-200">
-    <a routerLink="/admin"
-      class="block w-full text-center py-2 text-xs font-semibold bg-gradient-to-r from-gray-900 to-gray-700 text-white rounded hover:brightness-110 transition">
-      Admin
-    </a>
+    <a routerLink="/login" routerLinkActive="bg-gradient-to-r from-sky-900 to-gray-700 text-white rounded"
+          class="flex items-center space-x-2 text-gray-800 hover:bg-gray-100 rounded px-3 py-2 transition">
+          <mat-icon class="text-gray-600">logout</mat-icon>
+          <span class="text-xs font-medium">Cerrar sesión</span>
+        </a>
   </div>
 </aside>
