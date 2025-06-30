@@ -1,0 +1,53 @@
+<div class="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+  <div class="bg-white rounded-xl shadow-lg p-8 w-full max-w-2xl">
+    <h2 class="text-2xl font-bold mb-4 text-center">Pago de Reserva</h2>
+    <ng-container *ngIf="reserva; else sinReserva">
+      <div class="flex flex-col md:flex-row gap-6 items-start">
+        <!-- Información de reserva -->
+        <div class="flex-1 min-w-0">
+          <div class="mb-4">
+            <h3 class="text-lg font-semibold">Local reservado:</h3>
+            <p class="text-gray-700">{{ reserva.propiedad.nombre }}</p>
+            <p class="text-gray-500 text-sm">Dirección: {{ reserva.propiedad.direccion }}</p>
+          </div>
+          <div class="mb-4">
+            <h3 class="text-lg font-semibold">Datos del usuario:</h3>
+            <p class="text-gray-700">{{ reserva.cliente.nombres }} {{ reserva.cliente.appaterno }} {{ reserva.cliente.apmaterno }}</p>
+            <p class="text-gray-500 text-sm">Correo: {{ reserva.cliente.email }}</p>
+          </div>
+          <div class="mb-4">
+            <h3 class="text-lg font-semibold">Detalles de la reserva:</h3>
+            <p class="text-gray-700">Desde: {{ reserva.inicio | date:'short' }}</p>
+            <p class="text-gray-700">Hasta: {{ reserva.fin | date:'short' }}</p>
+            <p class="text-gray-700">Cantidad de horas: {{ reserva.cant_horas }}</p>
+            <p class="text-gray-700">Precio por hora: ${{ reserva.propiedad.precioH }}</p>
+          </div>
+          <div class="mb-6">
+            <h3 class="text-lg font-semibold">Monto a pagar ahora (50%):</h3>
+            <p class="text-2xl font-bold text-indigo-700">${{ montoPagar | number:'1.0-0' }}</p>
+            <p class="text-gray-500 text-xs mt-1">El 50% restante se paga al finalizar el evento.</p>
+          </div>
+          <div class="mb-4">
+            <h3 class="text-lg font-semibold">Instrucciones de pago:</h3>
+            <p class="text-gray-700">Realiza el pago a la siguiente cuenta bancaria:</p>
+            <ul class="text-sm text-gray-600 mt-2">
+              <li><strong>Banco:</strong> Banco Ejemplo</li>
+              <li><strong>Cuenta:</strong> 123456789</li>
+              <li><strong>Nombre:</strong> Reservio Pagos</li>
+              <li><strong>RUT:</strong> 12.345.678-9</li>
+            </ul>
+            <p class="text-xs text-gray-400 mt-2">* Una vez realizado el pago, recibirás un correo de confirmación.</p>
+          </div>
+        </div>
+        <!-- Logo Webpay -->
+        <div class="flex flex-col items-center justify-center w-full md:w-56">
+          <img src="https://www.defensapropiedades.cl/wp-content/uploads/2023/11/logo-webpay-plus-3-2.png" alt="Webpay Plus" class="w-40 h-auto mb-6 mx-auto" />
+        </div>
+      </div>
+      <button class="w-full bg-indigo-700 hover:bg-indigo-800 text-white py-2 px-4 rounded-xl shadow transition duration-200 mt-8">Confirmar pago</button>
+    </ng-container>
+    <ng-template #sinReserva>
+      <p class="text-center text-gray-500">No hay información de reserva para mostrar.</p>
+    </ng-template>
+  </div>
+</div>

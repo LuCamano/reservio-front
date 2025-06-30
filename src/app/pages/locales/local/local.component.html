@@ -167,15 +167,21 @@
       <form [formGroup]="reservaForm" (ngSubmit)="enviarReserva()" class="space-y-4">
         <div>
           <label class="block text-sm font-medium mb-1">Fecha de inicio</label>
-          <input type="datetime-local" formControlName="inicio" class="w-full border rounded-lg px-3 py-2">
+          <input type="datetime-local" formControlName="inicio" class="w-full border rounded-lg px-3 py-2" (change)="actualizarHoras()">
         </div>
         <div>
           <label class="block text-sm font-medium mb-1">Fecha de término</label>
-          <input type="datetime-local" formControlName="fin" class="w-full border rounded-lg px-3 py-2">
+          <input type="datetime-local" formControlName="fin" class="w-full border rounded-lg px-3 py-2" (change)="actualizarHoras()">
         </div>
         <div>
           <label class="block text-sm font-medium mb-1">Cantidad de horas</label>
-          <input type="number" formControlName="cant_horas" min="1" class="w-full border rounded-lg px-3 py-2">
+          <input type="number" formControlName="cant_horas" min="1" class="w-full border rounded-lg px-3 py-2 bg-gray-100" readonly>
+        </div>
+        <div class="text-right text-base font-semibold text-gray-700" *ngIf="local && reservaForm.get('cant_horas')?.value">
+          Total a pagar: <span class="text-indigo-700">${{ local.precioH * reservaForm.get('cant_horas')?.value }}</span>
+        </div>
+        <div class="text-sm text-blue-700 bg-blue-50 rounded-lg px-3 py-2 mb-2" *ngIf="local && reservaForm.get('cant_horas')?.value">
+          <span class="font-semibold">Importante:</span> El 50% del costo de la reserva deberá ser pagado al inicio de la reserva y el otro 50% al finalizar el periodo de reserva.
         </div>
         <div *ngIf="reservaError" class="text-red-600 text-sm text-center">{{ reservaError }}</div>
         <div class="flex justify-end gap-2 pt-2">

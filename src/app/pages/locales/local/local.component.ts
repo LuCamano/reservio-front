@@ -130,10 +130,11 @@ export class LocalComponent implements OnDestroy {
       const reservas = JSON.parse(localStorage.getItem('reservas') || '[]');
       reservas.push(reserva);
       localStorage.setItem('reservas', JSON.stringify(reservas));
-
+      // Guardar la reserva actual para el pago
+      localStorage.setItem('reservaPagoActual', JSON.stringify(reserva));
       this.cerrarModalReserva();
-      this.mostrarAlerta = true;
-      setTimeout(() => this.mostrarAlerta = false, 4000);
+      // Redirigir a la página de pago
+      this.router.navigate(['/pago']);
     }
   }
 
@@ -157,6 +158,24 @@ export class LocalComponent implements OnDestroy {
       this.renderer.addClass(document.body, 'overflow-hidden');
     } else {
       this.router.navigate(['/login']);
+    }
+  }
+
+  actualizarHoras() {
+    const inicioStr = this.reservaForm.get('inicio')?.value;
+    const finStr = this.reservaForm.get('fin')?.value;
+    if (inicioStr && finStr) {
+      const inicio = new Date(inicioStr);
+      const fin = new Date(finStr);
+      if (!isNaN(inicio.getTime()) && !isNaN(fin.getTime()) && fin > inicio) {
+        const diffMs = fin.getTime() - inicio.getTime();
+        const diffHrs = diffMs / (1000 * 60 * 60);
+        this.reservaForm.get('cant_horas')?.setValue(Math.max(1, Math.round(diffHrs)));
+      } else {
+        this.reservaForm.get('cant_horas')?.setValue(1);
+      }
+    } else {
+      this.reservaForm.get('cant_horas')?.setValue(1);
     }
   }
 }
