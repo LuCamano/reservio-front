@@ -29,12 +29,12 @@ export class AppComponent implements OnInit {
     {
       id: '2',
       nombre: 'Cabaña en el Bosque',
-      region: 'Los Lagos',
-      comuna: 'Puerto Varas',
+      region: 'biobío',
+      comuna: 'Tomé',
       capacidad: 4,
       descripcion: 'Encantadora cabaña rodeada de naturaleza, perfecta para desconectar.',
       precioH: 9000,
-      direccion: 'Camino al Lago 456',
+      direccion: '',
       disponible: false,
       imagenUrl: 'https://cdn0.matrimonios.cl/vendor/7446/3_2/960/jpg/foto-3_8_107446.jpeg',
       usuario: 'reservio@reservio.cl'
