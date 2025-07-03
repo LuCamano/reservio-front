@@ -64,8 +64,7 @@ export class AppComponent implements OnInit {
       appaterno: 'Prueba',
       apmaterno: 'Reservio',
       fecha_nacimiento: new Date('2020-01-01'),
-      tipo: 'Propietario',
-      activo: true,
+      tipo: 'propietario',
       fecha_creacion: new Date('2020-01-01')
     },
     {
@@ -77,8 +76,7 @@ export class AppComponent implements OnInit {
       appaterno: 'Prueba',
       apmaterno: 'Reservio',
       fecha_nacimiento: new Date('2020-01-01'),
-      tipo: 'Propietario',
-      activo: true,
+      tipo: 'propietario',
       fecha_creacion: new Date('2020-01-01')
     }
   ];

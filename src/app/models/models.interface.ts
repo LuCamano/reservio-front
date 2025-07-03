@@ -32,9 +32,8 @@ export interface Usuario{
     apmaterno: string;
     fecha_nacimiento: Date;
     password?: string; 
-    tipo: string;
+    tipo: 'cliente' | 'propietario' | 'admin';
     fecha_creacion: Date;
-    activo: boolean;
 }
 
 export interface Reserva {

@@ -33,7 +33,7 @@
                         Historial
                     </button>
                 </div>
-                <div class="w-1/2 p-1 md:w-auto md:flex-1" *ngIf="usuario.tipo === 'Propietario'">
+                <div class="w-1/2 p-1 md:w-auto md:flex-1" *ngIf="usuario.tipo === 'propietario'">
                     <button (click)="onTabChange(2)"
                         [ngClass]="selectedTabIndex === 2 ? 'bg-blue-600 text-white shadow' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
                         class="w-full text-center rounded-full px-4 py-2 text-sm font-medium transition duration-300">
@@ -117,7 +117,7 @@
 
                 <!-- Cambiar tipo de cuenta -->
                 <div class="mt-4 border-t pt-4 flex items-center justify-between"
-                    *ngIf="usuario.tipo !== 'Propietario'">
+                    *ngIf="usuario.tipo !== 'propietario'">
                     <p class="text-sm text-gray-500 hidden sm:block">Quiero ser propietario</p>
                     <button class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition w-full md:w-auto"
                         (click)="solicitarPropietario()">
@@ -125,7 +125,7 @@
                     </button>
                 </div>
                 <div class="mt-4 border-t pt-4 flex items-center justify-between"
-                    *ngIf="usuario.tipo === 'Propietario'">
+                    *ngIf="usuario.tipo === 'propietario'">
                     <p class="text-sm text-gray-500 hidden sm:block">Eres propietario</p>
                     <button class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition w-full md:w-auto"
                         (click)="dejarDeSerPropietario()">

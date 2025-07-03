@@ -116,10 +116,9 @@ export class RegisterComponent {
       appaterno: this.appaterno,
       apmaterno: this.apmaterno,
       fecha_nacimiento: fechaNacimientoDate,
-      tipo: 'Usuario común', // Siempre por defecto
+      tipo: 'cliente', // Siempre por defecto
       password: this.password,
-      fecha_creacion: new Date(),
-      activo: true
+      fecha_creacion: new Date()
     };
 
     // Guardar usuario en localStorage (sesión iniciada)
