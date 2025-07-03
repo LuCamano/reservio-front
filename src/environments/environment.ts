@@ -4,5 +4,5 @@
 
 export const environment = {
   production: false,
-  apiUrl: '/api' // Proxy URL para desarrollo
+  apiUrl: 'https://api.reservio.space'
 };
