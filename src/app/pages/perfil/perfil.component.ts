@@ -78,7 +78,7 @@ export class PerfilComponent implements OnInit {
       this.selectedTabIndex = 0;
       // Eliminar todas las propiedades del usuario
       this.locales.forEach(local => {
-        this.svgLocales.deleteLocal(local.id);
+        this.svgLocales.deleteLocal(local.id!);
       });
       this.locales = [];
     }

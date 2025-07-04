@@ -68,6 +68,6 @@ export class ConnectionService {
   }
 
   private generateId(locales: Local[]): string {
-    return (locales.length > 0 ? Math.max(...locales.map(l => parseInt(l.id))) + 1 : 1).toString();
+    return (locales.length > 0 ? Math.max(...locales.map(l => parseInt(l.id!))) + 1 : 1).toString();
   }
 }
