@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, map, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, lastValueFrom, map, Observable } from 'rxjs';
 import { Usuario } from '../models/models.interface';
 import { environment } from '../../environments/environment';
 
@@ -42,6 +42,10 @@ export class AuthService {
           throw error; // Re-throw the error to be handled by the component
         })
       )
+  }
+
+  register(user: Usuario): Promise<Usuario> {
+    return lastValueFrom(this.http.post<Usuario>(`${this.api_url}/auth/register`, user));
   }
 
   refreshToken(): Observable<TokenResponse> {

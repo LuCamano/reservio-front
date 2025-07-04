@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { ConnectionService } from '../../../services/connection.service';
 import { Usuario } from '../../../models/models.interface';
+import { AuthService } from '../../../services/auth.service';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { rutValidator } from '../../../validators/rut.validator';
+import { formatRut, RutFormat } from '@fdograph/rut-utilities';
 
 @Component({
   selector: 'app-register',
@@ -10,39 +13,78 @@ import { Usuario } from '../../../models/models.interface';
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
-  // Campos del formulario
-  email = '';
-  password = '';
-  repeatPassword = '';
-  rut = '';
-  nombres = '';
-  appaterno = '';
-  apmaterno = '';
-  fecha_nacimiento = '';
+  // Inyecciones
+  private authSvc = inject(AuthService);
+  private router = inject(Router);
 
-  error = '';
-  emailError = false;
-  rutError = false;
+  loading = false;
 
-  emailTouched = false;
-  passwordTouched = false;
-  repeatPasswordTouched = false;
-  rutTouched = false;
-  nombresTouched = false;
-  appaternoTouched = false;
-  apmaternoTouched = false;
-  fechaNacimientoTouched = false;
-  edadInvalida: boolean = false;
+  registerForm = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+    repeatPassword: new FormControl('', [Validators.required, this.identicalPasswordsValidation('password')]),
+    rut: new FormControl('', [Validators.required, rutValidator]),
+    nombres: new FormControl('', [Validators.required]),
+    appaterno: new FormControl('', [Validators.required]),
+    apmaterno: new FormControl('', [Validators.required]),
+    fecha_nacimiento: new FormControl((new Date().toISOString().split('T')[0]), [Validators.required, this.validarEdad])
+  });
 
-  constructor(
-    private connectionService: ConnectionService,
-    private router: Router
-  ) {}
+  // Tipos de errores
+  rutErrors = {
+    required: 'El RUT es obligatorio.',
+    invalidRut: 'El RUT es inválido.'
+  };
+  emailErrors = {
+    required: 'El email es obligatorio.',
+    email: 'El email debe ser válido.'
+  };
+  passwordErrors = {
+    required: 'La contraseña es obligatoria.',
+    minlength: 'La contraseña debe tener al menos 6 caracteres.'
+  };
+  repeatPasswordErrors = {
+    required: 'Debe repetir la contraseña.',
+    notIdentical: 'Las contraseñas no coinciden.'
+  };
+  nombresErrors = {
+    required: 'Los nombres son obligatorios.',
+    minlength: 'Los nombres deben tener al menos 2 caracteres.'
+  };
+  appaternoErrors = {
+    required: 'El apellido paterno es obligatorio.',
+    minlength: 'El apellido paterno debe tener al menos 2 caracteres.'
+  };
+  apmaternoErrors = {
+    required: 'El apellido materno es obligatorio.',
+    minlength: 'El apellido materno debe tener al menos 2 caracteres.'
+  };
+  fechaNacimientoErrors = {
+    required: 'La fecha de nacimiento es obligatoria.',
+    invalidDate: 'Debe ser mayor de 18 años.'
+  };
+
+  identicalPasswordsValidation(passwordControlName: string): ValidatorFn {
+    return (control: AbstractControl) => {
+      const password = control.root.get(passwordControlName)?.value;
+      const repeatPassword = control.value;
+
+      if (!password || !repeatPassword) {
+        return null; // No validation error if either field is empty
+      }
+
+      if (password !== repeatPassword) {
+        return { notIdentical: true };
+      } else {
+        return null;
+      }
+    };
+  }
 
   // Formatea el RUT mientras se escribe
   formatearRut() {
     // Elimina todo lo que no sea número o K/k
-    let rut = this.rut.replace(/[^0-9kK]/g, '').toUpperCase();
+    let rut = this.registerForm.controls.rut.value!.replace(/[^0-9kK]/g, '').toUpperCase();
 
     // Máximo 8 dígitos + 1 verificador
     if (rut.length > 9) rut = rut.slice(0, 9);
@@ -59,91 +101,50 @@ export class RegisterComponent {
     }
     cuerpoFormateado = cuerpo + cuerpoFormateado;
 
-    this.rut = cuerpoFormateado + (dv ? '-' + dv : '');
+    this.registerForm.controls.rut.setValue(cuerpoFormateado + (dv ? '-' + dv : ''));
   }
 
-  validarRut(rut: string): boolean {
-    // Valida formato XX.XXX.XXX-X
-    const rutRegex = /^\d{1,2}\.\d{3}\.\d{3}-[\dkK]$/;
-    return rutRegex.test(rut);
+  async onSubmit() {
+    this.loading = true;
+    try {
+      // Validar que la fecha sea válida
+      const fechaNacimientoDate = new Date(this.registerForm.controls.fecha_nacimiento.value!);
+  
+      // Construir el objeto usuario
+      const usuario: Usuario = {
+        email: this.registerForm.controls.email.value!,
+        rut: this.registerForm.controls.rut.value!,
+        nombres: this.registerForm.controls.nombres.value!,
+        appaterno: this.registerForm.controls.appaterno.value!,
+        apmaterno: this.registerForm.controls.apmaterno.value!,
+        fecha_nacimiento: fechaNacimientoDate,
+        tipo: 'cliente', // Siempre por defecto
+        password: this.registerForm.controls.password.value!
+      };
+      console.log('Usuario a registrar:', usuario);
+  
+      // Llamar al servicio de registro
+      const resp = await this.authSvc.register(usuario);
+      console.log('Respuesta del registro:', resp);
+      // Redirigir al home
+      this.router.navigate(['/login']);
+    } catch (error) {
+      console.error('Error al registrar usuario:', error);
+    } finally {
+      this.loading = false;
+    }
   }
 
-  validarEmail(email: string): boolean {
-    // Expresión regular simple para email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  }
-
-  onSubmit() {
-    this.error = '';
-    this.emailError = false;
-    this.rutError = false;
-
-    // Validación de email
-    if (!this.validarEmail(this.email)) {
-      this.emailError = true;
-      this.error = 'Correo inválido.';
-      return;
+  validarEdad(control: FormControl): ValidationErrors | null {
+    const fechaNacimientoDate = new Date(control.value);
+    const hoy = new Date();
+    let edad = hoy.getFullYear() - fechaNacimientoDate.getFullYear();
+    const mes = hoy.getMonth() - fechaNacimientoDate.getMonth();
+    if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNacimientoDate.getDate())) {
+      edad--;
     }
 
-    // Validación de RUT
-    if (!this.validarRut(this.rut)) {
-      this.rutError = true;
-      return;
-    }
-
-    // Validación de contraseñas
-    if (this.password !== this.repeatPassword) {
-      this.error = 'Las contraseñas no coinciden.';
-      return;
-    }
-
-    // Validar que la fecha sea válida
-    const fechaNacimientoDate = this.fecha_nacimiento ? new Date(this.fecha_nacimiento) : null;
-    console.log('Fecha inválida:', this.fecha_nacimiento);
-    if (!fechaNacimientoDate || isNaN(fechaNacimientoDate.getTime())) {
-
-      this.error = 'Fecha de nacimiento inválida.';
-      return;
-    }
-
-    // Construir el objeto usuario
-    const usuario: Usuario = {
-      id: Date.now().toString(),
-      email: this.email,
-      rut: this.rut,
-      nombres: this.nombres,
-      appaterno: this.appaterno,
-      apmaterno: this.apmaterno,
-      fecha_nacimiento: fechaNacimientoDate,
-      tipo: 'cliente', // Siempre por defecto
-      password: this.password,
-      fecha_creacion: new Date()
-    };
-
-    // Guardar usuario en localStorage (sesión iniciada)
-    this.connectionService.registrarUsuario(usuario);
-
-    // Redirigir al home
-    this.router.navigate(['/login']);
+    return edad >= 18 ? null : { invalidDate: true };
   }
-
-  validarEdad() {
-  const fechaNacimientoDate = this.fecha_nacimiento ? new Date(this.fecha_nacimiento) : null;
-
-  if (!fechaNacimientoDate || isNaN(fechaNacimientoDate.getTime())) {
-    this.edadInvalida = false;
-    return;
-  }
-
-  const hoy = new Date();
-  let edad = hoy.getFullYear() - fechaNacimientoDate.getFullYear();
-  const mes = hoy.getMonth() - fechaNacimientoDate.getMonth();
-  if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNacimientoDate.getDate())) {
-    edad--;
-  }
-
-  this.edadInvalida = edad < 18;
-}
 }
 
