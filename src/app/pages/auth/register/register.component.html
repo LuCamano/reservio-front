@@ -8,91 +8,94 @@
     <!-- Título de la página -->
     <h2 class="text-2xl font-bold text-center text-gray-800 mb-4">Crear cuenta</h2>
     <!-- Formulario de registro -->
-    <form (ngSubmit)="onSubmit()" #registerForm="ngForm" autocomplete="off" class="space-y-3">
+    <form (ngSubmit)="onSubmit()" [formGroup]="registerForm" autocomplete="off" class="space-y-3">
       <!-- Correo -->
       <div class="relative">
         <label class="block text-sm font-medium text-gray-700 mb-1">Correo</label>
-        <input type="email" name="email" [(ngModel)]="email" required
-          (input)="emailTouched = true"
+        <input type="email" formControlName="email"
           class="w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
-          [ngClass]="{'border-red-500': emailTouched && !validarEmail(email), 'border-green-500': emailTouched && validarEmail(email)}">
-        <span *ngIf="emailTouched && validarEmail(email)" class="absolute right-3 top-9 text-green-600 material-icons text-lg">check_circle</span>
-        <div *ngIf="emailTouched && !validarEmail(email)" class="text-red-600 text-xs mt-1">Correo inválido.</div>
+          [ngClass]="{'border-red-500': registerForm.controls.email.touched && registerForm.controls.email.invalid, 'border-green-500': registerForm.controls.email.touched && registerForm.controls.email.valid}">
+        <span *ngIf="registerForm.controls.email.touched && registerForm.controls.email.valid" class="absolute right-3 top-9 text-green-600 material-icons text-lg">check_circle</span>
+        <div *ngIf="registerForm.controls.email.touched && registerForm.controls.email.errors?.['required']" class="text-red-600 text-xs mt-1">{{ emailErrors.required }}</div>
+        <div *ngIf="registerForm.controls.email.touched && registerForm.controls.email.errors?.['email']" class="text-red-600 text-xs mt-1">{{ emailErrors.email }}</div>
       </div>
+      
       <!-- Contraseña -->
       <div class="relative">
         <label class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
-        <input type="password" name="password" [(ngModel)]="password" required
-          (input)="passwordTouched = true"
+        <input type="password" formControlName="password"
           class="w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
-          [ngClass]="{'border-red-500': passwordTouched && password.length < 6, 'border-green-500': passwordTouched && password.length >= 6}">
-        <span *ngIf="passwordTouched && password.length >= 6" class="absolute right-3 top-9 text-green-600 material-icons text-lg">check_circle</span>
-        <div *ngIf="passwordTouched && password.length < 6" class="text-red-600 text-xs mt-1">Mínimo 6 caracteres.</div>
+          [ngClass]="{'border-red-500': registerForm.controls.password.touched && registerForm.controls.password.invalid, 'border-green-500': registerForm.controls.password.touched && registerForm.controls.password.valid}">
+        <span *ngIf="registerForm.controls.password.touched && registerForm.controls.password.valid" class="absolute right-3 top-9 text-green-600 material-icons text-lg">check_circle</span>
+        <div *ngIf="registerForm.controls.password.touched && registerForm.controls.password.errors?.['required']" class="text-red-600 text-xs mt-1">{{ passwordErrors.required }}</div>
+        <div *ngIf="registerForm.controls.password.touched && registerForm.controls.password.errors?.['minlength']" class="text-red-600 text-xs mt-1">{{ passwordErrors.minlength }}</div>
       </div>
+      
       <!-- Repetir Contraseña -->
       <div class="relative">
         <label class="block text-sm font-medium text-gray-700 mb-1">Repetir Contraseña</label>
-        <input type="password" name="repeatPassword" [(ngModel)]="repeatPassword" required
-          (input)="repeatPasswordTouched = true"
+        <input type="password" formControlName="repeatPassword"
           class="w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
-          [ngClass]="{'border-red-500': repeatPasswordTouched && repeatPassword !== password, 'border-green-500': repeatPasswordTouched && repeatPassword === password && repeatPassword.length > 0}">
-        <span *ngIf="repeatPasswordTouched && repeatPassword === password && repeatPassword.length > 0" class="absolute right-3 top-9 text-green-600 material-icons text-lg">check_circle</span>
-        <div *ngIf="repeatPasswordTouched && repeatPassword !== password" class="text-red-600 text-xs mt-1">Las contraseñas no coinciden.</div>
+          [ngClass]="{'border-red-500': registerForm.controls.repeatPassword.touched && registerForm.controls.repeatPassword.invalid, 'border-green-500': registerForm.controls.repeatPassword.touched && registerForm.controls.repeatPassword.valid}">
+        <span *ngIf="registerForm.controls.repeatPassword.touched && registerForm.controls.repeatPassword.valid" class="absolute right-3 top-9 text-green-600 material-icons text-lg">check_circle</span>
+        <div *ngIf="registerForm.controls.repeatPassword.touched && registerForm.controls.repeatPassword.errors?.['required']" class="text-red-600 text-xs mt-1">{{ repeatPasswordErrors.required }}</div>
+        <div *ngIf="registerForm.controls.repeatPassword.touched && registerForm.controls.repeatPassword.errors?.['notIdentical']" class="text-red-600 text-xs mt-1">{{ repeatPasswordErrors.notIdentical }}</div>
       </div>
+      
       <!-- RUT -->
       <div class="relative">
         <label class="block text-sm font-medium text-gray-700 mb-1">RUT</label>
-        <input type="text" name="rut" [(ngModel)]="rut" required maxlength="12"
-          (input)="rutTouched = true; formatearRut()"
+        <input type="text" formControlName="rut" maxlength="12"
+          (input)="formatearRut()"
           class="w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
-          [ngClass]="{'border-red-500': rutTouched && !validarRut(rut), 'border-green-500': rutTouched && validarRut(rut)}">
-        <span *ngIf="rutTouched && validarRut(rut)" class="absolute right-3 top-9 text-green-600 material-icons text-lg">check_circle</span>
-        <div *ngIf="rutTouched && !validarRut(rut)" class="text-red-600 text-xs mt-1">RUT inválido. Ej: 12.345.678-9</div>
+          [ngClass]="{'border-red-500': registerForm.controls.rut.touched && registerForm.controls.rut.invalid, 'border-green-500': registerForm.controls.rut.touched && registerForm.controls.rut.valid}">
+        <span *ngIf="registerForm.controls.rut.touched && registerForm.controls.rut.valid" class="absolute right-3 top-9 text-green-600 material-icons text-lg">check_circle</span>
+        <div *ngIf="registerForm.controls.rut.touched && registerForm.controls.rut.errors?.['required']" class="text-red-600 text-xs mt-1">{{ rutErrors.required }}</div>
+        <div *ngIf="registerForm.controls.rut.touched && registerForm.controls.rut.errors?.['invalidRut']" class="text-red-600 text-xs mt-1">{{ rutErrors.invalidRut }}</div>
       </div>
+      
       <!-- Nombres -->
       <div class="relative">
         <label class="block text-sm font-medium text-gray-700 mb-1">Nombres</label>
-        <input type="text" name="nombres" [(ngModel)]="nombres" required
-          (input)="nombresTouched = true"
+        <input type="text" formControlName="nombres"
           class="w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
-          [ngClass]="{'border-red-500': nombresTouched && nombres.trim().length < 2, 'border-green-500': nombresTouched && nombres.trim().length >= 2}">
-        <span *ngIf="nombresTouched && nombres.trim().length >= 2" class="absolute right-3 top-9 text-green-600 material-icons text-lg">check_circle</span>
-        <div *ngIf="nombresTouched && nombres.trim().length < 2" class="text-red-600 text-xs mt-1">Ingrese su nombre.</div>
+          [ngClass]="{'border-red-500': registerForm.controls.nombres.touched && registerForm.controls.nombres.invalid, 'border-green-500': registerForm.controls.nombres.touched && registerForm.controls.nombres.valid}">
+        <span *ngIf="registerForm.controls.nombres.touched && registerForm.controls.nombres.valid" class="absolute right-3 top-9 text-green-600 material-icons text-lg">check_circle</span>
+        <div *ngIf="registerForm.controls.nombres.touched && registerForm.controls.nombres.errors?.['required']" class="text-red-600 text-xs mt-1">{{ nombresErrors.required }}</div>
       </div>
+      
       <!-- Apellido paterno -->
       <div class="relative">
         <label class="block text-sm font-medium text-gray-700 mb-1">Apellido paterno</label>
-        <input type="text" name="appaterno" [(ngModel)]="appaterno" required
-          (input)="appaternoTouched = true"
+        <input type="text" formControlName="appaterno"
           class="w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
-          [ngClass]="{'border-red-500': appaternoTouched && appaterno.trim().length < 2, 'border-green-500': appaternoTouched && appaterno.trim().length >= 2}">
-        <span *ngIf="appaternoTouched && appaterno.trim().length >= 2" class="absolute right-3 top-9 text-green-600 material-icons text-lg">check_circle</span>
-        <div *ngIf="appaternoTouched && appaterno.trim().length < 2" class="text-red-600 text-xs mt-1">Ingrese su apellido paterno.</div>
+          [ngClass]="{'border-red-500': registerForm.controls.appaterno.touched && registerForm.controls.appaterno.invalid, 'border-green-500': registerForm.controls.appaterno.touched && registerForm.controls.appaterno.valid}">
+        <span *ngIf="registerForm.controls.appaterno.touched && registerForm.controls.appaterno.valid" class="absolute right-3 top-9 text-green-600 material-icons text-lg">check_circle</span>
+        <div *ngIf="registerForm.controls.appaterno.touched && registerForm.controls.appaterno.errors?.['required']" class="text-red-600 text-xs mt-1">{{ appaternoErrors.required }}</div>
       </div>
+      
       <!-- Apellido materno -->
       <div class="relative">
         <label class="block text-sm font-medium text-gray-700 mb-1">Apellido materno</label>
-        <input type="text" name="apmaterno" [(ngModel)]="apmaterno" required
-          (input)="apmaternoTouched = true"
+        <input type="text" formControlName="apmaterno"
           class="w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
-          [ngClass]="{'border-red-500': apmaternoTouched && apmaterno.trim().length < 2, 'border-green-500': apmaternoTouched && apmaterno.trim().length >= 2}">
-        <span *ngIf="apmaternoTouched && apmaterno.trim().length >= 2" class="absolute right-3 top-9 text-green-600 material-icons text-lg">check_circle</span>
-        <div *ngIf="apmaternoTouched && apmaterno.trim().length < 2" class="text-red-600 text-xs mt-1">Ingrese su apellido materno.</div>
+          [ngClass]="{'border-red-500': registerForm.controls.apmaterno.touched && registerForm.controls.apmaterno.invalid, 'border-green-500': registerForm.controls.apmaterno.touched && registerForm.controls.apmaterno.valid}">
+        <span *ngIf="registerForm.controls.apmaterno.touched && registerForm.controls.apmaterno.valid" class="absolute right-3 top-9 text-green-600 material-icons text-lg">check_circle</span>
+        <div *ngIf="registerForm.controls.apmaterno.touched && registerForm.controls.apmaterno.errors?.['required']" class="text-red-600 text-xs mt-1">{{ apmaternoErrors.required }}</div>
       </div>
       
       <!-- Fecha de nacimiento -->
       <div class="relative">
-        <input type="date" name="fecha_nacimiento" [(ngModel)]="fecha_nacimiento" required
-          (change)="fechaNacimientoTouched = true; validarEdad()" 
+        <label class="block text-sm font-medium text-gray-700 mb-1">Fecha de nacimiento</label>
+        <input type="date" formControlName="fecha_nacimiento"
           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
-          [ngClass]="{'border-red-500': fechaNacimientoTouched && edadInvalida, 'border-green-500': fechaNacimientoTouched && !edadInvalida}">
-          <div *ngIf="fechaNacimientoTouched && edadInvalida" class="text-red-600 text-xs mt-1">
-              Debes tener al menos 18 años.
-          </div>
+          [ngClass]="{'border-red-500': registerForm.controls.fecha_nacimiento.touched && registerForm.controls.fecha_nacimiento.invalid, 'border-green-500': registerForm.controls.fecha_nacimiento.touched && registerForm.controls.fecha_nacimiento.valid}">
+        <div *ngIf="registerForm.controls.fecha_nacimiento.touched && registerForm.controls.fecha_nacimiento.errors?.['required']" class="text-red-600 text-xs mt-1">{{ fechaNacimientoErrors.required }}</div>
+        <div *ngIf="registerForm.controls.fecha_nacimiento.touched && registerForm.controls.fecha_nacimiento.errors?.['invalidDate']" class="text-red-600 text-xs mt-1">{{ fechaNacimientoErrors.invalidDate }}</div>
       </div>
         
       <!-- Botón para enviar el formulario de registro -->
-      <button type="submit" [disabled]="registerForm.invalid" 
+      <button type="submit" [disabled]="registerForm.invalid || loading" 
         class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition mt-2 
                hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed">
         Registrarse

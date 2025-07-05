@@ -56,7 +56,7 @@
           <th class="px-6 py-3 cursor-pointer" (click)="sortTable('nombres')">Nombre</th>
           <th class="px-6 py-3 cursor-pointer" (click)="sortTable('tipo')">Tipo</th>
           <th class="px-6 py-3 cursor-pointer" (click)="sortTable('fecha_creacion')">Fecha Creación</th>
-          <th class="px-6 py-3 cursor-pointer" (click)="sortTable('activo')">Estado</th>
+          <!-- <th class="px-6 py-3 cursor-pointer" (click)="sortTable('activo')">Estado</th> -->
           <th class="px-6 py-3 text-right">Acciones</th>
         </tr>
       </thead>
@@ -78,7 +78,7 @@
           <td class="px-6 py-4">{{ usuario.tipo }}</td>
           <td class="px-6 py-4 text-gray-500">{{ usuario.fecha_creacion | date:'dd/MM/yyyy' }}</td>
           <td class="px-6 py-4">
-            <span 
+            <!-- <span 
               [class.bg-green-100]="usuario.activo" 
               [class.text-green-800]="usuario.activo"
               [class.bg-red-100]="!usuario.activo"
@@ -86,15 +86,15 @@
               class="px-2 py-1 text-xs font-semibold rounded-full"
             >
               {{ usuario.activo ? 'Activo' : 'Inactivo' }}
-            </span>
+            </span> -->
           </td>
           <td class="px-6 py-4 text-right space-x-2">
-            <button (click)="verDetalles(usuario.id)" class="text-blue-600 hover:text-blue-900"><i class="fas fa-eye"></i></button>
-            <button (click)="editarUsuario(usuario.id)" class="text-yellow-600 hover:text-yellow-900"><i class="fas fa-edit"></i></button>
-            <button (click)="toggleActivo(usuario)" [class.text-gray-500]="!usuario.activo" [class.text-green-500]="usuario.activo">
+            <button (click)="verDetalles(usuario.id!)" class="text-blue-600 hover:text-blue-900"><i class="fas fa-eye"></i></button>
+            <button (click)="editarUsuario(usuario.id!)" class="text-yellow-600 hover:text-yellow-900"><i class="fas fa-edit"></i></button>
+            <!-- <button (click)="toggleActivo(usuario)" [class.text-gray-500]="!usuario.activo" [class.text-green-500]="usuario.activo">
               <i [class.fa-toggle-on]="usuario.activo" [class.fa-toggle-off]="!usuario.activo" class="fas"></i>
-            </button>
-            <button (click)="eliminarUsuario(usuario.id)" class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+            </button> -->
+            <button (click)="eliminarUsuario(usuario.id!)" class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
           </td>
         </tr>
       </tbody>
@@ -112,7 +112,7 @@
           <h3 class="text-base font-semibold text-gray-900">{{ usuario.nombres }} {{ usuario.appaterno }}</h3>
           <p class="text-sm text-gray-600">{{ usuario.email }}</p>
         </div>
-        <span 
+        <!-- <span 
           [ngClass]="{
             'bg-green-100 text-green-800': usuario.activo,
             'bg-red-100 text-red-800': !usuario.activo
@@ -120,7 +120,7 @@
           class="ml-auto px-2 py-1 text-xs font-semibold rounded-full"
         >
           {{ usuario.activo ? 'Activo' : 'Inactivo' }}
-        </span>
+        </span> -->
       </div>
 
       <div class="grid grid-cols-2 gap-2 text-sm">
@@ -131,12 +131,12 @@
       </div>
 
       <div class="flex justify-between text-xs font-medium mt-2">
-        <button (click)="verDetalles(usuario.id)" class="text-blue-600 hover:text-blue-800"><i class="fas fa-eye mr-1"></i>Ver</button>
-        <button (click)="editarUsuario(usuario.id)" class="text-yellow-600 hover:text-yellow-800"><i class="fas fa-edit mr-1"></i>Editar</button>
-        <button (click)="toggleActivo(usuario)" [class.text-gray-500]="!usuario.activo" [class.text-green-500]="usuario.activo">
+        <button (click)="verDetalles(usuario.id!)" class="text-blue-600 hover:text-blue-800"><i class="fas fa-eye mr-1"></i>Ver</button>
+        <button (click)="editarUsuario(usuario.id!)" class="text-yellow-600 hover:text-yellow-800"><i class="fas fa-edit mr-1"></i>Editar</button>
+        <!-- <button (click)="toggleActivo(usuario)" [class.text-gray-500]="!usuario.activo" [class.text-green-500]="usuario.activo">
           <i [class.fa-toggle-on]="usuario.activo" [class.fa-toggle-off]="!usuario.activo" class="fas mr-1"></i>{{ usuario.activo ? 'Desact.' : 'Activar' }}
-        </button>
-        <button (click)="eliminarUsuario(usuario.id)" class="text-red-600 hover:text-red-800"><i class="fas fa-trash mr-1"></i>Eliminar</button>
+        </button> -->
+        <button (click)="eliminarUsuario(usuario.id!)" class="text-red-600 hover:text-red-800"><i class="fas fa-trash mr-1"></i>Eliminar</button>
       </div>
     </div>
   </div>

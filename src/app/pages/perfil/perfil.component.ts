@@ -66,19 +66,19 @@ export class PerfilComponent implements OnInit {
 
   solicitarPropietario() {
     if (confirm('¿Estás seguro que deseas convertirte en propietario? Esto te permitirá agregar y administrar propiedades.')) {
-      this.usuario.tipo = 'Propietario';
+      this.usuario.tipo = 'propietario';
       this.svgLocales.setSesionUsuario(this.usuario);
     }
   }
 
   dejarDeSerPropietario() {
     if (confirm('¿Estás seguro que deseas dejar de ser propietario? Todas las propiedades asociadas a tu cuenta serán eliminadas del sistema.')) {
-      this.usuario.tipo = 'Usuario común';
+      this.usuario.tipo = 'cliente';
       this.svgLocales.setSesionUsuario(this.usuario);
       this.selectedTabIndex = 0;
       // Eliminar todas las propiedades del usuario
       this.locales.forEach(local => {
-        this.svgLocales.deleteLocal(local.id);
+        this.svgLocales.deleteLocal(local.id!);
       });
       this.locales = [];
     }

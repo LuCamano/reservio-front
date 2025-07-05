@@ -178,7 +178,7 @@
           <input type="number" formControlName="cant_horas" min="1" class="w-full border rounded-lg px-3 py-2 bg-gray-100" readonly>
         </div>
         <div class="text-right text-base font-semibold text-gray-700" *ngIf="local && reservaForm.get('cant_horas')?.value">
-          Total a pagar: <span class="text-indigo-700">${{ local.precioH * reservaForm.get('cant_horas')?.value }}</span>
+          Total a pagar: <span class="text-indigo-700">${{ local.precioH * reservaForm.get('cant_horas')?.value! }}</span>
         </div>
         <div class="text-sm text-blue-700 bg-blue-50 rounded-lg px-3 py-2 mb-2" *ngIf="local && reservaForm.get('cant_horas')?.value">
           <span class="font-semibold">Importante:</span> El 50% del costo de la reserva deberá ser pagado al inicio de la reserva y el otro 50% al finalizar el periodo de reserva.
