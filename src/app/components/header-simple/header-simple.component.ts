@@ -18,7 +18,7 @@ export class HeaderSimpleComponent implements OnInit {
 
   ngOnInit() {
     // Suscribirse al observable del usuario actual
-    this.authSvc.currentUser$.subscribe(user => {
+    this.authSvc.getCurrentUser().subscribe(user => {
       this.usuario = user;
     });
   }

@@ -1,11 +1,12 @@
 import { Component, inject, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Renderer2 } from '@angular/core';
 import { Local, Reserva, Usuario } from '../../../models/models.interface';
 import { ConnectionService } from '../../../services/connection.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { OpenStreetMapService } from '../../../services/open-street-map.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-local',
@@ -17,6 +18,11 @@ export class LocalComponent implements OnDestroy {
 
   // Inyectar el servicio OpenStreetMap
   private MapService = inject(OpenStreetMapService);
+  private renderer = inject(Renderer2);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private authSvc = inject(AuthService);
+  private connectionService = inject(ConnectionService);
 
   local: Local | null = null;
 
@@ -28,7 +34,12 @@ export class LocalComponent implements OnDestroy {
 
   mostrarModalReserva = false;
   mostrarAlerta = false;
-  reservaForm: FormGroup;
+  reservaForm = new FormGroup({
+    inicio: new FormControl('', [Validators.required]),
+    fin: new FormControl('', [Validators.required]),
+    cant_horas: new FormControl(1, [Validators.required, Validators.min(1)]),
+    descripcion: new FormControl('', [Validators.required])
+  });
 
   reservas: Reserva[] = [];
   reservaError: string = '';
@@ -42,20 +53,6 @@ export class LocalComponent implements OnDestroy {
   idUsuario: string = '';
   idReserva: string = '';
   usuario: Usuario | null = null;
-
-  constructor(
-    private fb: FormBuilder,
-    private renderer: Renderer2,
-    private route: ActivatedRoute,
-    private router: Router,
-    private connectionService: ConnectionService
-  ) {
-    this.reservaForm = this.fb.group({
-      inicio: ['', Validators.required],
-      fin: ['', Validators.required],
-      cant_horas: [1, [Validators.required, Validators.min(1)]]
-    });
-  }
 
   ngOnInit(): void {
     this.idLocal = this.route.snapshot.paramMap.get('id')!;
@@ -101,8 +98,8 @@ export class LocalComponent implements OnDestroy {
     this.reservaError = '';
     if (this.reservaForm.valid && this.local) {
       const form = this.reservaForm.value;
-      const inicio = new Date(form.inicio);
-      const fin = new Date(form.fin);
+      const inicio = new Date(form.inicio!);
+      const fin = new Date(form.fin!);
 
       if (fin <= inicio) {
         this.reservaError = 'La fecha de término debe ser posterior a la fecha de inicio.';
@@ -120,7 +117,7 @@ export class LocalComponent implements OnDestroy {
         id: crypto.randomUUID(),
         inicio,
         fin,
-        cant_horas: form.cant_horas,
+        cant_horas: form.cant_horas!,
         estado: 'pendiente',
         cliente: usuario,
         propiedad: this.local,
@@ -153,7 +150,7 @@ export class LocalComponent implements OnDestroy {
   }
 
   reservar() {
-    if (this.svLocal.haySesionActiva()) {
+    if (this.authSvc.isLoggedIn()) {
       this.mostrarModalReserva = true;
       this.renderer.addClass(document.body, 'overflow-hidden');
     } else {
