@@ -51,11 +51,11 @@ export class UsuariosAdmComponent {
       const matchesTipo = !this.selectedTipo || usuario.tipo === this.selectedTipo;
       
       let matchesEstado = true;
-      if (this.selectedEstado === 'Activo') {
-        matchesEstado = usuario.activo;
-      } else if (this.selectedEstado === 'Inactivo') {
-        matchesEstado = !usuario.activo;
-      }
+      // if (this.selectedEstado === 'Activo') {
+      //   matchesEstado = usuario.activo;
+      // } else if (this.selectedEstado === 'Inactivo') {
+      //   matchesEstado = !usuario.activo;
+      // }
       
       return matchesSearch && matchesTipo && matchesEstado;
     });
@@ -98,7 +98,7 @@ export class UsuariosAdmComponent {
   }
 
   toggleActivo(usuario: Usuario): void {
-    usuario.activo = !usuario.activo;
+    // usuario.activo = !usuario.activo;
     // Aquí deberías agregar la lógica para actualizar en tu backend
   }
 

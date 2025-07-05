@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { ConnectionService } from '../../../services/connection.service';
-import { Usuario } from '../../../models/models.interface';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -10,27 +10,32 @@ import { Usuario } from '../../../models/models.interface';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-  email: string = '';
-  password: string = '';
+  // Inyecciones
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  loginForm = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required, Validators.minLength(6)])
+  });
   error: string = '';
-
-  constructor(
-    private connectionService: ConnectionService,
-    private router: Router
-  ) {}
+  loading = false;
 
   onSubmit() {
-    // Aquí deberías validar el usuario contra tu backend o una lista local.
-    // Para ejemplo, creamos un usuario de prueba:
-    const usuarios: Usuario[] = this.connectionService.getUsuarios();
-    const usuario = usuarios.find(u => u.email === this.email && u.password === this.password);
-    if (usuario) {
-      // Si el usuario es encontrado, guardamos la sesión y redirigimos
-      this.connectionService.setSesionUsuario(usuario);
-      this.router.navigate(['/']);
-    } else {
-      // Si no se encuentra, mostramos un error
-      this.error = 'Email o contraseña incorrectos';
+    if (this.loginForm.valid) {
+      this.loading = true;
+      this.error = '';
+
+      const { email, password } = this.loginForm.value;
+      
+      this.authService.login(email!, password!).subscribe({
+        next: () => {
+          this.router.navigate(['/']);
+        },
+        error: err => {
+          this.error = 'Error de autenticación. Por favor, verifica tus credenciales.';
+          this.loading = false;
+        }
+      })
     }
   }
 }

@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { ConnectionService } from '../../services/connection.service';
+import { Component, inject, OnInit } from '@angular/core';
 import { Usuario } from '../../models/models.interface';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header-simple',
@@ -9,16 +9,22 @@ import { Router } from '@angular/router';
   templateUrl: './header-simple.component.html',
   styleUrl: './header-simple.component.scss'
 })
-export class HeaderSimpleComponent {
+export class HeaderSimpleComponent implements OnInit {
+  // Inyecciones
+  private authSvc = inject(AuthService);
+  private router = inject(Router);
   menuAbierto = false;
-  usuario?: Usuario;
+  usuario: Usuario | null = null;
 
-  constructor(private connectionService: ConnectionService, private router: Router) {
-    this.usuario = this.connectionService.getSesionUsuario();
+  ngOnInit() {
+    // Suscribirse al observable del usuario actual
+    this.authSvc.getCurrentUser().subscribe(user => {
+      this.usuario = user;
+    });
   }
 
   logout() {
-    this.connectionService.limpiarSesionUsuario();
+    this.authSvc.logout();
     this.router.navigate(['/login']);
   }
 }

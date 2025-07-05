@@ -1,16 +1,16 @@
 export interface Region {
-    id: string;
+    id?: string;
     nombre: string;
 }
 
 export interface Comuna {
-    id: string;
+    id?: string;
     nombre: string;
     regionId: string;
 }
 
 export interface Local {
-    id: string;
+    id?: string;
     nombre: string;
     region: string;
     comuna: string;
@@ -24,7 +24,7 @@ export interface Local {
 }
 
 export interface Usuario{
-    id: string;
+    id?: string;
     email: string;
     rut: string;
     nombres: string;
@@ -32,13 +32,12 @@ export interface Usuario{
     apmaterno: string;
     fecha_nacimiento: Date;
     password?: string; 
-    tipo: string;
-    fecha_creacion: Date;
-    activo: boolean;
+    tipo?: 'cliente' | 'propietario' | 'admin';
+    fecha_creacion?: Date;
 }
 
 export interface Reserva {
-    id: string;
+    id?: string;
     inicio: Date;
     fin: Date;
     cant_horas: number;
