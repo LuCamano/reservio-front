@@ -20,16 +20,19 @@
                 <i *ngIf="sortField !== 'nombre'" class="fas fa-sort ml-1 text-gray-300"></i>
               </div>
             </th>
-            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
-                (click)="sortTable('region')">
+            <!-- Esto ya no funciona y hay que cambiarlo -->
+            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer">
+                <!-- (click)="sortTable('region')"> -->
+                
               <div class="flex items-center">
                 <span>Región</span>
-                <i *ngIf="sortField === 'region'" class="fas ml-1" 
+                <!-- <i *ngIf="sortField === 'region'" class="fas ml-1" 
                    [class.fa-sort-up]="sortDirection === 'asc'"
                    [class.fa-sort-down]="sortDirection === 'desc'"></i>
-                <i *ngIf="sortField !== 'region'" class="fas fa-sort ml-1 text-gray-300"></i>
+                <i *ngIf="sortField !== 'region'" class="fas fa-sort ml-1 text-gray-300"></i> -->
               </div>
             </th>
+            <!-- Hasta aqui xd -->
             <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
                 (click)="sortTable('comuna')">
               <div class="flex items-center">
@@ -41,33 +44,33 @@
               </div>
             </th>
             <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
-                (click)="sortTable('precioH')">
+                (click)="sortTable('precio_hora')">
               <div class="flex items-center">
                 <span>Precio/Hora</span>
-                <i *ngIf="sortField === 'precioH'" class="fas ml-1" 
+                <i *ngIf="sortField === 'precio_hora'" class="fas ml-1" 
                    [class.fa-sort-up]="sortDirection === 'asc'"
                    [class.fa-sort-down]="sortDirection === 'desc'"></i>
-                <i *ngIf="sortField !== 'precioH'" class="fas fa-sort ml-1 text-gray-300"></i>
+                <i *ngIf="sortField !== 'precio_hora'" class="fas fa-sort ml-1 text-gray-300"></i>
               </div>
             </th>
             <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
-                (click)="sortTable('disponible')">
+                (click)="sortTable('activo')">
               <div class="flex items-center">
-                <span>Disponible</span>
-                <i *ngIf="sortField === 'disponible'" class="fas ml-1" 
+                <span>Activo</span>
+                <i *ngIf="sortField === 'activo'" class="fas ml-1" 
                    [class.fa-sort-up]="sortDirection === 'asc'"
                    [class.fa-sort-down]="sortDirection === 'desc'"></i>
-                <i *ngIf="sortField !== 'disponible'" class="fas fa-sort ml-1 text-gray-300"></i>
+                <i *ngIf="sortField !== 'activo'" class="fas fa-sort ml-1 text-gray-300"></i>
               </div>
             </th>
             <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
-                (click)="sortTable('usuario')">
+                (click)="sortTable('propietarios')">
               <div class="flex items-center">
                 <span>Propietario</span>
-                <i *ngIf="sortField === 'usuario'" class="fas ml-1" 
+                <i *ngIf="sortField === 'propietarios'" class="fas ml-1" 
                    [class.fa-sort-up]="sortDirection === 'asc'"
                    [class.fa-sort-down]="sortDirection === 'desc'"></i>
-                <i *ngIf="sortField !== 'usuario'" class="fas fa-sort ml-1 text-gray-300"></i>
+                <i *ngIf="sortField !== 'propietarios'" class="fas fa-sort ml-1 text-gray-300"></i>
               </div>
             </th>
             <th scope="col" class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -86,36 +89,36 @@
               </div>
             </td>
             <td class="px-4 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900">{{ local.region }}</div>
+              <div class="text-sm text-gray-900">{{ local.comuna?.region_id }}</div>
             </td>
             <td class="px-4 py-4 whitespace-nowrap">
               <div class="text-sm text-gray-900">{{ local.comuna }}</div>
             </td>
             <td class="px-4 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900">${{ local.precioH | number }}</div>
+              <div class="text-sm text-gray-900">${{ local.precio_hora | number }}</div>
             </td>
             <td class="px-4 py-4 whitespace-nowrap">
               <span 
-                [class.bg-green-100]="local.disponible" 
-                [class.text-green-800]="local.disponible"
-                [class.bg-red-100]="!local.disponible"
-                [class.text-red-800]="!local.disponible"
+                [class.bg-green-100]="local.activo" 
+                [class.text-green-800]="local.activo"
+                [class.bg-red-100]="!local.activo"
+                [class.text-red-800]="!local.activo"
                 class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full"
               >
-                {{ local.disponible ? 'Disponible' : 'No Disponible' }}
+                {{ local.activo ? 'Activo' : 'Inactivo' }}
               </span>
             </td>
             <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
-              {{ local.usuario || 'Sin propietario' }}
+              {{ local.propietarios || 'Sin propietario' }}
             </td>
             <td class="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
               <button 
                 (click)="toggleDisponibilidad(local)"
-                [class.bg-gray-500]="!local.disponible"
-                [class.bg-green-500]="local.disponible"
+                [class.bg-gray-500]="!local.activo"
+                [class.bg-green-500]="local.activo"
                 class="text-white px-3 py-1 rounded-md text-xs mr-2"
               >
-                {{ local.disponible ? 'Desactivar' : 'Activar' }}
+                {{ local.activo ? 'Desactivar' : 'Activar' }}
               </button>
               <button 
                 (click)="eliminarLocal(local.id!)"
@@ -137,38 +140,38 @@
         <div class="flex justify-between items-start">
           <div>
             <h3 class="text-lg font-semibold text-gray-900">{{ local.nombre }}</h3>
-            <p class="text-sm text-gray-600 mt-1">{{ local.region }}, {{ local.comuna }}</p>
+            <p class="text-sm text-gray-600 mt-1">{{ local.comuna?.region_id }}, {{ local.comuna }}</p>
           </div>
           <span 
-            [class.bg-green-100]="local.disponible" 
-            [class.text-green-800]="local.disponible"
-            [class.bg-red-100]="!local.disponible"
-            [class.text-red-800]="!local.disponible"
+            [class.bg-green-100]="local.activo" 
+            [class.text-green-800]="local.activo"
+            [class.bg-red-100]="!local.activo"
+            [class.text-red-800]="!local.activo"
             class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full"
           >
-            {{ local.disponible ? 'Disponible' : 'No Disponible' }}
+            {{ local.activo ? 'Activo' : 'Inactivo' }}
           </span>
         </div>
         
         <div class="mt-4 grid grid-cols-2 gap-3">
           <div>
             <p class="text-sm text-gray-500">Precio/Hora</p>
-            <p class="font-medium">${{ local.precioH | number }}</p>
+            <p class="font-medium">${{ local.precio_hora | number }}</p>
           </div>
           <div>
             <p class="text-sm text-gray-500">Propietario</p>
-            <p class="font-medium">{{ local.usuario || 'Sin propietario' }}</p>
+            <p class="font-medium">{{ local.propietarios || 'Sin propietario' }}</p>
           </div>
         </div>
         
         <div class="mt-4 flex justify-between">
           <button 
             (click)="toggleDisponibilidad(local)"
-            [class.bg-gray-500]="!local.disponible"
-            [class.bg-green-500]="local.disponible"
+            [class.bg-gray-500]="!local.activo"
+            [class.bg-green-500]="local.activo"
             class="text-white px-3 py-2 rounded-md text-xs w-full mr-2"
           >
-            {{ local.disponible ? 'Desactivar' : 'Activar' }}
+            {{ local.activo ? 'Desactivar' : 'Activar' }}
           </button>
           <button 
             (click)="eliminarLocal(local.id!)"

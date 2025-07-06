@@ -52,22 +52,22 @@ export class LocalesComponent implements OnInit {
     
     this.localesFiltrados = this.locales.filter(local => {
       // Filtrar por precio
-      if (filtros.precioMax && local.precioH > filtros.precioMax) {
+      if (filtros.precioMax && local.precio_hora > filtros.precioMax) {
         return false;
       }
       
       // Filtrar por capacidad
-      if (filtros.capacidadMin && local.capacidad < filtros.capacidadMin) {
+      if (filtros.capacidadMin && local.capacidad! < filtros.capacidadMin) {
         return false;
       }
       
       // Filtrar por región
-      if (filtros.region && local.region !== this.getRegionNombre(filtros.region)) {
+      if (filtros.region && local.comuna?.region_id !== this.getRegionNombre(filtros.region)) { //Hay que arreglar esto
         return false;
       }
       
       // Filtrar por comuna
-      if (filtros.comuna && local.comuna !== this.getComunaNombre(filtros.comuna)) {
+      if (filtros.comuna && local.comuna?.nombre !== this.getComunaNombre(filtros.comuna)) {
         return false;
       }
       
@@ -86,9 +86,9 @@ export class LocalesComponent implements OnInit {
   }
   
   actualizarComunas(): void {
-    const regionId = this.filtrosForm.get('region')?.value;
-    if (regionId) {
-      this.comunasFiltradas = this.comunas.filter(c => c.regionId === regionId);
+    const region_id = this.filtrosForm.get('region')?.value;
+    if (region_id) {
+      this.comunasFiltradas = this.comunas.filter(c => c.region_id === region_id);
     } else {
       this.comunasFiltradas = [...this.comunas];
     }
@@ -98,10 +98,10 @@ export class LocalesComponent implements OnInit {
   ordenarLocales() {
     switch (this.ordenarPor) {
       case 'precioAsc':
-        this.localesFiltrados.sort((a, b) => a.precioH - b.precioH);
+        this.localesFiltrados.sort((a, b) => a.precio_hora - b.precio_hora);
         break;
       case 'precioDesc':
-        this.localesFiltrados.sort((a, b) => b.precioH - a.precioH);
+        this.localesFiltrados.sort((a, b) => b.precio_hora - a.precio_hora);
         break;
     }
   }
@@ -110,8 +110,8 @@ export class LocalesComponent implements OnInit {
     return new Date().toISOString().split('T')[0];
   }
   
-  private getRegionNombre(regionId: string): string {
-    const region = this.regiones.find(r => r.id === regionId);
+  private getRegionNombre(region_id: string): string {
+    const region = this.regiones.find(r => r.id === region_id);
     return region ? region.nombre : '';
   }
   
@@ -131,16 +131,16 @@ export class LocalesComponent implements OnInit {
     // Datos de las comunas
     this.comunas = [
       // Región Metropolitana
-      { id: 'santiago', nombre: 'Santiago', regionId: 'rm' },
+      { id: 'santiago', nombre: 'Santiago', region_id: 'rm' },
       
       // Valparaíso
-      { id: 'valparaiso', nombre: 'Valparaíso', regionId: 'v' },
+      { id: 'valparaiso', nombre: 'Valparaíso', region_id: 'v' },
       
 
       // Biobío
-      { id: 'concepcion', nombre: 'Concepción', regionId: 'b' },
-      { id: 'talcahuano', nombre: 'Talcahuano', regionId: 'b' },
-      { id:'tome' , nombre: 'Tomé', regionId: 'b' }
+      { id: 'concepcion', nombre: 'Concepción', region_id: 'b' },
+      { id: 'talcahuano', nombre: 'Talcahuano', region_id: 'b' },
+      { id:'tome' , nombre: 'Tomé', region_id: 'b' }
     ];
     
     // Datos de los locales

@@ -60,7 +60,7 @@ export class LocalesAdmComponent implements OnInit {
   }
 
   toggleDisponibilidad(local: Local): void {
-    local.disponible = !local.disponible;
+    local.activo = !local.activo;
   }
 
   eliminarLocal(id: string): void {

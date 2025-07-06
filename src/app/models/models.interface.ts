@@ -6,21 +6,37 @@ export interface Region {
 export interface Comuna {
     id?: string;
     nombre: string;
-    regionId: string;
+    region_id: string;
 }
 
 export interface Local {
     id?: string;
-    nombre: string;
-    region: string;
-    comuna: string;
-    capacidad: number;
+    nombre?: string;
     descripcion: string;
-    precioH: number;
-    direccion?: string;
-    disponible: boolean;
-    imagenUrl: string;
-    usuario?: string; // Propietario
+    direccion: string;
+    tipo: string;
+    cod_postal: string;
+    capacidad?: number;
+    precio_hora: number;
+    hora_apertura?: string;
+    hora_cierre?: string;
+    comuna_id: string;
+    validada: boolean;
+    activo: boolean;
+    imagenes?: string[];
+    documentos?: string[];
+    comuna?: Comuna;
+    propietarios?: Usuario[];
+    valoraciones?: Valoracion[];
+}
+
+export interface Valoracion {
+    id?: string;
+    fecha: string;
+    puntaje: number;
+    comentario?: string;
+    cliente_id?: string;
+    propiedad_id?: string;
 }
 
 export interface Usuario{
@@ -34,6 +50,15 @@ export interface Usuario{
     password?: string; 
     tipo?: 'cliente' | 'propietario' | 'admin';
     fecha_creacion?: Date;
+}
+
+export interface BloqueoUsuario {
+    id?: string;
+    motivo: string;
+    fecha_bloqueo: Date;
+    fecha_desbloqueo: Date;
+    usuario_id: string;
+    administrador_id: string;
 }
 
 export interface Reserva {
