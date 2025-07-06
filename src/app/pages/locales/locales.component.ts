@@ -62,7 +62,7 @@ export class LocalesComponent implements OnInit {
       }
       
       // Filtrar por región
-      if (filtros.region && local.comuna?.regionId !== this.getRegionNombre(filtros.region)) { //Hay que arreglar esto
+      if (filtros.region && local.comuna?.region_id !== this.getRegionNombre(filtros.region)) { //Hay que arreglar esto
         return false;
       }
       
@@ -86,9 +86,9 @@ export class LocalesComponent implements OnInit {
   }
   
   actualizarComunas(): void {
-    const regionId = this.filtrosForm.get('region')?.value;
-    if (regionId) {
-      this.comunasFiltradas = this.comunas.filter(c => c.regionId === regionId);
+    const region_id = this.filtrosForm.get('region')?.value;
+    if (region_id) {
+      this.comunasFiltradas = this.comunas.filter(c => c.region_id === region_id);
     } else {
       this.comunasFiltradas = [...this.comunas];
     }
@@ -110,8 +110,8 @@ export class LocalesComponent implements OnInit {
     return new Date().toISOString().split('T')[0];
   }
   
-  private getRegionNombre(regionId: string): string {
-    const region = this.regiones.find(r => r.id === regionId);
+  private getRegionNombre(region_id: string): string {
+    const region = this.regiones.find(r => r.id === region_id);
     return region ? region.nombre : '';
   }
   
@@ -131,16 +131,16 @@ export class LocalesComponent implements OnInit {
     // Datos de las comunas
     this.comunas = [
       // Región Metropolitana
-      { id: 'santiago', nombre: 'Santiago', regionId: 'rm' },
+      { id: 'santiago', nombre: 'Santiago', region_id: 'rm' },
       
       // Valparaíso
-      { id: 'valparaiso', nombre: 'Valparaíso', regionId: 'v' },
+      { id: 'valparaiso', nombre: 'Valparaíso', region_id: 'v' },
       
 
       // Biobío
-      { id: 'concepcion', nombre: 'Concepción', regionId: 'b' },
-      { id: 'talcahuano', nombre: 'Talcahuano', regionId: 'b' },
-      { id:'tome' , nombre: 'Tomé', regionId: 'b' }
+      { id: 'concepcion', nombre: 'Concepción', region_id: 'b' },
+      { id: 'talcahuano', nombre: 'Talcahuano', region_id: 'b' },
+      { id:'tome' , nombre: 'Tomé', region_id: 'b' }
     ];
     
     // Datos de los locales

@@ -6,7 +6,7 @@ export interface Region {
 export interface Comuna {
     id?: string;
     nombre: string;
-    regionId: string;
+    region_id: string;
 }
 
 export interface Local {
@@ -21,6 +21,7 @@ export interface Local {
     hora_apertura?: string;
     hora_cierre?: string;
     comuna_id: string;
+    validada: boolean;
     activo: boolean;
     imagenes?: string[];
     documentos?: string[];
@@ -29,7 +30,7 @@ export interface Local {
     valoraciones?: Valoracion[];
 }
 
-interface Valoracion {
+export interface Valoracion {
     id?: string;
     fecha: string;
     puntaje: number;
@@ -49,6 +50,15 @@ export interface Usuario{
     password?: string; 
     tipo?: 'cliente' | 'propietario' | 'admin';
     fecha_creacion?: Date;
+}
+
+export interface BloqueoUsuario {
+    id?: string;
+    motivo: string;
+    fecha_bloqueo: Date;
+    fecha_desbloqueo: Date;
+    usuario_id: string;
+    administrador_id: string;
 }
 
 export interface Reserva {

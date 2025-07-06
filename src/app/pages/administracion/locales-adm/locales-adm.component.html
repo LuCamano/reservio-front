@@ -89,7 +89,7 @@
               </div>
             </td>
             <td class="px-4 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900">{{ local.comuna?.regionId }}</div>
+              <div class="text-sm text-gray-900">{{ local.comuna?.region_id }}</div>
             </td>
             <td class="px-4 py-4 whitespace-nowrap">
               <div class="text-sm text-gray-900">{{ local.comuna }}</div>
@@ -140,7 +140,7 @@
         <div class="flex justify-between items-start">
           <div>
             <h3 class="text-lg font-semibold text-gray-900">{{ local.nombre }}</h3>
-            <p class="text-sm text-gray-600 mt-1">{{ local.comuna?.regionId }}, {{ local.comuna }}</p>
+            <p class="text-sm text-gray-600 mt-1">{{ local.comuna?.region_id }}, {{ local.comuna }}</p>
           </div>
           <span 
             [class.bg-green-100]="local.activo" 
