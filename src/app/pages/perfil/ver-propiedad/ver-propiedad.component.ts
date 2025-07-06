@@ -10,7 +10,7 @@ import { ConnectionService } from '../../../services/connection.service';
   styleUrl: './ver-propiedad.component.scss'
 })
 export class VerPropiedadComponent {
-   local: Local | undefined;
+  local!: Local;
 
   constructor(
     private route: ActivatedRoute,
@@ -25,6 +25,12 @@ export class VerPropiedadComponent {
   }
 
   obtenerLocal(id: string): void {
-    this.local = this.localService.getLocalById(id);
+    let local = this.localService.getLocalById(id);
+    if (local) {
+      this.local = local;
+    } else {
+      console.error('Local no encontrado');
+      // Aquí podrías redirigir a una página de error o mostrar un mensaje
+    }
   }
 }
