@@ -24,7 +24,7 @@ export class LocalComponent implements OnDestroy {
   private authSvc = inject(AuthService);
   private connectionService = inject(ConnectionService);
 
-  local: Local | null = null;
+  local!: Local;
 
   idLocal!: string;
   svLocal = inject(ConnectionService);
@@ -60,7 +60,7 @@ export class LocalComponent implements OnDestroy {
   }
 
   buscarCoordenadas() {
-    this.direccioncompleta = this.local?.direccion + ', ' + this.local?.comuna + ', ' + this.local?.region + ', chile';
+    this.direccioncompleta = this.local?.direccion + ', ' + this.local?.comuna + ', chile';
     this.MapService.getCoordinates(this.direccioncompleta)
       .subscribe({
         next: (coords) => {
@@ -145,7 +145,8 @@ export class LocalComponent implements OnDestroy {
       this.local = local;
       this.buscarCoordenadas();
     } else {
-      this.local = null;
+      console.error('No se encontró el local con ID:', id);
+      this.router.navigate(['/locales']);
     }
   }
 

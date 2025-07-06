@@ -52,22 +52,22 @@ export class LocalesComponent implements OnInit {
     
     this.localesFiltrados = this.locales.filter(local => {
       // Filtrar por precio
-      if (filtros.precioMax && local.precioH > filtros.precioMax) {
+      if (filtros.precioMax && local.precio_hora > filtros.precioMax) {
         return false;
       }
       
       // Filtrar por capacidad
-      if (filtros.capacidadMin && local.capacidad < filtros.capacidadMin) {
+      if (filtros.capacidadMin && local.capacidad! < filtros.capacidadMin) {
         return false;
       }
       
       // Filtrar por región
-      if (filtros.region && local.region !== this.getRegionNombre(filtros.region)) {
+      if (filtros.region && local.comuna?.regionId !== this.getRegionNombre(filtros.region)) { //Hay que arreglar esto
         return false;
       }
       
       // Filtrar por comuna
-      if (filtros.comuna && local.comuna !== this.getComunaNombre(filtros.comuna)) {
+      if (filtros.comuna && local.comuna?.nombre !== this.getComunaNombre(filtros.comuna)) {
         return false;
       }
       
@@ -98,10 +98,10 @@ export class LocalesComponent implements OnInit {
   ordenarLocales() {
     switch (this.ordenarPor) {
       case 'precioAsc':
-        this.localesFiltrados.sort((a, b) => a.precioH - b.precioH);
+        this.localesFiltrados.sort((a, b) => a.precio_hora - b.precio_hora);
         break;
       case 'precioDesc':
-        this.localesFiltrados.sort((a, b) => b.precioH - a.precioH);
+        this.localesFiltrados.sort((a, b) => b.precio_hora - a.precio_hora);
         break;
     }
   }

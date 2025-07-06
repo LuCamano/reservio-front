@@ -11,16 +11,31 @@ export interface Comuna {
 
 export interface Local {
     id?: string;
-    nombre: string;
-    region: string;
-    comuna: string;
-    capacidad: number;
+    nombre?: string;
     descripcion: string;
-    precioH: number;
-    direccion?: string;
-    disponible: boolean;
-    imagenUrl: string;
-    usuario?: string; // Propietario
+    direccion: string;
+    tipo: string;
+    cod_postal: string;
+    capacidad?: number;
+    precio_hora: number;
+    hora_apertura?: string;
+    hora_cierre?: string;
+    comuna_id: string;
+    activo: boolean;
+    imagenes?: string[];
+    documentos?: string[];
+    comuna?: Comuna;
+    propietarios?: Usuario[];
+    valoraciones?: Valoracion[];
+}
+
+interface Valoracion {
+    id?: string;
+    fecha: string;
+    puntaje: number;
+    comentario?: string;
+    cliente_id?: string;
+    propiedad_id?: string;
 }
 
 export interface Usuario{

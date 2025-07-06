@@ -24,8 +24,8 @@ export class PerfilComponent implements OnInit {
 
   ngOnInit(): void {
     this.usuario = this.svgLocales.getSesionUsuario()!;
-    this.getDatos();
-    this.cargarReservas();
+    // this.getDatos();
+    // this.cargarReservas();
   }
 
   onTabChange(index: number) {
@@ -36,27 +36,27 @@ export class PerfilComponent implements OnInit {
     this.historialTabIndex = index;
   }
 
-  getDatos(){
-    try {
-      this.locales = this.svgLocales.getLocales().filter(local => {
-        return local.usuario === this.usuario.email;
-      });
-    } catch (error) {
-      console.error('Error al obtener los datos de los locales:', error);
-    }
-  }
+  // getDatos(){
+  //   try {
+  //     this.locales = this.svgLocales.getLocales().filter(local => {
+  //       return local.usuario === this.usuario.email;
+  //     });
+  //   } catch (error) {
+  //     console.error('Error al obtener los datos de los locales:', error);
+  //   }
+  // }
 
-  cargarReservas() {
-    const reservas: Reserva[] = JSON.parse(localStorage.getItem('reservas') || '[]');
-    // Reservas recibidas: propiedades donde el usuario es propietario
-    this.reservasRecibidas = reservas.filter(r =>
-      r.propiedad?.usuario === this.usuario.email
-    );
-    // Reservas realizadas: donde el usuario es el cliente
-    this.reservasRealizadas = reservas.filter(r =>
-      r.cliente?.email === this.usuario.email
-    );
-  }
+  // cargarReservas() {
+  //   const reservas: Reserva[] = JSON.parse(localStorage.getItem('reservas') || '[]');
+  //   // Reservas recibidas: propiedades donde el usuario es propietario
+  //   this.reservasRecibidas = reservas.filter(r =>
+  //     r.propiedad?.usuario === this.usuario.email
+  //   );
+  //   // Reservas realizadas: donde el usuario es el cliente
+  //   this.reservasRealizadas = reservas.filter(r =>
+  //     r.cliente?.email === this.usuario.email
+  //   );
+  // }
 
   preferencias = {
     modoOscuro: false,

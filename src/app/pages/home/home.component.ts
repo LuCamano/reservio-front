@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { map, Observable, startWith } from 'rxjs';
 import { ConnectionService } from '../../services/connection.service';
 import { Local } from '../../models/models.interface';
+import { ApiService } from '../../services/api.service';
 
 
 export interface Ciudad {
@@ -16,6 +15,10 @@ export interface Ciudad {
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit, OnDestroy {
+  // Inyecciones
+  private svgLocales = inject(ConnectionService);
+  private apiService = inject(ApiService);
+
   heroImages = [
     'assets/homeassets/hero/conciertopequeno.jpg',
     'assets/homeassets/hero/juntaempresa.jpg',
@@ -53,8 +56,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     clearInterval(this.intervalId);
   }
-
-  svgLocales = inject(ConnectionService);
 
   async getDatos(){
     try {
