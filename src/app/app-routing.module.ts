@@ -32,6 +32,16 @@ const routes: Routes = [
     loadChildren: () => import("./pages/pago/pago.module").then(m => m.PagoModule),
     canActivate: [authGuard]
   },
+  {
+    path: 'pagoExitoso',
+    loadChildren: () => import("./pages/pago-exitoso/pago-exitoso.module").then(m => m.PagoExitosoModule),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'pagoErroneo',
+    loadChildren: () => import("./pages/pago-erroneo/pago-erroneo.module").then(m => m.PagoErroneoModule),
+    canActivate: [authGuard]
+  },
 
 ];
 
