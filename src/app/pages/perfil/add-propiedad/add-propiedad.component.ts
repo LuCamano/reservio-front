@@ -1,8 +1,9 @@
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Local } from '../../../models/models.interface';
+import { Comuna, Local, Region } from '../../../models/models.interface';
 import { ConnectionService } from '../../../services/connection.service';
 import { Router } from '@angular/router';
+import { ApiService } from '../../../services/api.service';
 
 @Component({
   selector: 'app-add-propiedad',
@@ -10,16 +11,14 @@ import { Router } from '@angular/router';
   templateUrl: './add-propiedad.component.html',
   styleUrl: './add-propiedad.component.scss'
 })
-export class AddPropiedadComponent {
+export class AddPropiedadComponent implements OnInit {
 
-  svLocal = inject(ConnectionService);
-  regiones: string[] = ['Región Metropolitana', 'Valparaíso', 'Biobío'];
-  comunas: { [key: string]: string[] } = {
-    'Región Metropolitana': ['Santiago', 'Providencia', 'Maipú'],
-    'Valparaíso': ['Valparaíso', 'Viña del Mar'],
-    'Biobío': ['Concepción', 'Talcahuano']
-  };
-  comunasFiltradas: string[] = [];
+  private svLocal = inject(ConnectionService);
+  private apiSv = inject(ApiService); // Asumiendo que ConnectionService tiene métodos para manejar las regiones y comunas
+  regiones: Region[] = [];
+  comunas: Comuna[] = [];
+
+  comunasFiltradas: Comuna[] = [];
 
   localForm: FormGroup = new FormGroup({
     nombre: new FormControl('', [Validators.required]),
@@ -36,11 +35,34 @@ export class AddPropiedadComponent {
   constructor(private router: Router, private connectionService: ConnectionService) { }
 
   ngOnInit(): void {
+    this.cargarDatos();
     // Filtrar comunas cuando cambia la región
-    this.localForm.get('region')?.valueChanges.subscribe(region => {
-      this.comunasFiltradas = this.comunas[region] || [];
+    /* this.localForm.get('region')?.valueChanges.subscribe(region => {
+      const comunasEnRegion = this.comunas.filter(comuna => comuna.region_id === region.id);
+      this.comunasFiltradas = comunasEnRegion.map(comuna => comuna.nombre);
       this.localForm.get('comuna')?.setValue('');
+    }); */
+  }
+
+  filtrarComunas() {
+    const regionId = this.localForm.get('region')?.value;
+    this.comunasFiltradas = this.comunas.filter(comuna => comuna.region_id === regionId);
+    this.localForm.get('comuna')?.setValue('');
+  }
+
+  cargarDatos(){
+    // Cargar datos de regiones y comunas desde el servicio 
+    this.apiSv.getRegiones().then(r => {
+      this.regiones = r;
+      console.log('Regiones cargadas:', this.regiones);
+    })
+    .catch((error) => {
+      console.error('Error al cargar las regiones:', error);
     });
+    this.apiSv.getComunas().then(c => {
+      this.comunas = c;
+      console.log('Comunas cargadas:', this.comunas);
+    })
   }
 
   onSubmit(): void {

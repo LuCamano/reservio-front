@@ -9,12 +9,15 @@
                 <label class="block text-sm font-medium text-gray-700">Nombre</label>
                 <input type="text" formControlName="nombre" class="w-full border border-gray-300 p-2 rounded-lg" />
             </div>
-
+            <p>regiones</p>
+            <div *ngFor="let r of regiones" >
+                <p class="text-gray-600">{{ r.nombre }}</p>
+            </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700">Región</label>
                 <select formControlName="region" class="w-full border border-gray-300 p-2 rounded-lg">
                     <option value="">Seleccione Región</option>
-                    <option *ngFor="let reg of regiones" [value]="reg">{{ reg }}</option>
+                    <option *ngFor="let reg of regiones" [value]="reg.id">{{ reg.nombre }}</option>
                 </select>
             </div>
 
@@ -22,7 +25,7 @@
                 <label class="block text-sm font-medium text-gray-700">Comuna</label>
                 <select formControlName="comuna" class="w-full border border-gray-300 p-2 rounded-lg">
                     <option value="">Seleccione Comuna</option>
-                    <option *ngFor="let com of comunasFiltradas" [value]="com">{{ com }}</option>
+                    <option *ngFor="let com of comunasFiltradas" [value]="com.id">{{ com.nombre }}</option>
                 </select>
             </div>
 
