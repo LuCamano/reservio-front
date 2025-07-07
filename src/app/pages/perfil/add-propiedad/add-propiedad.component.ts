@@ -37,17 +37,11 @@ export class AddPropiedadComponent implements OnInit {
   ngOnInit(): void {
     this.cargarDatos();
     // Filtrar comunas cuando cambia la región
-    /* this.localForm.get('region')?.valueChanges.subscribe(region => {
-      const comunasEnRegion = this.comunas.filter(comuna => comuna.region_id === region.id);
-      this.comunasFiltradas = comunasEnRegion.map(comuna => comuna.nombre);
+    this.localForm.get('region')?.valueChanges.subscribe(regionId => {
+      const comunasEnRegion = this.comunas.filter(comuna => comuna.region_id === regionId);
+      this.comunasFiltradas = comunasEnRegion;
       this.localForm.get('comuna')?.setValue('');
-    }); */
-  }
-
-  filtrarComunas() {
-    const regionId = this.localForm.get('region')?.value;
-    this.comunasFiltradas = this.comunas.filter(comuna => comuna.region_id === regionId);
-    this.localForm.get('comuna')?.setValue('');
+    });
   }
 
   cargarDatos(){
@@ -65,26 +59,38 @@ export class AddPropiedadComponent implements OnInit {
     })
   }
 
-  onSubmit(): void {
-    if (this.localForm.valid) {
-      // Obtener usuario actual
-      const usuarioActual = this.connectionService.getSesionUsuario();
-      if (!usuarioActual) {
-        // Redirigir al usuario a la página de inicio de sesión si no hay sesión activa
-        alert('Debe iniciar sesión para agregar una propiedad.');
-        this.router.navigate(['/login']);
-        return;
-      }
-
-      const emailUsuario = usuarioActual.email;
-      const nuevoLocal: Local = {
-        id: crypto.randomUUID(),
-        ...this.localForm.value,
-        usuario: emailUsuario // Guardar el email del propietario
-      };
-      this.svLocal.addLocal(nuevoLocal);
-      this.router.navigate(['/perfil']);
+  crearPropiedad(): void {
+    if (this.localForm.invalid) {
+      this.localForm.markAllAsTouched();
+      return;
     }
+
+    const formValue = this.localForm.value;
+
+    const nuevaPropiedad: Local = {
+      nombre: formValue.nombre,
+      descripcion: formValue.descripcion,
+      direccion: formValue.direccion,
+      tipo: 'local', // o el tipo que corresponda según tu lógica
+      cod_postal: '', // puedes agregar un campo en el formulario si lo necesitas
+      capacidad: formValue.capacidad,
+      precio_hora: formValue.precioH,
+      comuna_id: formValue.comuna,
+      validada: true,
+      activo: true,
+      imagenes: [formValue.imagenUrl]
+    };
+
+    this.apiSv.createLocal(nuevaPropiedad)
+      .then(() => {
+        alert('Propiedad creada exitosamente');
+        this.localForm.reset();
+        this.router.navigate(['/perfil']); // Redirige al perfil o donde prefieras
+      })
+      .catch(error => {
+        console.error('Error al crear la propiedad:', error);
+        alert('Hubo un error al crear la propiedad');
+      });
   }
 
   onCancel() {
