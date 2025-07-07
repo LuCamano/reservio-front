@@ -58,7 +58,7 @@
 
             <div class="col-span-2">
                 <label class="block text-sm font-medium text-gray-700">Imagen</label>
-                <app-image-uploader></app-image-uploader> <!-- Componente de carga de imágenes -->
+                <app-image-uploader (imagesChange)="onImagesChange($event)"></app-image-uploader> <!-- Componente de carga de imágenes -->
             </div>
 
             <!-- NUEVO: Campo Descripción -->
@@ -75,7 +75,7 @@
                 Cancelar
             </button>
             
-            <button type="submit" [disabled]="localForm.invalid"
+            <button type="submit"
                 class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow-md">
                 Guardar Propiedad
             </button>

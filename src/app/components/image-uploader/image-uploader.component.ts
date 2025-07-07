@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 
 interface UploadedImage {
   file: File;
@@ -19,7 +19,8 @@ export class ImageUploaderComponent {
 
   // Manejo de imágenes
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
-
+  @Output() imagesChange = new EventEmitter<string[]>(); // Puedes emitir dataUrl o archivos según tu necesidad
+  
   images: UploadedImage[] = [];
   category: string = 'general';
   imageName: string = '';
@@ -68,7 +69,7 @@ export class ImageUploaderComponent {
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       if (!file.type.match('image.*')) continue;
-      
+
       const reader = new FileReader();
       reader.onload = (e: ProgressEvent<FileReader>) => {
         if (e.target?.result) {
@@ -80,6 +81,8 @@ export class ImageUploaderComponent {
             category: this.category,
             customName: this.imageName || file.name
           });
+          // Emitir las imágenes actualizadas
+          this.imagesChange.emit(this.images.map(img => img.dataUrl));
         }
       };
       reader.readAsDataURL(file);
@@ -98,13 +101,14 @@ export class ImageUploaderComponent {
   // Elimina una imagen específica
   removeImage(index: number) {
     this.images.splice(index, 1);
+    this.imagesChange.emit(this.images.map(img => img.dataUrl));
   }
 
-  // Elimina todas las imágenes
   removeAllImages() {
     if (this.images.length === 0) return;
     if (confirm('¿Estás seguro de que quieres eliminar todas las imágenes?')) {
       this.images = [];
+      this.imagesChange.emit([]);
     }
   }
 

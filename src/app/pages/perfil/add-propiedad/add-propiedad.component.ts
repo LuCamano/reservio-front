@@ -1,9 +1,10 @@
 import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Comuna, Local, Region } from '../../../models/models.interface';
+import { Comuna, Local, Region, Usuario } from '../../../models/models.interface';
 import { ConnectionService } from '../../../services/connection.service';
 import { Router } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-add-propiedad',
@@ -13,12 +14,13 @@ import { ApiService } from '../../../services/api.service';
 })
 export class AddPropiedadComponent implements OnInit {
 
-  private svLocal = inject(ConnectionService);
   private apiSv = inject(ApiService); // Asumiendo que ConnectionService tiene métodos para manejar las regiones y comunas
   regiones: Region[] = [];
   comunas: Comuna[] = [];
-
+  private authSvc = inject(AuthService);
+  imagenesSeleccionadas: string[] = [];
   comunasFiltradas: Comuna[] = [];
+  usuario: Usuario | null = null; 
 
   localForm: FormGroup = new FormGroup({
     nombre: new FormControl('', [Validators.required]),
@@ -36,6 +38,10 @@ export class AddPropiedadComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarDatos();
+
+    this.authSvc.getCurrentUser().subscribe(user => {
+      this.usuario = user;
+    });
     // Filtrar comunas cuando cambia la región
     this.localForm.get('region')?.valueChanges.subscribe(regionId => {
       const comunasEnRegion = this.comunas.filter(comuna => comuna.region_id === regionId);
@@ -59,12 +65,8 @@ export class AddPropiedadComponent implements OnInit {
     })
   }
 
-  crearPropiedad(): void {
-    if (this.localForm.invalid) {
-      this.localForm.markAllAsTouched();
-      return;
-    }
-
+  crearPropiedad() {
+    
     const formValue = this.localForm.value;
 
     const nuevaPropiedad: Local = {
@@ -72,16 +74,18 @@ export class AddPropiedadComponent implements OnInit {
       descripcion: formValue.descripcion,
       direccion: formValue.direccion,
       tipo: 'local', // o el tipo que corresponda según tu lógica
-      cod_postal: '', // puedes agregar un campo en el formulario si lo necesitas
+      cod_postal: '4000', // puedes agregar un campo en el formulario si lo necesitas
       capacidad: formValue.capacidad,
       precio_hora: formValue.precioH,
       comuna_id: formValue.comuna,
       validada: true,
       activo: true,
-      imagenes: [formValue.imagenUrl]
+      imagenes: this.imagenesSeleccionadas,
+      propietarios: [ this.usuario!], // Aquí puedes agregar el propietario actual si es necesario
     };
+    console.log('Nueva propiedad a crear:', nuevaPropiedad);
 
-    this.apiSv.createLocal(nuevaPropiedad)
+    /* this.apiSv.createLocal(nuevaPropiedad)
       .then(() => {
         alert('Propiedad creada exitosamente');
         this.localForm.reset();
@@ -90,11 +94,14 @@ export class AddPropiedadComponent implements OnInit {
       .catch(error => {
         console.error('Error al crear la propiedad:', error);
         alert('Hubo un error al crear la propiedad');
-      });
+      }); */
   }
 
   onCancel() {
     this.localForm.reset();
   }
 
+  onImagesChange(imagenes: string[]) {
+    this.imagenesSeleccionadas = imagenes;
+  }
 }
