@@ -15,6 +15,7 @@ import { AuthService } from '../../../services/auth.service';
 export class AddPropiedadComponent implements OnInit {
 
   private apiSv = inject(ApiService); // Asumiendo que ConnectionService tiene métodos para manejar las regiones y comunas
+
   regiones: Region[] = [];
   comunas: Comuna[] = [];
   private authSvc = inject(AuthService);
@@ -27,14 +28,15 @@ export class AddPropiedadComponent implements OnInit {
     region: new FormControl('', [Validators.required]),
     comuna: new FormControl('', [Validators.required]),
     capacidad: new FormControl(null, [Validators.required, Validators.min(1)]),
-    precioH: new FormControl(null, [Validators.required, Validators.min(0)]),
-    direccion: new FormControl(''), // opcional
+    precioH: new FormControl(0, [Validators.required, Validators.min(0)]),
+    direccion: new FormControl('', [Validators.required]),
     disponible: new FormControl(true),
     imagenUrl: new FormControl('', [Validators.required]),
-    descripcion: new FormControl('', [Validators.required]) 
+    descripcion: new FormControl('', [Validators.required]),
+    documento: new FormControl<File | null>(null),
+    imagenes: new FormControl<FileList | null>(null, [Validators.required])
   });
 
-  constructor(private router: Router, private connectionService: ConnectionService) { }
 
   ngOnInit(): void {
     this.cargarDatos();
@@ -80,8 +82,6 @@ export class AddPropiedadComponent implements OnInit {
       comuna_id: formValue.comuna,
       validada: true,
       activo: true,
-      imagenes: this.imagenesSeleccionadas,
-      propietarios: [ this.usuario!], // Aquí puedes agregar el propietario actual si es necesario
     };
     console.log('Nueva propiedad a crear:', nuevaPropiedad);
 

@@ -24,7 +24,7 @@ export interface Local {
     validada: boolean;
     activo: boolean;
     imagenes?: string[];
-    documentos?: string[];
+    documento?: string;
     comuna?: Comuna;
     propietarios?: Usuario[];
     valoraciones?: Valoracion[];

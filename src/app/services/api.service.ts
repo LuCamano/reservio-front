@@ -131,12 +131,14 @@ export class ApiService {
     return this.getOne<Local>('propiedades/', id);
   }
 
-  createLocal(local: Local): Promise<Local> {
-    return this.post<Local>('propiedades/', local);
+  createLocal(localData: FormData): Promise<Local> {
+    const url = `${this.api_url}propiedades/`;
+    return lastValueFrom(this.http.post<Local>(url, localData));
   }
 
-  updateLocal(id: string, local: Local): Promise<Local> {
-    return this.put<Local>('propiedades/', id, local);
+  updateLocal(id: string, localData: FormData): Promise<Local> {
+    const url = `${this.api_url}propiedades/${id}`;
+    return lastValueFrom(this.http.put<Local>(url, localData));
   }
 
   deleteLocal(id: string): Promise<void> {
