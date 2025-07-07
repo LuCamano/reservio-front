@@ -100,7 +100,7 @@ export class AddPropiedadComponent implements OnInit {
     }
 
     // Otros campos si los necesitas
-    formData.append('validada', 'true');
+    formData.append('validada', 'false');
     formData.append('activo', 'true');
 
     console.log('Nueva propiedad a crear:', formData.values());
