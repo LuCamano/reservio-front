@@ -3,7 +3,6 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Renderer2 } from '@angular/core';
 import { Local, Reserva, Usuario } from '../../../models/models.interface';
 import { ApiService } from '../../../services/api.service';
-import { ConnectionService } from '../../../services/connection.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { OpenStreetMapService } from '../../../services/open-street-map.service';
@@ -28,7 +27,10 @@ export class LocalComponent implements OnDestroy {
   local!: Local;
 
   idLocal!: string;
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
   isLoading = true;
   mapError = false;
 
@@ -57,6 +59,12 @@ export class LocalComponent implements OnDestroy {
   // Nuevas variables para nombre de comuna y región
   nombreRegion: string = '';
   nombreComuna: string = '';
+
+  imagenActual: number = 0;
+
+  // Variables y métodos para el modal de imagen
+  mostrarImagenModal: boolean = false;
+  imagenModalUrl: string = '';
 
   async ngOnInit(): Promise<void> {
     this.idLocal = this.route.snapshot.paramMap.get('id')!;
@@ -193,5 +201,23 @@ export class LocalComponent implements OnDestroy {
     } else {
       this.reservaForm.get('cant_horas')?.setValue(1);
     }
+  }
+
+  cambiarImagen(direccion: number) {
+    if (!this.local?.imagenes) return;
+    const total = this.local.imagenes.length;
+    this.imagenActual = (this.imagenActual + direccion + total) % total;
+  }
+
+  abrirImagenModal(url: string) {
+    this.imagenModalUrl = url;
+    this.mostrarImagenModal = true;
+    this.renderer.addClass(document.body, 'overflow-hidden');
+  }
+
+  cerrarImagenModal() {
+    this.mostrarImagenModal = false;
+    this.imagenModalUrl = '';
+    this.renderer.removeClass(document.body, 'overflow-hidden');
   }
 }

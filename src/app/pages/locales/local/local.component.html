@@ -12,9 +12,41 @@
     <section class="grid grid-cols-12 gap-2 pt-10 px-3">
       <div class="col-span-1"></div>
       <div class="col-span-12 md:col-span-10 bg-white rounded-t-xl overflow-hidden border border-gray-300 shadow">
-        <img [src]="local.imagenes![0]"
-            alt="Foto del local {{ local.nombre }}"
-            class="w-full rounded-t aspect-[3/1] object-cover "/>
+        <!-- Carousel de imágenes -->
+        <div class="relative w-full aspect-[3/1] bg-gray-100">
+          <img *ngIf="local.imagenes && local.imagenes.length > 0"
+               [src]="local.imagenes[imagenActual]"
+               alt="Foto del local {{ local.nombre }}"
+               class="w-full h-full object-cover rounded-t transition-all duration-300 cursor-zoom-in"
+               (click)="abrirImagenModal(local.imagenes[imagenActual])" />
+          <!-- Flechas -->
+          <button *ngIf="local.imagenes && local.imagenes.length > 1"
+                  (click)="cambiarImagen(-1)"
+                  class="absolute top-1/2 left-4 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow text-2xl">
+            &#8592;
+          </button>
+          <button *ngIf="local.imagenes && local.imagenes.length > 1"
+                  (click)="cambiarImagen(1)"
+                  class="absolute top-1/2 right-4 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow text-2xl">
+            &#8594;
+          </button>
+          <!-- Indicadores -->
+          <div *ngIf="local.imagenes && local.imagenes.length > 1"
+               class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+            <span *ngFor="let img of local.imagenes; let i = index"
+                  class="w-3 h-3 rounded-full"
+                  [ngClass]="i === imagenActual ? 'bg-indigo-600' : 'bg-gray-300'">
+            </span>
+          </div>
+        </div>
+        <!-- Modal de imagen ampliada -->
+        <div *ngIf="mostrarImagenModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+          <div class="relative max-w-3xl w-full flex flex-col items-center">
+            <button (click)="cerrarImagenModal()" class="absolute top-2 right-2 text-white text-3xl bg-black/40 rounded-full px-2 py-1 hover:bg-black/70">&times;</button>
+            <img [src]="imagenModalUrl" alt="Imagen ampliada" class="max-h-[80vh] w-auto rounded-xl shadow-lg border-4 border-white" />
+          </div>
+        </div>
+        <!-- Fin carousel y modal -->
         <div class="grid grid-cols-4 p-7">
             <div class="col-span-4 md:col-span-3">
                 <h2 class="text-2xl font-bold mb-0 hover:underline">{{ local.nombre }}</h2>
@@ -82,6 +114,7 @@
           <p>Cargando mapa...</p>
         </div>
 
+
         <div *ngIf="mapError" class="error">
           <p>No se pudo cargar el mapa para esta ubicación</p>
         </div>
@@ -94,6 +127,7 @@
               [localName]="direccioncompleta">
             </app-map>
           </div>
+<<<<<<< HEAD
           <div class="col-span-4 md:col-span-1 pt-2">
               <p class="text-sm text-gray-800">Precio por hora</p>
               <h2 class="text-2xl font-bold mb-2">${{ local.precio_hora }}/h</h2>
@@ -145,6 +179,9 @@
         <h2 class="text-2xl font-bold mb-2">{{ local.direccion }}</h2>
         <p class="text-sm text-gray-800 mb-4">Test: {{direccioncompleta}}</p>
         <p class="text-sm text-gray-800 mb-4">Ubicación del local</p>
+=======
+        </div>
+>>>>>>> master
         
       </div>
     </div>

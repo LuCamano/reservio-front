@@ -68,8 +68,9 @@
       <div class="md:col-span-3 flex flex-col h-full">
 
         <!-- Spinner de carga -->
-        <div *ngIf="isLoading" class="spinner">
+        <div *ngIf="isLoading" class="spinner" role="status" aria-label="Loading">
           <div class="spinner-icon"></div>
+          <span class="sr-only">Loading</span>
         </div>
         <!-- Fin spinner -->
         <div *ngIf="!isLoading">
