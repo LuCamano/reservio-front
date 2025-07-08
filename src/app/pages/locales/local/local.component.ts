@@ -3,7 +3,6 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Renderer2 } from '@angular/core';
 import { Local, Reserva, Usuario } from '../../../models/models.interface';
 import { ApiService } from '../../../services/api.service';
-import { ConnectionService } from '../../../services/connection.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { OpenStreetMapService } from '../../../services/open-street-map.service';
@@ -28,8 +27,6 @@ export class LocalComponent implements OnDestroy {
   local!: Local;
 
   idLocal!: string;
-  svLocal = inject(ConnectionService);
-
   isLoading = true;
   mapError = false;
 
