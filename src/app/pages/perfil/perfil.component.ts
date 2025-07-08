@@ -4,6 +4,7 @@ import { ConnectionService } from '../../services/connection.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { ApiService } from '../../services/api.service';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-perfil',
@@ -22,15 +23,13 @@ export class PerfilComponent implements OnInit {
   historialTabIndex = 0; // 0: recibidas, 1: realizadas
 
   locales: Local[] = [];
-
+  region: string = '';
   reservasRecibidas: Reserva[] = [];
   reservasRealizadas: Reserva[] = [];
 
-  ngOnInit(): void {
-    this.authSvc.getCurrentUser().subscribe(user => {
-      this.usuario = user;
-    });
-    // this.getDatos();
+  async ngOnInit() {
+    this.usuario = await lastValueFrom(this.authSvc.getCurrentUser());
+    this.getDatos();
     this.cargarReservas();
   }
 
@@ -42,16 +41,21 @@ export class PerfilComponent implements OnInit {
     this.historialTabIndex = index;
   }
 
-  // getDatos(){
-  //   try {
-  //     this.locales = this.svgLocales.getLocales().filter(local => {
-  //       return local.usuario === this.usuario.email;
-  //     });
-  //   } catch (error) {
-  //     console.error('Error al obtener los datos de los locales:', error);
-  //   }
-  // }
+  getDatos(){
+     this.apiSv.getLocales().then(lo => {
+      this.locales = lo.filter(r => 
+        r.propietarios?.some(p => p.id === this.usuario!.id))
+    });
 
+    
+  }
+  buscarRe(id : string){
+    this.apiSv.getRegion(id).then(r => this.region = r.nombre);
+    return this.region
+  }
+
+
+  
   cargarReservas() {
     this.apiSv.getReservas().then(reservas => {
       // Realizadas: reservas hechas por el usuario (como cliente)

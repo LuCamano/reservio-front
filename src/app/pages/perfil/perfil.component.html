@@ -210,25 +210,24 @@
         <a class="max-w-6xl mx-auto">
             <h2 class="text-3xl font-bold text-gray-800 mb-8">Mis propiedades</h2>
             <a class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- <div *ngFor="let local of locales"
+                <div *ngFor="let local of locales"
                     class="bg-white shadow-sm hover:shadow-lg transition-shadow rounded-xl border border-gray-200 overflow-hidden">
-                    <img [src]="local.imagenUrl" [alt]="local.nombre" class="w-full h-48 object-cover" />
+                    <img [src]="local.imagenes" [alt]="local.nombre" class="w-full h-48 object-cover" />
                     <div class="p-5">
                         <div class="flex justify-between items-start mb-2">
                             <h3 class="text-lg font-semibold text-gray-900">{{ local.nombre }}</h3>
                         </div>
-
                         <p class="text-sm text-gray-600 mb-1">
-                            <span class="font-medium">Región:</span> {{ local.region }}
+                            <span class="font-medium">Región:</span> {{ buscarRe(local.comuna!.region_id) }}
                         </p>
                         <p class="text-sm text-gray-600 mb-1">
-                            <span class="font-medium">Comuna:</span> {{ local.comuna }}
+                            <span class="font-medium">Comuna:</span> {{ local.comuna?.nombre }}
                         </p>
                         <p class="text-sm text-gray-600 mb-1">
                             <span class="font-medium">Capacidad:</span> {{ local.capacidad }} personas
                         </p>
                         <p class="text-sm text-gray-600 mb-1">
-                            <span class="font-medium">Precio/Hora:</span> ${{ local.precioH | number:'1.0-0' }}
+                            <span class="font-medium">Precio/Hora:</span> ${{ local.precio_hora| number:'1.0-0' }}
                         </p>
                         <p class="text-sm text-gray-600 mb-4" *ngIf="local.direccion">
                             <span class="font-medium">Dirección:</span> {{ local.direccion }}
@@ -241,7 +240,7 @@
                             </button>
                         </div>
                     </div>
-                </div> -->
+                </div>
                 <a routerLink="/perfil/add-propiedad"
                     class="bg-white shadow-sm hover:shadow-lg transition-shadow rounded-2xl border border-dashed border-gray-300 flex flex-col justify-center items-center text-center p-8 cursor-pointer hover:border-blue-500">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-600 mb-4" fill="Normal"
