@@ -212,7 +212,7 @@
             <a class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div *ngFor="let local of locales"
                     class="bg-white shadow-sm hover:shadow-lg transition-shadow rounded-xl border border-gray-200 overflow-hidden">
-                    <img [src]="local.imagenes" [alt]="local.nombre" class="w-full h-48 object-cover" />
+                    <img [src]="local.imagenes![0]" [alt]="local.nombre" class="w-full h-48 object-cover" />
                     <div class="p-5">
                         <div class="flex justify-between items-start mb-2">
                             <h3 class="text-lg font-semibold text-gray-900">{{ local.nombre }}</h3>

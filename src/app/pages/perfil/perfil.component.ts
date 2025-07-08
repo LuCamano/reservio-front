@@ -46,16 +46,11 @@ export class PerfilComponent implements OnInit {
       this.locales = lo.filter(r => 
         r.propietarios?.some(p => p.id === this.usuario!.id))
     });
-
-    
   }
   buscarRe(id : string){
     this.apiSv.getRegion(id).then(r => this.region = r.nombre);
     return this.region
-  }
-
-
-  
+  }  
   cargarReservas() {
     this.apiSv.getReservas().then(reservas => {
       // Realizadas: reservas hechas por el usuario (como cliente)
