@@ -48,7 +48,7 @@ export class ApiService {
   }
 
   getOne<T>(endpoint: Endpoint, id: string): Promise<T> {
-    const url = `${this.api_url}${endpoint}/${id}`;
+    const url = `${this.api_url}${endpoint}${id}`;
     return lastValueFrom(this.http.get<T>(url));
   }
 
@@ -58,59 +58,59 @@ export class ApiService {
   }
 
   put<T>(endpoint: Endpoint, id: string, data: T): Promise<T> {
-    const url = `${this.api_url}${endpoint}/${id}`;
+    const url = `${this.api_url}${endpoint}${id}`;
     return lastValueFrom(this.http.put<T>(url, data));
   }
 
   delete(endpoint: Endpoint, id: string): Promise<void> {
-    const url = `${this.api_url}${endpoint}/${id}`;
+    const url = `${this.api_url}${endpoint}${id}`;
     return lastValueFrom(this.http.delete<void>(url));
   }
 
   // Crud de Regiones
   getRegiones(): Promise<Region[]> {
-    return this.get<Region>({ endpoint: 'regiones' });
+    return this.get<Region>({ endpoint: 'regiones/' });
   }
 
   getRegion(id: string): Promise<Region> {
-    return this.getOne<Region>('regiones', id);
+    return this.getOne<Region>('regiones/', id);
   }
 
   createRegion(region: Region): Promise<Region> {
-    return this.post<Region>('regiones', region);
+    return this.post<Region>('regiones/', region);
   }
 
   updateRegion(id: string, nombre: string): Promise<Region> {
-    return this.put<Region>('regiones', id, { nombre });
+    return this.put<Region>('regiones/', id, { nombre });
   }
 
   deleteRegion(id: string): Promise<void> {
-    return this.delete('regiones', id);
+    return this.delete('regiones/', id);
   }
 
   // Crud de Comunas
   getComunas(): Promise<Comuna[]> {
-    return this.get<Comuna>({ endpoint: 'comunas' });
+    return this.get<Comuna>({ endpoint: 'comunas/' });
   }
 
   getComuna(id: string): Promise<Comuna> {
-    return this.getOne<Comuna>('comunas', id);
+    return this.getOne<Comuna>('comunas/', id);
   }
 
   createComuna(comuna: Comuna): Promise<Comuna> {
-    return this.post<Comuna>('comunas', comuna);
+    return this.post<Comuna>('comunas/', comuna);
   }
 
   updateComuna(id: string, comuna: Comuna): Promise<Comuna> {
-    return this.put<Comuna>('comunas', id, comuna);
+    return this.put<Comuna>('comunas/', id, comuna);
   }
 
   deleteComuna(id: string): Promise<void> {
-    return this.delete('comunas', id);
+    return this.delete('comunas/', id);
   }
 
   // Crud de Locales
-  getLocales(offset: number = 0, limit: number = 20, order_by?: string, tipo?: string, comuna_id?: string, precioMin?: number, precioMax?: number): Promise<Local[]> {
+  async getLocales(offset: number = 0, limit: number = 20, order_by?: string, tipo?: string, comuna_id?: string, precioMin?: number, precioMax?: number): Promise<Local[]> {
     // Filtrar parámetros undefined
     const params: Record<string, string> = {};
     if (tipo) params['tipo'] = tipo;
@@ -118,58 +118,77 @@ export class ApiService {
     if (precioMin !== undefined) params['precioMin'] = precioMin.toString();
     if (precioMax !== undefined) params['precioMax'] = precioMax.toString();
 
-    return this.get<Local>({
-      endpoint: 'propiedades',
+    let locales = await this.get<Local>({
+      endpoint: 'propiedades/',
       offset,
       limit,
       order_by,
       params: Object.keys(params).length > 0 ? params : undefined
     });
+    locales = locales.map(local => {
+      if (local.imagenes && local.imagenes.length > 0) {
+        local.imagenes = local.imagenes.map(imagen => `${environment.apiUrl}/${imagen}`);
+      }
+      if (local.documento) {
+        local.documento = `${environment.apiUrl}/${local.documento}`;
+      }
+      return local;
+    });
+    return locales;
   }
 
-  getLocal(id: string): Promise<Local> {
-    return this.getOne<Local>('propiedades', id);
+  async getLocal(id: string): Promise<Local> {
+    const local = await this.getOne<Local>('propiedades/', id);
+    if (local.imagenes && local.imagenes.length > 0) {
+      local.imagenes = local.imagenes.map(imagen => `${environment.apiUrl}/${imagen}`);
+    }
+    if (local.documento) {
+      local.documento = `${environment.apiUrl}/${local.documento}`;
+    }
+    return local;
   }
 
-  createLocal(local: Local): Promise<Local> {
-    return this.post<Local>('propiedades', local);
+  createLocal(localData: FormData): Promise<Local> {
+    const url = `${this.api_url}propiedades/`;
+    return lastValueFrom(this.http.post<Local>(url, localData));
   }
 
-  updateLocal(id: string, local: Local): Promise<Local> {
-    return this.put<Local>('propiedades', id, local);
+  updateLocal(id: string, localData: FormData): Promise<Local> {
+    const url = `${this.api_url}propiedades/${id}`;
+    return lastValueFrom(this.http.put<Local>(url, localData));
   }
 
   deleteLocal(id: string): Promise<void> {
-    return this.delete('propiedades', id);
+    return this.delete('propiedades/', id);
   }
 
   // Crud de valoraciones
   // Esto probablemente cambiará
   getValoraciones(offset: number = 0, limit: number = 20, order_by?: string): Promise<Valoracion[]> {
     return this.get<Valoracion>({
-      endpoint: 'valoraciones',
+      endpoint: 'valoraciones/',
       offset,
       limit,
       order_by
     });
   }
   getValoracion(id: string): Promise<Valoracion> {
-    return this.getOne<Valoracion>('valoraciones', id);
+    return this.getOne<Valoracion>('valoraciones/', id);
   }
   createValoracion(valoracion: Valoracion): Promise<Valoracion> {
-    return this.post<Valoracion>('valoraciones', valoracion);
+    return this.post<Valoracion>('valoraciones/', valoracion);
   }
   updateValoracion(id: string, valoracion: Valoracion): Promise<Valoracion> {
-    return this.put<Valoracion>('valoraciones', id, valoracion);
+    return this.put<Valoracion>('valoraciones/', id, valoracion);
   }
   deleteValoracion(id: string): Promise<void> {
-    return this.delete('valoraciones', id);
+    return this.delete('valoraciones/', id);
   }
 
   // Crud de reservas
   getReservas(offset: number = 0, limit: number = 20, order_by?: string): Promise<Reserva[]> {
     return this.get<Reserva>({
-      endpoint: 'reservas',
+      endpoint: 'reservas/',
       offset,
       limit,
       order_by
@@ -177,18 +196,18 @@ export class ApiService {
   }
 
   getReserva(id: string): Promise<Reserva> {
-    return this.getOne<Reserva>('reservas', id);
+    return this.getOne<Reserva>('reservas/', id);
   }
 
   createReserva(reserva: Reserva): Promise<Reserva> {
-    return this.post<Reserva>('reservas', reserva);
+    return this.post<Reserva>('reservas/', reserva);
   }
 
   updateReserva(id: string, reserva: Reserva): Promise<Reserva> {
-    return this.put<Reserva>('reservas', id, reserva);
+    return this.put<Reserva>('reservas/', id, reserva);
   }
 
   deleteReserva(id: string): Promise<void> {
-    return this.delete('reservas', id);
+    return this.delete('reservas/', id);
   }
 }

@@ -10,9 +10,9 @@
         <div class="flex items-center gap-4">
             <mat-icon fontIcon="account_circle" class="text-[80px] text-gray-500"></mat-icon>
             <div>
-                <h2 class="text-xl font-bold text-gray-800">{{ usuario.nombres }} {{ usuario.appaterno }}
-                    {{ usuario.apmaterno }}</h2>
-                <p class="text-sm text-gray-500">{{ usuario.email }}</p>
+                <h2 class="text-xl font-bold text-gray-800">{{ usuario!.nombres }} {{ usuario!.appaterno }}
+                    {{ usuario!.apmaterno }}</h2>
+                <p class="text-sm text-gray-500">{{ usuario!.email }}</p>
             </div>
         </div>
 
@@ -33,7 +33,7 @@
                         Historial
                     </button>
                 </div>
-                <div class="w-1/2 p-1 md:w-auto md:flex-1" *ngIf="usuario.tipo === 'propietario'">
+                <div class="w-1/2 p-1 md:w-auto md:flex-1" *ngIf="usuario!.tipo === 'propietario'">
                     <button (click)="onTabChange(2)"
                         [ngClass]="selectedTabIndex === 2 ? 'bg-blue-600 text-white shadow' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
                         class="w-full text-center rounded-full px-4 py-2 text-sm font-medium transition duration-300">
@@ -58,32 +58,21 @@
             <h2 class="text-2xl font-semibold mb-1">Información básica</h2>
             <p class="text-sm text-gray-600 mb-4">Aquí puedes editar tus datos personales.</p>
 
-            <div class="flex items-center justify-between border-t pt-4">
-                <div>
-                    <p class="text-sm text-gray-500">Foto de perfil</p>
-                    <p class="text-gray-700">Agrega una foto de perfil.</p>
-                </div>
-                <div
-                    class="w-14 h-14 rounded-full bg-green-700 text-white flex items-center justify-center text-xl font-bold">
-                    {{ usuario!.nombres ? usuario.nombres.charAt(0) : 'U' }}
-                </div>
-            </div>
-
             <div class="mt-4 border-t pt-4">
                 <p class="text-sm text-gray-500">Nombre completo</p>
-                <p class="text-gray-800 font-medium">{{ usuario.nombres }} {{ usuario.appaterno }}
+                <p class="text-gray-800 font-medium">{{ usuario!.nombres }} {{ usuario!.appaterno }}
                     {{ usuario!.apmaterno }}</p>
             </div>
 
             <div class="mt-4 border-t pt-4">
                 <p class="text-sm text-gray-500">Rut</p>
-                <p class="text-gray-800 font-medium">{{ usuario.rut }}</p>
+                <p class="text-gray-800 font-medium">{{ usuario!.rut }}</p>
             </div>
 
             <div class="mt-4 border-t pt-4">
                 <p class="text-sm text-gray-500">Fecha de nacimiento</p>
                 <p class="text-gray-800 font-medium">
-                    {{ usuario!.fecha_nacimiento ? (usuario.fecha_nacimiento | date:'dd/MM/yyyy') : '' }}
+                    {{ usuario!.fecha_nacimiento ? (usuario!.fecha_nacimiento | date:'dd/MM/yyyy') : '' }}
                 </p>
             </div>
         </div>
@@ -95,13 +84,12 @@
 
             <div class="mt-4 border-t pt-4">
                 <p class="text-sm text-gray-500">Correo electronico</p>
-                <p class="text-gray-800 font-medium">{{ usuario.email }}</p>
+                <p class="text-gray-800 font-medium">{{ usuario!.email }}</p>
             </div>
         </div>
 
         <!-- Opciones de cuenta -->
         <div class="flex flex-col lg:flex-row mt-6 space-y-6 lg:space-y-0 lg:space-x-6">
-
             <!-- Columna 1 -->
             <div class="w-full lg:flex-1 border rounded-xl p-6 shadow-sm">
                 <h2 class="text-2xl font-semibold mb-1">Opciones de cuenta</h2>
@@ -110,24 +98,28 @@
                 <!-- Cambiar contraseña -->
                 <div class="mt-4 border-t pt-4 flex items-center justify-between">
                     <p class="text-sm text-gray-500 hidden sm:block">Cambiar contraseña</p>
-                    <button class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition w-full md:w-auto">
+                    <button
+                        class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition w-full md:w-auto">
                         Actualizar contraseña
                     </button>
                 </div>
 
                 <!-- Cambiar tipo de cuenta -->
                 <div class="mt-4 border-t pt-4 flex items-center justify-between"
-                    *ngIf="usuario.tipo !== 'propietario'">
+                    *ngIf="usuario!.tipo !== 'propietario'">
                     <p class="text-sm text-gray-500 hidden sm:block">Quiero ser propietario</p>
-                    <button class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition w-full md:w-auto"
+                    <button
+                        class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition w-full md:w-auto"
                         (click)="solicitarPropietario()">
                         Actualizar cuenta
                     </button>
                 </div>
+                <!-- Dejar de ser propietario -->
                 <div class="mt-4 border-t pt-4 flex items-center justify-between"
-                    *ngIf="usuario.tipo === 'propietario'">
+                    *ngIf="usuario!.tipo === 'propietario'">
                     <p class="text-sm text-gray-500 hidden sm:block">Eres propietario</p>
-                    <button class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition w-full md:w-auto"
+                    <button
+                        class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition w-full md:w-auto"
                         (click)="dejarDeSerPropietario()">
                         Quiero dejar de ser propietario
                     </button>
@@ -136,45 +128,13 @@
                 <!-- Eliminar cuenta -->
                 <div class="mt-4 border-t pt-4 flex items-center justify-between ">
                     <p class="text-sm text-gray-500 hidden sm:block">Eliminar cuenta</p>
-                    <button class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition w-full md:w-auto">
+                    <button
+                        class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition w-full md:w-auto">
                         Eliminar cuenta
                     </button>
                 </div>
             </div>
-
-            <!-- Opciones de cuenta (modo oscuro y notificaciones) -->
-
-            <!--            <div class="w-full lg:flex-1 border rounded-xl p-6 shadow-sm">
-                <h2 class="text-2xl font-semibold mb-1">Opciones de accesibilidad</h2>
-                <p class="text-sm text-gray-600 mb-4">Aquí puedes personalizar tu cuenta.</p>
-
-                
-                <div class="mt-4 border-t pt-4 flex items-center justify-between">
-                    <p class="text-sm text-gray-500">Modo oscuro</p>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" class="sr-only peer" [(ngModel)]="preferencias.modoOscuro">
-                        <div class="w-11 h-6 bg-gray-300 rounded-full peer-checked:bg-blue-600 transition-colors"></div>
-                        <div
-                            class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5">
-                        </div>
-                    </label>
-                </div>
-
-                
-                <div class="mt-4 border-t pt-4 flex items-center justify-between">
-                    <p class="text-sm text-gray-500">Recibir notificaciones</p>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" class="sr-only peer" [(ngModel)]="preferencias.notificaciones">
-                        <div class="w-11 h-6 bg-gray-300 rounded-full peer-checked:bg-blue-600 transition-colors"></div>
-                        <div
-                            class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5">
-                        </div>
-                    </label>
-                </div>
-            </div> -->
-
         </div>
-
     </div>
 
     <!-- Contenido del Historial de actividad  -->
@@ -182,20 +142,20 @@
         <h3 class="text-lg font-semibold text-gray-700 mb-2">Historial de Reservas</h3>
         <!-- Tabs internas -->
         <div class="flex flex-col sm:flex-row gap-2 mb-6">
-            <button (click)="onHistorialTabChange(0)"
+            <button *ngIf="usuario?.tipo === 'propietario'" (click)="onHistorialTabChange(0)"
                 [ngClass]="historialTabIndex === 0 ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-                class="px-4 py-2 rounded-full font-medium transition w-full sm:w-auto"> <!-- Ancho completo en móvil -->
+                class="px-4 py-2 rounded-full font-medium transition w-full sm:w-auto">
                 Reservas recibidas
             </button>
-            <button (click)="onHistorialTabChange(1)"
-                [ngClass]="historialTabIndex === 1 ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-                class="px-4 py-2 rounded-full font-medium transition w-full sm:w-auto"> <!-- Ancho completo en móvil -->
+            <button (click)="onHistorialTabChange(usuario?.tipo === 'propietario' ? 1 : 0)"
+                [ngClass]="historialTabIndex === (usuario?.tipo === 'propietario' ? 1 : 0) ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                class="px-4 py-2 rounded-full font-medium transition w-full sm:w-auto">
                 Reservas realizadas
             </button>
         </div>
 
-        <!-- Reservas recibidas -->
-        <div *ngIf="historialTabIndex === 0">
+        <!-- Reservas recibidas SOLO para propietarios -->
+        <div *ngIf="usuario?.tipo === 'propietario' && historialTabIndex === 0">
             <div *ngIf="reservasRecibidas.length === 0" class="text-gray-500 text-center py-8">
                 No tienes reservas recibidas en tus propiedades.
             </div>
@@ -218,15 +178,20 @@
         </div>
 
         <!-- Reservas realizadas -->
-        <div *ngIf="historialTabIndex === 1">
+        <div *ngIf="(usuario?.tipo !== 'propietario' && historialTabIndex === 0) || (usuario?.tipo === 'propietario' && historialTabIndex === 1)">
             <div *ngIf="reservasRealizadas.length === 0" class="text-gray-500 text-center py-8">
                 No has realizado reservas aún.
             </div>
-            <!-- <div *ngFor="let reserva of reservasRealizadas" class="border rounded-lg p-4 mb-4 shadow-sm">
+            <div *ngFor="let reserva of reservasRealizadas" class="border rounded-lg p-4 mb-4 shadow-sm">
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between">
                     <div>
                         <div class="font-bold text-lg">{{ reserva.propiedad.nombre }}</div>
-                        <div class="text-sm text-gray-600">Propietario: {{ reserva.propiedad.usuario }}</div>
+                        <div class="text-sm text-gray-600">
+                            Propietarios:
+                            <span *ngFor="let propietario of reserva.propiedad.propietarios; let last = last">
+                                {{ propietario.nombres }} {{ propietario.appaterno }}<span *ngIf="!last">, </span>
+                            </span>
+                        </div>
                         <div class="text-sm text-gray-600">Estado: <span class="font-semibold">{{ reserva.estado
                                 }}</span></div>
                     </div>
@@ -236,7 +201,7 @@
                         <div>Horas: {{ reserva.cant_horas }}</div>
                     </div>
                 </div>
-            </div> -->
+            </div>
         </div>
     </div>
 
@@ -245,25 +210,24 @@
         <a class="max-w-6xl mx-auto">
             <h2 class="text-3xl font-bold text-gray-800 mb-8">Mis propiedades</h2>
             <a class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- <div *ngFor="let local of locales"
+                <div *ngFor="let local of locales"
                     class="bg-white shadow-sm hover:shadow-lg transition-shadow rounded-xl border border-gray-200 overflow-hidden">
-                    <img [src]="local.imagenUrl" [alt]="local.nombre" class="w-full h-48 object-cover" />
+                    <img [src]="local.imagenes![0]" [alt]="local.nombre" class="w-full h-48 object-cover" />
                     <div class="p-5">
                         <div class="flex justify-between items-start mb-2">
                             <h3 class="text-lg font-semibold text-gray-900">{{ local.nombre }}</h3>
                         </div>
-
                         <p class="text-sm text-gray-600 mb-1">
-                            <span class="font-medium">Región:</span> {{ local.region }}
+                            <span class="font-medium">Región:</span> {{ buscarRe(local.comuna!.region_id) }}
                         </p>
                         <p class="text-sm text-gray-600 mb-1">
-                            <span class="font-medium">Comuna:</span> {{ local.comuna }}
+                            <span class="font-medium">Comuna:</span> {{ local.comuna?.nombre }}
                         </p>
                         <p class="text-sm text-gray-600 mb-1">
                             <span class="font-medium">Capacidad:</span> {{ local.capacidad }} personas
                         </p>
                         <p class="text-sm text-gray-600 mb-1">
-                            <span class="font-medium">Precio/Hora:</span> ${{ local.precioH | number:'1.0-0' }}
+                            <span class="font-medium">Precio/Hora:</span> ${{ local.precio_hora| number:'1.0-0' }}
                         </p>
                         <p class="text-sm text-gray-600 mb-4" *ngIf="local.direccion">
                             <span class="font-medium">Dirección:</span> {{ local.direccion }}
@@ -276,7 +240,7 @@
                             </button>
                         </div>
                     </div>
-                </div> -->
+                </div>
                 <a routerLink="/perfil/add-propiedad"
                     class="bg-white shadow-sm hover:shadow-lg transition-shadow rounded-2xl border border-dashed border-gray-300 flex flex-col justify-center items-center text-center p-8 cursor-pointer hover:border-blue-500">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-600 mb-4" fill="Normal"
