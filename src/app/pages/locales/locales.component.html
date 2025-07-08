@@ -67,88 +67,95 @@
       <!-- Div Locales -->
       <div class="md:col-span-3 flex flex-col h-full">
 
-        <!-- Opciones de vista y ordenar -->
-        <div class="hidden sm:flex items-center justify-between gap-4 bg-white rounded-xl shadow-md p-4 mb-8">
-          <!-- Opciones de vista -->
-          <div class="flex items-center gap-2">
-            <span class="text-gray-600 text-sm mr-2">Ver como:</span>
-            <button
-              class="p-2 rounded-lg transition-colors flex items-center gap-1"
-              [ngClass]="vista === 'grilla' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'"
-              (click)="vista = 'grilla'"
-              aria-label="Ver como grilla"
-            >
-              <span class="material-icons">grid_view</span>
-              <span>Grilla</span>
-            </button>
-            <button
-              class="p-2 rounded-lg transition-colors flex items-center gap-1"
-              [ngClass]="vista === 'lista' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'"
-              (click)="vista = 'lista'"
-              aria-label="Ver como lista"
-            >
-              <span class="material-icons">view_list</span>
-              <span>Lista</span>
-            </button>
-          </div>
-          <!-- Dropdown Ordenar Por -->
-          <div class="flex items-center gap-2">
-            <label for="ordenarPor" class="text-gray-600 text-sm mr-1">Ordenar por:</label>
-            <select
-              id="ordenarPor"
-              class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              [(ngModel)]="ordenarPor"
-              (change)="ordenarLocales()"
-              name="ordenarPor"
-            >
-              <option value="precioAsc">Precio Menor a Mayor</option>
-              <option value="precioDesc">Precio Mayor a Menor</option>
-            </select>
-          </div>
+        <!-- Spinner de carga -->
+        <div *ngIf="isLoading" class="spinner">
+          <div class="spinner-icon"></div>
         </div>
-        <!-- Lista de locales -->
-        <div
-          [ngClass]="vista === 'grilla'
-            ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6'
-            : 'flex flex-col gap-4 md:gap-6'"
-        >
-          @for (local of localesFiltrados; track $index) {
-            <div
-              [ngClass]="vista === 'grilla'
-                ? 'bg-white rounded-xl overflow-hidden hover:shadow-lg border-gray-300 border transition-shadow text-base'
-                : 'bg-white rounded-xl flex flex-row gap-0 p-0 border border-gray-300 shadow-lg h-64 overflow-hidden min-w-0'"
-            >
-              <img
-                [src]="local.imagenes![0]"
-                alt="Imagen del local"
-                [ngClass]="vista === 'grilla' ? 'h-44 w-full object-cover bg-contain' : 'h-full w-40 sm:w-64 object-cover'"
+        <!-- Fin spinner -->
+        <div *ngIf="!isLoading">
+          <!-- Opciones de vista y ordenar -->
+          <div class="hidden sm:flex items-center justify-between gap-4 bg-white rounded-xl shadow-md p-4 mb-8">
+            <!-- Opciones de vista -->
+            <div class="flex items-center gap-2">
+              <span class="text-gray-600 text-sm mr-2">Ver como:</span>
+              <button
+                class="p-2 rounded-lg transition-colors flex items-center gap-1"
+                [ngClass]="vista === 'grilla' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'"
+                (click)="vista = 'grilla'"
+                aria-label="Ver como grilla"
               >
-              <div [ngClass]="vista === 'grilla' ? 'p-5' : 'flex-1 flex flex-col justify-between h-full p-4 sm:p-8 text-lg min-w-0'">
-                <h3 class="text-2xl font-bold mb-2 truncate">{{local.nombre}}</h3>
-                <p class="text-base truncate">Comuna: {{local.comuna}}</p>
-                <p class="text-base truncate">Capacidad: {{local.capacidad}} personas</p>
-                <p class="text-base mb-2 truncate">Precio por hora: ${{local.precio_hora}}/h</p>
-                <button class="w-full py-3 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors text-base mt-4" [routerLink]="['/locales', local.id]">
-                  Ver detalles
-                </button>
-              </div>
+                <span class="material-icons">grid_view</span>
+                <span>Grilla</span>
+              </button>
+              <button
+                class="p-2 rounded-lg transition-colors flex items-center gap-1"
+                [ngClass]="vista === 'lista' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'"
+                (click)="vista = 'lista'"
+                aria-label="Ver como lista"
+              >
+                <span class="material-icons">view_list</span>
+                <span>Lista</span>
+              </button>
             </div>
-          }
-        </div>
+            <!-- Dropdown Ordenar Por -->
+            <div class="flex items-center gap-2">
+              <label for="ordenarPor" class="text-gray-600 text-sm mr-1">Ordenar por:</label>
+              <select
+                id="ordenarPor"
+                class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                [(ngModel)]="ordenarPor"
+                (change)="ordenarLocales()"
+                name="ordenarPor"
+              >
+                <option value="precioAsc">Precio Menor a Mayor</option>
+                <option value="precioDesc">Precio Mayor a Menor</option>
+              </select>
+            </div>
+          </div>
+          <!-- Lista de locales -->
+          <div
+            [ngClass]="vista === 'grilla'
+              ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6'
+              : 'flex flex-col gap-4 md:gap-6'"
+          >
+            @for (local of localesFiltrados; track $index) {
+              <div
+                [ngClass]="vista === 'grilla'
+                  ? 'bg-white rounded-xl overflow-hidden hover:shadow-lg border-gray-300 border transition-shadow text-base'
+                  : 'bg-white rounded-xl flex flex-row gap-0 p-0 border border-gray-300 shadow-lg h-64 overflow-hidden min-w-0'"
+              >
+                <img
+                  [src]="local.imagenes![0]"
+                  alt="Imagen del local"
+                  [ngClass]="vista === 'grilla' ? 'h-44 w-full object-cover bg-contain' : 'h-full w-40 sm:w-64 object-cover'"
+                >
+                <div [ngClass]="vista === 'grilla' ? 'p-5' : 'flex-1 flex flex-col justify-between h-full p-4 sm:p-8 text-lg min-w-0'">
+                  <h3 class="text-2xl font-bold mb-2 truncate">{{local.nombre}}</h3>
+                  <p class="text-base truncate">Comuna: {{local.comuna?.nombre}}</p>
+                  <p class="text-base truncate">Capacidad: {{local.capacidad}} personas</p>
+                  <p class="text-base mb-2 truncate">Precio por hora: ${{local.precio_hora}}/h</p>
+                  <button class="w-full py-3 bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors text-base mt-4" [routerLink]="['/locales', local.id]">
+                    Ver detalles
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
 
-        <!-- Paginación inferior -->
-        <div class="flex justify-end items-center mb-2 text-sm text-gray-600 pt-20">
-          <span class="hidden sm:flex items-center">
-            <span>Max. Items por pagina: 20</span>
-            <span class="mx-3 h-5 border-l border-gray-300 inline-block align-middle"></span>
-            <span>1 - 10 de 52</span>
-          </span>
-          <button class="p-1 rounded-full hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300 ml-2">
-            <mat-icon>chevron_left</mat-icon>
-          </button>
-          <button class="p-1 rounded-full hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300 ml-1">
-            <mat-icon>chevron_right</mat-icon>
-          </button>
+          <!-- Paginación inferior -->
+          <div class="flex justify-end items-center mb-2 text-sm text-gray-600 pt-20">
+            <span class="hidden sm:flex items-center">
+              <span>Max. Items por pagina: 20</span>
+              <span class="mx-3 h-5 border-l border-gray-300 inline-block align-middle"></span>
+              <span>1 - 10 de 52</span>
+            </span>
+            <button class="p-1 rounded-full hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300 ml-2">
+              <mat-icon>chevron_left</mat-icon>
+            </button>
+            <button class="p-1 rounded-full hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300 ml-1">
+              <mat-icon>chevron_right</mat-icon>
+            </button>
+          </div>
         </div>
       </div>
     </div>
