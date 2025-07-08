@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { lastValueFrom } from 'rxjs';
-import { Comuna, Local, Region, Reserva, Valoracion } from '../models/models.interface';
+import { Comuna, Local, Region, Reserva, Usuario, Valoracion } from '../models/models.interface';
 
 interface GetRequest {
   endpoint: Endpoint;
@@ -209,5 +209,27 @@ export class ApiService {
 
   deleteReserva(id: string): Promise<void> {
     return this.delete('reservas/', id);
+  }
+
+  // Utilidades de usuario
+  getUsuarios(offset: number = 0, limit: number = 20, order_by?: string): Promise<Usuario[]> {
+    return this.get<Usuario>({
+      endpoint: 'usuarios/',
+      offset,
+      limit,
+      order_by
+    });
+  }
+
+  getUsuario(id: string): Promise<Usuario> {
+    return this.getOne<Usuario>('usuarios/', id);
+  }
+
+  updateUsuario(id: string, usuario: Usuario): Promise<Usuario> {
+    return this.put<Usuario>('usuarios/', id, usuario);
+  }
+
+  cambiarTipoUsuario(id: string, tipo: 'admin' | 'cliente' | 'propietario') {
+    return lastValueFrom(this.http.put(`${this.api_url}usuarios/${id}/cambiar-tipo`, {}, { params: { nuevo_tipo: tipo } }));
   }
 }
