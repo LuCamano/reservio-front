@@ -2,201 +2,210 @@
 
 <div class="bg-gray-100 min-h-screen px-4 md:px-30 pt-10 pb-20">
 
-  <!-- Sección del local -->
-  <section class="grid grid-cols-12 gap-2 pt-10 px-3">
-    <div class="col-span-1"></div>
-    <div class="col-span-12 md:col-span-10 bg-white rounded-t-xl overflow-hidden border border-gray-300 shadow">
-      <img [src]="local.imagenes![0]"
-          alt="Foto del local {{ local.nombre }}"
-          class="w-full rounded-t aspect-[3/1] object-cover "/>
-      <div class="grid grid-cols-4 p-7">
-          <div class="col-span-4 md:col-span-3">
-              <h2 class="text-2xl font-bold mb-0 hover:underline">{{ local.nombre }}</h2>
-              <p class="mb-3 text-gray-500 dark:text-gray-400 opacity-75">Codigo postal:{{local.comuna}}</p>
-              <ul class="space-y-1 text-sm text-gray-800">
-                  <li><strong>Dirección:</strong> {{ local.direccion }}</li>
-              </ul>
+  <!-- Spinner de carga -->
+  <div *ngIf="isLoading" class="spinner">
+    <div class="spinner-icon"></div>
+  </div>
+  <!-- Fin spinner -->
+  <ng-container *ngIf="!isLoading">
+    <!-- Sección del local -->
+    <section class="grid grid-cols-12 gap-2 pt-10 px-3">
+      <div class="col-span-1"></div>
+      <div class="col-span-12 md:col-span-10 bg-white rounded-t-xl overflow-hidden border border-gray-300 shadow">
+        <img [src]="local.imagenes![0]"
+            alt="Foto del local {{ local.nombre }}"
+            class="w-full rounded-t aspect-[3/1] object-cover "/>
+        <div class="grid grid-cols-4 p-7">
+            <div class="col-span-4 md:col-span-3">
+                <h2 class="text-2xl font-bold mb-0 hover:underline">{{ local.nombre }}</h2>
+                <p class="mb-3 text-gray-500 dark:text-gray-400 opacity-75">
+                  Comuna: {{ nombreComuna }} | Región: {{ nombreRegion }}
+                </p>
+                <ul class="space-y-1 text-sm text-gray-800">
+                    <li><strong>Dirección:</strong> {{ local.direccion }}</li>
+                </ul>
+            </div>
+            <div class="col-span-4 md:col-span-1 pt-2">
+                <p class="text-sm text-gray-800">Precio por hora</p>
+                <h2 class="text-2xl font-bold mb-2">${{ local.precio_hora }}/h</h2>
+                <button class="bg-indigo-700  hover:bg-indigo-800 text-white w-full py-2 px-4 rounded-xl shadow transition duration-200"
+                    (click)="reservar()">
+                    Reservar
+                </button>
+            </div>
+        </div>
+      </div>
+      <div class="col-span-1"></div>
+    </section>
+
+    <!-- Información adicional y contactos -->
+    <section class="flex flex-col md:flex-row gap-4 py-5">
+      <!-- Margen izquierdo -->
+      <div class="hidden md:block w-1/12"></div>
+
+      <!-- Información adicional -->
+      <div class="w-full md:w-7/12">
+        <div class="p-4">
+          <h2 class="text-2xl font-bold mb-2">Información adicional</h2>
+          <p class="text-sm text-gray-900">{{ local.descripcion }}</p>
+
+          <h2 class="text-2xl font-bold my-2 pt-5">Características del local</h2>
+          <p class="text-sm text-gray-800">Capacidad: {{ local.capacidad }} personas</p>
+        </div>
+      </div>
+
+      <!-- Contactos -->
+      <div class="w-full md:w-3/12 self-start bg-white rounded-xl overflow-hidden border border-gray-300 shadow">
+        <div class="p-4">
+          <h2 class="text-2xl font-bold mb-2">Contacto</h2>
+          <ul class="space-y-1 text-sm text-gray-800">
+            <li><strong>Correo electrónico:</strong> {{ local.propietarios![0].email }}</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Margen derecho -->
+      <div class="hidden md:block w-1/12"></div>
+    </section>
+
+    <!-- Imagen del mapa y ubicación -->
+    <section class="grid grid-cols-12 gap-2 pb-10 px-5 bg-gray-100">
+      <div class="col-span-1"></div>
+      <div class="col-span-12 md:col-span-10">
+        <div class="p-4">
+          <h2 class="text-2xl font-bold mb-2">{{ local.direccion }}</h2>
+          <p class="text-sm text-gray-800 mb-4">{{ nombreComuna }}, {{ nombreRegion }}</p>
+          <p class="text-sm text-gray-800 mb-4">Ubicación del local</p>
+          
+        </div>
+        <div *ngIf="isLoading" class="loading">
+          <p>Cargando mapa...</p>
+        </div>
+
+        <div *ngIf="mapError" class="error">
+          <p>No se pudo cargar el mapa para esta ubicación</p>
+        </div>
+
+        <div *ngIf="!isLoading && !mapError">
+          <div>
+            <app-map 
+              [lat]="dato_lat" 
+              [lng]="dato_lng"
+              [localName]="direccioncompleta">
+            </app-map>
           </div>
-          <div class="col-span-4 md:col-span-1 pt-2">
-              <p class="text-sm text-gray-800">Precio por hora</p>
-              <h2 class="text-2xl font-bold mb-2">${{ local.precio_hora }}/h</h2>
-              <button class="bg-indigo-700  hover:bg-indigo-800 text-white w-full py-2 px-4 rounded-xl shadow transition duration-200"
-                  (click)="reservar()">
-                  Reservar
-              </button>
-          </div>
-      </div>
-    </div>
-    <div class="col-span-1"></div>
-  </section>
-
-  <!-- Información adicional y contactos -->
-  <section class="flex flex-col md:flex-row gap-4 py-5">
-    <!-- Margen izquierdo -->
-    <div class="hidden md:block w-1/12"></div>
-
-    <!-- Información adicional -->
-    <div class="w-full md:w-7/12">
-      <div class="p-4">
-        <h2 class="text-2xl font-bold mb-2">Información adicional</h2>
-        <p class="text-sm text-gray-900">{{ local.descripcion }}</p>
-
-        <h2 class="text-2xl font-bold my-2 pt-5">Características del local</h2>
-        <p class="text-sm text-gray-800">Capacidad: {{ local.capacidad }} personas</p>
-      </div>
-    </div>
-
-    <!-- Contactos -->
-    <div class="w-full md:w-3/12 self-start bg-white rounded-xl overflow-hidden border border-gray-300 shadow">
-      <div class="p-4">
-        <h2 class="text-2xl font-bold mb-2">Contacto</h2>
-        <ul class="space-y-1 text-sm text-gray-800">
-          <li><strong>Correo electrónico:</strong> {{ local.propietarios![0].email }}</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Margen derecho -->
-    <div class="hidden md:block w-1/12"></div>
-  </section>
-
-  <!-- Imagen del mapa y ubicación -->
-  <section class="grid grid-cols-12 gap-2 pb-10 px-5 bg-gray-100">
-    <div class="col-span-1"></div>
-    <div class="col-span-12 md:col-span-10">
-      <div class="p-4">
-        <h2 class="text-2xl font-bold mb-2">{{ local.direccion }}</h2>
-        <p class="text-sm text-gray-800 mb-4">Test: {{direccioncompleta }}</p>
-        <p class="text-sm text-gray-800 mb-4">Ubicación del local</p>
+        </div>
         
       </div>
-      <div *ngIf="isLoading" class="loading">
-        <p>Cargando mapa...</p>
-      </div>
+      <div class="col-span-1"></div>
+    </section>
 
-      <div *ngIf="mapError" class="error">
-        <p>No se pudo cargar el mapa para esta ubicación</p>
-      </div>
+    <section class="bg-grey-100 py-10 px-5">
+      <div class="max-w-6xl mx-auto text-center">
+        <h2 class="text-3xl font-bold mb-4">Opiniones de los usuarios</h2>
+        <p class="text-xl text-gray-600 mb-10">
+          ⭐⭐⭐⭐ <span class="text-2xl font-semibold text-gray-800 ml-2">4.4</span> Puntuación media
+        </p>
 
-      <div *ngIf="!isLoading && !mapError">
-        <div>
-          <app-map 
-            [lat]="dato_lat" 
-            [lng]="dato_lng"
-            [localName]="direccioncompleta">
-          </app-map>
-        </div>
-      </div>
-      
-    </div>
-    <div class="col-span-1"></div>
-  </section>
-
-  <section class="bg-grey-100 py-10 px-5">
-    <div class="max-w-6xl mx-auto text-center">
-      <h2 class="text-3xl font-bold mb-4">Opiniones de los usuarios</h2>
-      <p class="text-xl text-gray-600 mb-10">
-        ⭐⭐⭐⭐ <span class="text-2xl font-semibold text-gray-800 ml-2">4.4</span> Puntuación media
-      </p>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-        <!-- Más útil -->
-        <div class="bg-white p-6 rounded-xl shadow-lg">
-          <h3 class="text-xl font-semibold mb-2">Los más útiles</h3>
-          <p class="text-sm text-gray-500 mb-4">2 de 2 personas encontraron útil esta opinión</p>
-          <div class="flex items-center gap-3 mb-3">
-            <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-lg">👤</div>
-            <div>
-              <p class="font-medium">usuario_123</p>
-              <p class="text-xs text-gray-500">Hace 10 meses</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+          <!-- Más útil -->
+          <div class="bg-white p-6 rounded-xl shadow-lg">
+            <h3 class="text-xl font-semibold mb-2">Los más útiles</h3>
+            <p class="text-sm text-gray-500 mb-4">2 de 2 personas encontraron útil esta opinión</p>
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-lg">👤</div>
+              <div>
+                <p class="font-medium">usuario_123</p>
+                <p class="text-xs text-gray-500">Hace 10 meses</p>
+              </div>
             </div>
+            <div class="text-yellow-500 mb-2 text-sm">⭐⭐⭐☆☆</div>
+            <p class="text-gray-700 text-sm">
+              El local tiene buen ambiente. Aunque al final del día estaba un poco lleno.
+            </p>
           </div>
-          <div class="text-yellow-500 mb-2 text-sm">⭐⭐⭐☆☆</div>
-          <p class="text-gray-700 text-sm">
-            El local tiene buen ambiente. Aunque al final del día estaba un poco lleno.
-          </p>
-        </div>
 
-        <!-- Más valorado -->
-        <div class="bg-white p-6 rounded-xl shadow-lg">
-          <h3 class="text-xl font-semibold mb-2">Los más valorados</h3>
-          <p class="text-sm text-gray-500 mb-4">5/5 estrellas</p>
-          <div class="flex items-center gap-3 mb-3">
-            <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-lg">👤</div>
-            <div>
-              <p class="font-medium">sandra_locales</p>
-              <p class="text-xs text-gray-500">Hace 6 meses</p>
+          <!-- Más valorado -->
+          <div class="bg-white p-6 rounded-xl shadow-lg">
+            <h3 class="text-xl font-semibold mb-2">Los más valorados</h3>
+            <p class="text-sm text-gray-500 mb-4">5/5 estrellas</p>
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-lg">👤</div>
+              <div>
+                <p class="font-medium">sandra_locales</p>
+                <p class="text-xs text-gray-500">Hace 6 meses</p>
+              </div>
             </div>
+            <div class="text-yellow-500 mb-2 text-sm">⭐⭐⭐⭐⭐</div>
+            <p class="text-gray-700 text-sm">
+              Ideal para pasar el rato con amigos. La atención es excelente y puedes volver varias veces.
+            </p>
           </div>
-          <div class="text-yellow-500 mb-2 text-sm">⭐⭐⭐⭐⭐</div>
-          <p class="text-gray-700 text-sm">
-            Ideal para pasar el rato con amigos. La atención es excelente y puedes volver varias veces.
-          </p>
-        </div>
 
-        <!-- Último -->
-        <div class="bg-white p-6 rounded-xl shadow-lg">
-          <h3 class="text-xl font-semibold mb-2">Último</h3>
-          <p class="text-sm text-gray-500 mb-4">Hace 6 meses</p>
-          <div class="flex items-center gap-3 mb-3">
-            <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-lg">👤</div>
-            <div>
-              <p class="font-medium">sandra_locales</p>
-              <p class="text-xs text-gray-500">Hace 6 meses</p>
+          <!-- Último -->
+          <div class="bg-white p-6 rounded-xl shadow-lg">
+            <h3 class="text-xl font-semibold mb-2">Último</h3>
+            <p class="text-sm text-gray-500 mb-4">Hace 6 meses</p>
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-lg">👤</div>
+              <div>
+                <p class="font-medium">sandra_locales</p>
+                <p class="text-xs text-gray-500">Hace 6 meses</p>
+              </div>
             </div>
+            <div class="text-yellow-500 mb-2 text-sm">⭐⭐⭐⭐⭐</div>
+            <p class="text-gray-700 text-sm">
+              Ideal para pasar el rato con amigos. La atención es excelente y puedes volver varias veces.
+            </p>
           </div>
-          <div class="text-yellow-500 mb-2 text-sm">⭐⭐⭐⭐⭐</div>
-          <p class="text-gray-700 text-sm">
-            Ideal para pasar el rato con amigos. La atención es excelente y puedes volver varias veces.
-          </p>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Modal de Reserva -->
-  <div
-    *ngIf="mostrarModalReserva" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-    <div class="bg-white rounded-xl shadow-lg w-full max-w-xl p-8 relative">
-      <button
-        class="absolute top-2 right-2 text-gray-400 hover:text-gray-600 text-2xl"
-        (click)="cerrarModalReserva()"
-        aria-label="Cerrar"
-      >&times;</button>
-      <h2 class="text-2xl font-bold mb-4">Reservar Local</h2>
-      <form [formGroup]="reservaForm" (ngSubmit)="enviarReserva()" class="space-y-4">
-        <div>
-          <label class="block text-sm font-medium mb-1">Fecha de inicio</label>
-          <input type="datetime-local" formControlName="inicio" class="w-full border rounded-lg px-3 py-2" (change)="actualizarHoras()">
-        </div>
-        <div>
-          <label class="block text-sm font-medium mb-1">Fecha de término</label>
-          <input type="datetime-local" formControlName="fin" class="w-full border rounded-lg px-3 py-2" (change)="actualizarHoras()">
-        </div>
-        <div>
-          <label class="block text-sm font-medium mb-1">Cantidad de horas</label>
-          <input type="number" formControlName="cant_horas" min="1" class="w-full border rounded-lg px-3 py-2 bg-gray-100" readonly>
-        </div>
-        <div class="text-right text-base font-semibold text-gray-700" *ngIf="local && reservaForm.get('cant_horas')?.value">
-          Total a pagar: <span class="text-indigo-700">${{ local.precio_hora * reservaForm.get('cant_horas')?.value! }}</span>
-        </div>
-        <div class="text-sm text-blue-700 bg-blue-50 rounded-lg px-3 py-2 mb-2" *ngIf="local && reservaForm.get('cant_horas')?.value">
-          <span class="font-semibold">Importante:</span> El 50% del costo de la reserva deberá ser pagado al inicio de la reserva y el otro 50% al finalizar el periodo de reserva.
-        </div>
-        <div *ngIf="reservaError" class="text-red-600 text-sm text-center">{{ reservaError }}</div>
-        <div class="flex justify-end gap-2 pt-2">
-          <button type="button" (click)="cerrarModalReserva()" class="px-4 py-2 rounded-lg border">Cancelar</button>
-          <button type="submit" [disabled]="reservaForm.invalid" class="px-4 py-2 rounded-lg bg-indigo-700 text-white hover:bg-indigo-800">Reservar</button>
-        </div>
-      </form>
+    <!-- Modal de Reserva -->
+    <div
+      *ngIf="mostrarModalReserva" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+      <div class="bg-white rounded-xl shadow-lg w-full max-w-xl p-8 relative">
+        <button
+          class="absolute top-2 right-2 text-gray-400 hover:text-gray-600 text-2xl"
+          (click)="cerrarModalReserva()"
+          aria-label="Cerrar"
+        >&times;</button>
+        <h2 class="text-2xl font-bold mb-4">Reservar Local</h2>
+        <form [formGroup]="reservaForm" (ngSubmit)="enviarReserva()" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium mb-1">Fecha de inicio</label>
+            <input type="datetime-local" formControlName="inicio" class="w-full border rounded-lg px-3 py-2" (change)="actualizarHoras()">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Fecha de término</label>
+            <input type="datetime-local" formControlName="fin" class="w-full border rounded-lg px-3 py-2" (change)="actualizarHoras()">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Cantidad de horas</label>
+            <input type="number" formControlName="cant_horas" min="1" class="w-full border rounded-lg px-3 py-2 bg-gray-100" readonly>
+          </div>
+          <div class="text-right text-base font-semibold text-gray-700" *ngIf="local && reservaForm.get('cant_horas')?.value">
+            Total a pagar: <span class="text-indigo-700">${{ local.precio_hora * reservaForm.get('cant_horas')?.value! }}</span>
+          </div>
+          <div class="text-sm text-blue-700 bg-blue-50 rounded-lg px-3 py-2 mb-2" *ngIf="local && reservaForm.get('cant_horas')?.value">
+            <span class="font-semibold">Importante:</span> El 50% del costo de la reserva deberá ser pagado al inicio de la reserva y el otro 50% al finalizar el periodo de reserva.
+          </div>
+          <div *ngIf="reservaError" class="text-red-600 text-sm text-center">{{ reservaError }}</div>
+          <div class="flex justify-end gap-2 pt-2">
+            <button type="button" (click)="cerrarModalReserva()" class="px-4 py-2 rounded-lg border">Cancelar</button>
+            <button type="submit" [disabled]="reservaForm.invalid" class="px-4 py-2 rounded-lg bg-indigo-700 text-white hover:bg-indigo-800">Reservar</button>
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
 
-  <!-- Alerta de éxito -->
-  <div
-    *ngIf="mostrarAlerta"
-    class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 bg-green-100 border border-green-400 text-green-800 px-6 py-3 rounded-xl shadow-lg transition-all"
-  >
-    Su arriendo se ha registrado.
-  </div>
+    <!-- Alerta de éxito -->
+    <div
+      *ngIf="mostrarAlerta"
+      class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 bg-green-100 border border-green-400 text-green-800 px-6 py-3 rounded-xl shadow-lg transition-all"
+    >
+      Su arriendo se ha registrado.
+    </div>
+  </ng-container>
 </div>

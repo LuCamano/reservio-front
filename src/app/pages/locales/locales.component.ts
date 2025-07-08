@@ -26,11 +26,14 @@ export class LocalesComponent implements OnInit {
   comunasFiltradas: Comuna[] = [];
   vista: 'grilla' | 'lista' = 'grilla';
   ordenarPor: string = 'precioAsc';
+  isLoading: boolean = true;
 
   async ngOnInit(): Promise<void> {
+    this.isLoading = true;
     await this.cargarDatos();
     this.comunasFiltradas = [...this.comunas];
     this.localesFiltrados = [...this.locales];
+    this.isLoading = false;
   }
 
   async cargarDatos() {
