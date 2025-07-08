@@ -2,7 +2,7 @@ import { Component, inject, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Renderer2 } from '@angular/core';
 import { Local, Reserva, Usuario } from '../../../models/models.interface';
-import { ConnectionService } from '../../../services/connection.service';
+import { ApiService } from '../../../services/api.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { OpenStreetMapService } from '../../../services/open-street-map.service';
@@ -22,13 +22,11 @@ export class LocalComponent implements OnDestroy {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private authSvc = inject(AuthService);
-  private connectionService = inject(ConnectionService);
+  private apiService = inject(ApiService);
 
   local!: Local;
 
   idLocal!: string;
-  svLocal = inject(ConnectionService);
-
   isLoading = true;
   mapError = false;
 
@@ -54,13 +52,50 @@ export class LocalComponent implements OnDestroy {
   idReserva: string = '';
   usuario: Usuario | null = null;
 
-  ngOnInit(): void {
+  // Nuevas variables para nombre de comuna y región
+  nombreRegion: string = '';
+  nombreComuna: string = '';
+
+  imagenActual: number = 0;
+
+  // Variables y métodos para el modal de imagen
+  mostrarImagenModal: boolean = false;
+  imagenModalUrl: string = '';
+
+  async ngOnInit(): Promise<void> {
     this.idLocal = this.route.snapshot.paramMap.get('id')!;
-    this.getLocal(this.idLocal);
+    await this.getLocal(this.idLocal);
+  }
+
+  async getLocal(id: string) {
+    try {
+      const local = await this.apiService.getLocal(id);
+      if (local) {
+        this.local = local;
+        // Obtener nombre de comuna y región
+        if (local.comuna) {
+          this.nombreComuna = local.comuna.nombre;
+          // Obtener la región asociada a la comuna
+          const regionId = local.comuna.region_id;
+          if (regionId) {
+            const region = await this.apiService.getRegion(regionId);
+            this.nombreRegion = region?.nombre || '';
+          }
+        }
+        this.buscarCoordenadas();
+      } else {
+        console.error('No se encontró el local con ID:', id);
+        this.router.navigate(['/locales']);
+      }
+    } catch (error) {
+      console.error('Error al obtener el local:', error);
+      this.router.navigate(['/locales']);
+    }
   }
 
   buscarCoordenadas() {
-    this.direccioncompleta = this.local?.direccion + ', ' + this.local?.comuna + ', chile';
+    // Usar nombre de comuna y región para la dirección completa
+    this.direccioncompleta = `${this.local?.direccion}, ${this.nombreComuna}, ${this.nombreRegion}, chile`;
     this.MapService.getCoordinates(this.direccioncompleta)
       .subscribe({
         next: (coords) => {
@@ -106,7 +141,8 @@ export class LocalComponent implements OnDestroy {
         return;
       }
 
-      const usuario = this.connectionService.getSesionUsuario();
+      // Obtener usuario autenticado de forma pública
+      const usuario = (this.authSvc as any).currentUserSubject?.value;
       if (!usuario) {
         alert('Debes iniciar sesión para reservar.');
         this.router.navigate(['/login']);
@@ -120,14 +156,11 @@ export class LocalComponent implements OnDestroy {
         cant_horas: form.cant_horas!,
         estado: 'pendiente',
         cliente: usuario,
-        propiedad: this.local,
+        propiedad: this.local, // Incluye el local completo
         fecha_creacion: new Date()
       };
 
-      const reservas = JSON.parse(localStorage.getItem('reservas') || '[]');
-      reservas.push(reserva);
-      localStorage.setItem('reservas', JSON.stringify(reservas));
-      // Guardar la reserva actual para el pago
+      // Guardar la reserva actual para el pago (incluye el local)
       localStorage.setItem('reservaPagoActual', JSON.stringify(reserva));
       this.cerrarModalReserva();
       // Redirigir a la página de pago
@@ -137,17 +170,6 @@ export class LocalComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.renderer.removeClass(document.body, 'overflow-hidden');
-  }
-
-  async getLocal(id: string) {
-    const local = await this.svLocal.getLocalById(id);
-    if (local) {
-      this.local = local;
-      this.buscarCoordenadas();
-    } else {
-      console.error('No se encontró el local con ID:', id);
-      this.router.navigate(['/locales']);
-    }
   }
 
   reservar() {
@@ -175,5 +197,23 @@ export class LocalComponent implements OnDestroy {
     } else {
       this.reservaForm.get('cant_horas')?.setValue(1);
     }
+  }
+
+  cambiarImagen(direccion: number) {
+    if (!this.local?.imagenes) return;
+    const total = this.local.imagenes.length;
+    this.imagenActual = (this.imagenActual + direccion + total) % total;
+  }
+
+  abrirImagenModal(url: string) {
+    this.imagenModalUrl = url;
+    this.mostrarImagenModal = true;
+    this.renderer.addClass(document.body, 'overflow-hidden');
+  }
+
+  cerrarImagenModal() {
+    this.mostrarImagenModal = false;
+    this.imagenModalUrl = '';
+    this.renderer.removeClass(document.body, 'overflow-hidden');
   }
 }
