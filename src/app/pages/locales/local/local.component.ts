@@ -2,6 +2,7 @@ import { Component, inject, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Renderer2 } from '@angular/core';
 import { Local, Reserva, Usuario } from '../../../models/models.interface';
+import { ApiService } from '../../../services/api.service';
 import { ConnectionService } from '../../../services/connection.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -22,7 +23,7 @@ export class LocalComponent implements OnDestroy {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private authSvc = inject(AuthService);
-  private connectionService = inject(ConnectionService);
+  private apiService = inject(ApiService);
 
   local!: Local;
 
@@ -54,9 +55,9 @@ export class LocalComponent implements OnDestroy {
   idReserva: string = '';
   usuario: Usuario | null = null;
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.idLocal = this.route.snapshot.paramMap.get('id')!;
-    this.getLocal(this.idLocal);
+    await this.getLocal(this.idLocal);
   }
 
   buscarCoordenadas() {
@@ -106,7 +107,8 @@ export class LocalComponent implements OnDestroy {
         return;
       }
 
-      const usuario = this.connectionService.getSesionUsuario();
+      // Obtener usuario autenticado de forma pública
+      const usuario = (this.authSvc as any).currentUserSubject?.value;
       if (!usuario) {
         alert('Debes iniciar sesión para reservar.');
         this.router.navigate(['/login']);
@@ -140,12 +142,17 @@ export class LocalComponent implements OnDestroy {
   }
 
   async getLocal(id: string) {
-    const local = await this.svLocal.getLocalById(id);
-    if (local) {
-      this.local = local;
-      this.buscarCoordenadas();
-    } else {
-      console.error('No se encontró el local con ID:', id);
+    try {
+      const local = await this.apiService.getLocal(id);
+      if (local) {
+        this.local = local;
+        this.buscarCoordenadas();
+      } else {
+        console.error('No se encontró el local con ID:', id);
+        this.router.navigate(['/locales']);
+      }
+    } catch (error) {
+      console.error('Error al obtener el local:', error);
       this.router.navigate(['/locales']);
     }
   }
