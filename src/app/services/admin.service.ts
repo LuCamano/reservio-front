@@ -36,4 +36,45 @@ export class AdminService {
       throw new Error('No tienes permisos para desbloquear usuarios');
     }
   }
+
+  validarPropiedad(propiedad_id: string) {
+    const reqUrl = `${this.apiUrl}api/v1/propiedades/${propiedad_id}/validar`;
+    if (this.authService.isAdmin()) {
+      return lastValueFrom(this.http.post(reqUrl, {}));
+    } else {
+      throw new Error('No tienes permisos para validar propiedades');
+    }
+  }
+
+  /////////////////////////////////////////////////////
+  // Para ver como se usan los endpoints de pagos   ///
+  // Revisar los readme del repositorio del backend ///
+  /////////////////////////////////////////////////////
+
+  getComisionesPorPagar() {
+    const reqUrl = `${this.apiUrl}pagos/admin/comisiones-a-pagar`;
+    if (this.authService.isAdmin()) {
+      return lastValueFrom(this.http.get(reqUrl));
+    } else {
+      throw new Error('No tienes permisos para acceder a las comisiones por pagar');
+    }
+  }
+
+  procesarComision(comisionId: string) {
+    const reqUrl = `${this.apiUrl}pagos/admin/procesar-comision/${comisionId}`;
+    if (this.authService.isAdmin()) {
+      return lastValueFrom(this.http.put(reqUrl, {}));
+    } else {
+      throw new Error('No tienes permisos para procesar comisiones');
+    }
+  }
+
+  completarComision(comisionId: string) {
+    const reqUrl = `${this.apiUrl}pagos/admin/completar-comision/${comisionId}`;
+    if (this.authService.isAdmin()) {
+      return lastValueFrom(this.http.put(reqUrl, {}));
+    } else {
+      throw new Error('No tienes permisos para completar comisiones');
+    }
+  }
 }
