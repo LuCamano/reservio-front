@@ -5,6 +5,11 @@ import { ConnectionService } from '../../../services/connection.service';
 import { Router } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { AuthService } from '../../../services/auth.service';
+import { HttpEventType } from '@angular/common/http';
+import { fileTypeValidator } from '../../../validators/png_pdf.validator';
+
+
+
 
 @Component({
   selector: 'app-add-propiedad',
@@ -23,6 +28,13 @@ export class AddPropiedadComponent implements OnInit {
   comunasFiltradas: Comuna[] = [];
   usuario: Usuario | null = null; 
 
+  // Guardamos los archivos y sus vistas previas
+  selectedFiles: File[] = [];
+  selectedDoc: File | null = null;
+  previews: string[] = [];
+  isLoading = false;
+  uploadProgress = 0;
+
   localForm: FormGroup = new FormGroup({
     nombre: new FormControl('', [Validators.required]),
     region: new FormControl('', [Validators.required]),
@@ -34,10 +46,10 @@ export class AddPropiedadComponent implements OnInit {
     hora_cierre: new FormControl('', [Validators.required]),
     direccion: new FormControl('', [Validators.required]),
     disponible: new FormControl(true),
-    imagenUrl: new FormControl('', [Validators.required]),
+    images: new FormControl<FileList | null>(null, [Validators.required]),
     descripcion: new FormControl('', [Validators.required]),
-    documento: new FormControl<File | null>(null),
-    imagenes: new FormControl<FileList | null>(null, [Validators.required])
+    documento: new FormControl<File|null>(null, [Validators.required, fileTypeValidator(['pdf', 'image'])]),
+
   });
 
 
@@ -70,55 +82,6 @@ export class AddPropiedadComponent implements OnInit {
     })
   }
 
-  crearPropiedad() {
-    
-    const formValue = this.localForm.value;
-
-    const formData = new FormData();
-    formData.append('nombre', formValue.nombre);
-    formData.append('descripcion', formValue.descripcion);
-    formData.append('direccion', formValue.direccion);
-    formData.append('tipo', 'local');
-    formData.append('cod_postal', formValue.cod_postal || '4000');
-    formData.append('capacidad', formValue.capacidad);
-    formData.append('precio_hora', formValue.precioH);
-    formData.append('hora_apertura', formValue.hora_apertura);
-    formData.append('hora_cierre', formValue.hora_cierre);
-    formData.append('comuna_id', formValue.comuna);
-    formData.append('usuario_id', this.usuario!.id || '');
-
-    const imagenes: FileList = formValue.imagenes;
-    if (imagenes && imagenes.length > 0) {
-      for (let i = 0; i < imagenes.length; i++) {
-        formData.append('imagenes', imagenes[i]);
-      }
-    }
-
-    // Si tienes documento:
-    if (formValue.documento) {
-      formData.append('documento', formValue.documento);
-    }
-
-    // Otros campos si los necesitas
-    formData.append('validada', 'false');
-    formData.append('activo', 'true');
-
-    console.log('Nueva propiedad a crear:', formData.values());
-    // Asegurarse de que sea del tipo correcto>;
-    console.log('Datos de la propiedad:', this.localForm.value);
-
-    this.apiSv.createLocal(formData)
-      .then(() => {
-        alert('Propiedad creada exitosamente');
-        this.localForm.reset();
-        this.router.navigate(['/perfil']); // Redirige al perfil o donde prefieras
-      })
-      .catch(error => {
-        console.error('Error al crear la propiedad:', error);
-        alert('Hubo un error al crear la propiedad');
-      });
-  }
-
   onCancel() {
     this.localForm.reset();
   }
@@ -126,4 +89,89 @@ export class AddPropiedadComponent implements OnInit {
   onImagesChange(imagenes: string[]) {
     this.imagenesSeleccionadas = imagenes;
   }
+
+  onFileSelected(e: Event) {
+    const files = (e.target as HTMLInputElement).files;
+    if (!files) return;
+    this.selectedFiles = Array.from(files);
+    this.localForm.patchValue({ images: files });
+    this.localForm.get('images')!.updateValueAndValidity();
+  }
+
+ /*  onDocumentSelected(e: Event) {
+    const file = (e.target as HTMLInputElement).files?.[0] ?? null;
+    this.selectedDoc = file;
+  } */
+
+  onDocumentSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    // 1) Si no hay ficheros, limpia el control
+    if (!input.files || input.files.length === 0) {
+      this.selectedDoc = null;
+      this.localForm.patchValue({ documento: null });
+      this.localForm.get('documento')!.updateValueAndValidity();
+      return;
+    }
+
+    // 2) Toma el primer fichero
+    const file = input.files[0];
+    this.selectedDoc = file;
+
+    // 3) Actualiza el FormControl
+    this.localForm.patchValue({ documento: file });
+    this.localForm.get('documento')!.updateValueAndValidity();
+  }
+
+  async crearPropiedad() {
+    this.isLoading = true;
+    const fv = this.localForm.value;
+    const formData = new FormData();
+
+    // 1. Agregar campos simples
+    formData.append('nombre', fv.nombre);
+    formData.append('descripcion', fv.descripcion);
+    formData.append('direccion', fv.direccion);
+    formData.append('tipo', 'local');
+    formData.append('cod_postal', fv.cod_postal || '4000');
+    formData.append('capacidad', fv.capacidad);
+    formData.append('precio_hora', fv.precioH);
+    formData.append('hora_apertura', fv.hora_apertura);
+    formData.append('hora_cierre', fv.hora_cierre);
+    formData.append('comuna_id', fv.comuna);
+    formData.append('usuario_id', this.usuario!.id || '');
+    
+    // Archivos: parámetro se llama “images”
+    const files: FileList = fv.images;
+    if (files && files.length) {
+      for (let i = 0; i < files.length; i++) {
+        formData.append('images', files[i]);
+      }
+    }
+
+    // Documento: parámetro se llama “documento”
+    console.log(fv.documento);
+    if (fv.documento) {
+      formData.append('documento', fv.documento);
+    }
+    try {
+      const nueva: Local = await this.apiSv.createLocal(formData);
+      alert('Propiedad creada exitosamente');
+      this.localForm.reset({
+        tipo: 'local',
+      });
+      console.log(formData);
+      this.previews = [];
+      this.router.navigate(['/perfil']);
+    }
+    catch (error) {
+      console.error('Error al crear la propiedad:', error);
+      alert('Hubo un error al crear la propiedad');
+    }
+    finally {
+      this.isLoading = false;
+    }
+  }
+
+
+
 }
