@@ -62,7 +62,7 @@
                     <!-- Contact Info -->
                     <div class="bg-gray-50 rounded-lg p-6">
                         <h3 class="text-xl font-bold text-dark mb-4">Información de Contacto</h3>
-                        <p class="text-gray-700 mb-2"><strong>Correo:</strong> {{ local.propietarios![0] || 'Particular' }}</p>
+                        <p class="text-gray-700 mb-2"><strong>Correo:</strong> {{ local.propietarios![0].email }}</p>
                         
                         <button class="mt-4 bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg transition">
                             <i class="fas fa-envelope mr-2"></i> Contactar
@@ -71,14 +71,36 @@
                 </div>
                 
                 <!-- Location Map -->
-                <div class="mt-8">
-                    <h3 class="text-xl font-bold text-dark mb-4">Ubicación</h3>
-                   
-                    <app-map></app-map>
-                    
+                <!-- Imagen del mapa y ubicación -->
+                <section class="grid grid-cols-12 gap-2 pb-10 px-5 bg-gray-100">
+                    <div class="col-span-1"></div>
+                    <div class="col-span-12 md:col-span-10">
+                        <div class="p-4">
+                            <h2 class="text-2xl font-bold mb-2">{{ local.direccion }}</h2>
+                            <p class="text-sm text-gray-800 mb-4">Test: {{direccioncompleta }}</p>
+                            <p class="text-sm text-gray-800 mb-4">Ubicación del local</p>
+                
+                        </div>
+                        <div *ngIf="isLoading" class="loading">
+                            <p>Cargando mapa...</p>
+                        </div>
+                
+                        <div *ngIf="mapError" class="error">
+                            <p>No se pudo cargar el mapa para esta ubicación</p>
+                        </div>
+                
+                        <div *ngIf="!isLoading && !mapError">
+                            <div>
+                                <app-map [lat]="dato_lat" [lng]="dato_lng" [localName]="direccioncompleta">
+                                </app-map>
+                            </div>
+                        </div>
+                
+                    </div>
+                    <div class="col-span-1"></div>
+                </section>
                 </div>
-            </div>
-        </div>
+                </div>
         
         <!-- Action Buttons -->
         <div class="flex flex-wrap gap-4 mt-8">
