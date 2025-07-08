@@ -12,7 +12,7 @@ interface GetRequest {
   order_by?: string;
 }
 
-type Endpoint = 'usuarios' | 'regiones' | 'comunas' | 'propiedades' | 'reservas' | 'boletas' | 'valoraciones';
+type Endpoint = 'usuarios/' | 'regiones/' | 'comunas/' | 'propiedades/' | 'reservas/' | 'boletas/' | 'valoraciones/';
 
 @Injectable({
   providedIn: 'root'
