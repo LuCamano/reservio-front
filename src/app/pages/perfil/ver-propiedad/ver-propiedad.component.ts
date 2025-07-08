@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Local } from '../../../models/models.interface';
 import { ActivatedRoute } from '@angular/router';
 import { ConnectionService } from '../../../services/connection.service';
+import { ApiService } from '../../../services/api.service';
 
 @Component({
   selector: 'app-ver-propiedad',
@@ -10,27 +11,24 @@ import { ConnectionService } from '../../../services/connection.service';
   styleUrl: './ver-propiedad.component.scss'
 })
 export class VerPropiedadComponent {
+  private apiSv = inject(ApiService)
   local!: Local;
+  region: string = '';
 
   constructor(
     private route: ActivatedRoute,
-    private localService: ConnectionService
+    
   ) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.obtenerLocal(id);
+      this.apiSv.getLocal(id).then(l => this.local = l)
     }
   }
 
-  obtenerLocal(id: string): void {
-    let local = this.localService.getLocalById(id);
-    if (local) {
-      this.local = local;
-    } else {
-      console.error('Local no encontrado');
-      // Aquí podrías redirigir a una página de error o mostrar un mensaje
-    }
-  }
+   buscarRe(id : string){
+    this.apiSv.getRegion(id).then(r => this.region = r.nombre);
+    return this.region
+  }  
 }

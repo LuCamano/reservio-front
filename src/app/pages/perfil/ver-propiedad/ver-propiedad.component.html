@@ -14,13 +14,13 @@
         <div class="bg-white rounded-xl shadow-lg overflow-hidden">
             <!-- Image Section -->
             <div class="relative">
-                <img src="{{ local.imagenes![0] }}" 
+                <img [src]="local.imagenes![0]" 
                      alt="Imagen del local" 
                      class="w-full h-64 md:h-96 object-cover">
                 
                 <div class="absolute top-4 right-4 bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full flex items-center">
                     <span class="font-medium" :class="local.activo ? 'text-green-600' : 'text-red-600'">
-                        {{ local.activo ? 'Disponible' : 'No disponible' }}
+                        {{ local.activo ? 'Validado' : 'no Validado' }}
                     </span>
                     <div class="ml-2 w-3 h-3 rounded-full" :class="local.activo ? 'bg-green-500' : 'bg-red-500'"></div>
                 </div>
@@ -38,7 +38,7 @@
                         <h2 class="text-2xl font-bold text-dark mb-2">{{ local.nombre }}</h2>
                         <div class="flex items-center text-gray-600 mb-4">
                             <i class="fas fa-map-marker-alt mr-2"></i>
-                            <span>{{ local.direccion }}, {{ local.comuna }}</span>
+                            <span>{{ local.direccion }}, {{ local.comuna?.nombre }}, {{buscarRe(local.comuna?.region_id!)}}</span>
                         </div>
                         
                         <div class="bg-gray-50 rounded-lg p-4 mb-6">
