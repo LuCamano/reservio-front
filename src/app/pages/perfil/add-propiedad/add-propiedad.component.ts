@@ -133,7 +133,7 @@ export class AddPropiedadComponent implements OnInit {
     formData.append('direccion', fv.direccion);
     formData.append('tipo', 'local');
     formData.append('cod_postal', fv.cod_postal || '4000');
-    formData.append('capacidad', fv.capacidad);
+    formData.append('capacidad', fv.capacidad.toString());
     formData.append('precio_hora', fv.precioH);
     formData.append('hora_apertura', fv.hora_apertura);
     formData.append('hora_cierre', fv.hora_cierre);
