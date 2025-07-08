@@ -137,8 +137,15 @@ export class ApiService {
     return locales;
   }
 
-  getLocal(id: string): Promise<Local> {
-    return this.getOne<Local>('propiedades/', id);
+  async getLocal(id: string): Promise<Local> {
+    const local = await this.getOne<Local>('propiedades/', id);
+    if (local.imagenes && local.imagenes.length > 0) {
+      local.imagenes = local.imagenes.map(imagen => `${environment.apiUrl}/${imagen}`);
+    }
+    if (local.documento) {
+      local.documento = `${environment.apiUrl}/${local.documento}`;
+    }
+    return local;
   }
 
   createLocal(localData: FormData): Promise<Local> {
