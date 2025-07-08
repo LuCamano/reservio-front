@@ -27,15 +27,21 @@ export class VerPropiedadComponent {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.apiSv.getLocal(id).then(l => {
-        this.local = l
-        this.buscarCoordenadas();
-      });
-    }
+    this.cargarDatos(id!)
   }
 
-   buscarRe(id : string){
+  async cargarDatos(id :string){
+    const local = await this.apiSv.getLocal(id);
+    if (local) {
+      this.local = local;
+      this.buscarCoordenadas();
+    } else {
+      console.error('No se encontró el local con ID:', id);
+    }
+  
+  }
+
+  buscarRe(id : string){
     this.apiSv.getRegion(id).then(r => this.region = r.nombre);
     return this.region
   }  
