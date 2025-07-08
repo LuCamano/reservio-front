@@ -112,4 +112,9 @@ export class AuthService {
     const token = this.getAccessToken();
     return token != null && !this.isTokenExpired(token);
   }
+
+  isAdmin(): boolean {
+    const user = this.currentUserSubject.value;
+    return user ? user.tipo === 'admin' : false;
+  }
 }

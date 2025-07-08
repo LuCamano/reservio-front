@@ -110,7 +110,7 @@ export class ApiService {
   }
 
   // Crud de Locales
-  getLocales(offset: number = 0, limit: number = 20, order_by?: string, tipo?: string, comuna_id?: string, precioMin?: number, precioMax?: number): Promise<Local[]> {
+  async getLocales(offset: number = 0, limit: number = 20, order_by?: string, tipo?: string, comuna_id?: string, precioMin?: number, precioMax?: number): Promise<Local[]> {
     // Filtrar parámetros undefined
     const params: Record<string, string> = {};
     if (tipo) params['tipo'] = tipo;
@@ -118,13 +118,23 @@ export class ApiService {
     if (precioMin !== undefined) params['precioMin'] = precioMin.toString();
     if (precioMax !== undefined) params['precioMax'] = precioMax.toString();
 
-    return this.get<Local>({
+    let locales = await this.get<Local>({
       endpoint: 'propiedades/',
       offset,
       limit,
       order_by,
       params: Object.keys(params).length > 0 ? params : undefined
     });
+    locales = locales.map(local => {
+      if (local.imagenes && local.imagenes.length > 0) {
+        local.imagenes = local.imagenes.map(imagen => `${environment.apiUrl}/${imagen}`);
+      }
+      if (local.documento) {
+        local.documento = `${environment.apiUrl}/${local.documento}`;
+      }
+      return local;
+    });
+    return locales;
   }
 
   getLocal(id: string): Promise<Local> {
