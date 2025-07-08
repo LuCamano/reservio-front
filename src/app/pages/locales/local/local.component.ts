@@ -56,6 +56,12 @@ export class LocalComponent implements OnDestroy {
   nombreRegion: string = '';
   nombreComuna: string = '';
 
+  imagenActual: number = 0;
+
+  // Variables y métodos para el modal de imagen
+  mostrarImagenModal: boolean = false;
+  imagenModalUrl: string = '';
+
   async ngOnInit(): Promise<void> {
     this.idLocal = this.route.snapshot.paramMap.get('id')!;
     await this.getLocal(this.idLocal);
@@ -191,5 +197,23 @@ export class LocalComponent implements OnDestroy {
     } else {
       this.reservaForm.get('cant_horas')?.setValue(1);
     }
+  }
+
+  cambiarImagen(direccion: number) {
+    if (!this.local?.imagenes) return;
+    const total = this.local.imagenes.length;
+    this.imagenActual = (this.imagenActual + direccion + total) % total;
+  }
+
+  abrirImagenModal(url: string) {
+    this.imagenModalUrl = url;
+    this.mostrarImagenModal = true;
+    this.renderer.addClass(document.body, 'overflow-hidden');
+  }
+
+  cerrarImagenModal() {
+    this.mostrarImagenModal = false;
+    this.imagenModalUrl = '';
+    this.renderer.removeClass(document.body, 'overflow-hidden');
   }
 }
