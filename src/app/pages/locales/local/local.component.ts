@@ -28,7 +28,6 @@ export class LocalComponent implements OnDestroy {
   local!: Local;
 
   idLocal!: string;
-  svLocal = inject(ConnectionService);
 
   isLoading = true;
   mapError = false;
