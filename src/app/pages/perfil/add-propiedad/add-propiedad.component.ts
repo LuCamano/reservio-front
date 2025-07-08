@@ -104,23 +104,23 @@ export class AddPropiedadComponent implements OnInit {
   } */
 
   onDocumentSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    // 1) Si no hay ficheros, limpia el control
-    if (!input.files || input.files.length === 0) {
-      this.selectedDoc = null;
-      this.localForm.patchValue({ documento: null });
-      this.localForm.get('documento')!.updateValueAndValidity();
-      return;
-    }
+  // 1) Garantiza que currentTarget es tu <input>
+  const input = event.currentTarget as HTMLInputElement;
+  console.log('input es HTMLInputElement?', input instanceof HTMLInputElement);
+  console.log('input.files raw:', input.files);
 
-    // 2) Toma el primer fichero
-    const file = input.files[0];
-    this.selectedDoc = file;
+  const file = input.files?.[0] ?? null;
 
-    // 3) Actualiza el FormControl
-    this.localForm.patchValue({ documento: file });
-    this.localForm.get('documento')!.updateValueAndValidity();
-  }
+  // 2) Actualiza la referencia en tu componente
+  this.selectedDoc = file;
+  
+  // 3) Mete el File o null en tu FormControl
+  this.localForm.get('documento')!.setValue(file);
+  this.localForm.get('documento')!.updateValueAndValidity();
+
+  console.log('FormControl documento:', this.localForm.get('documento')!.value);
+}
+
 
   async crearPropiedad() {
     this.isLoading = true;
