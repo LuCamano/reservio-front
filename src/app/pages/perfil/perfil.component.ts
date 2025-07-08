@@ -14,11 +14,11 @@ import { lastValueFrom } from 'rxjs';
 })
 export class PerfilComponent implements OnInit {
   private svgLocales = inject(ConnectionService);
-  private apiSv = inject(ApiService); 
-  private authSvc = inject(AuthService); 
-  private Router = inject(Router); 
+  private apiSv = inject(ApiService);
+  private authSvc = inject(AuthService);
+  private Router = inject(Router);
   usuario: Usuario | null = null;
-  
+
   selectedTabIndex = 0;
   historialTabIndex = 0; // 0: recibidas, 1: realizadas
 
@@ -27,11 +27,28 @@ export class PerfilComponent implements OnInit {
   reservasRecibidas: Reserva[] = [];
   reservasRealizadas: Reserva[] = [];
 
+  regionMap: { [regionId: string]: string } = {};
+
+
+  isLoading = true;
   async ngOnInit() {
-    this.usuario = await lastValueFrom(this.authSvc.getCurrentUser());
-    this.getDatos();
-    this.cargarReservas();
+    try {
+      this.isLoading = true;
+      this.usuario = await lastValueFrom(this.authSvc.getCurrentUser());
+
+      if (this.usuario) {
+        await Promise.all([
+          this.getDatos(),
+          this.cargarReservas()
+        ]);
+      }
+    } catch (error) {
+      console.error('Error al cargar datos del perfil:', error);
+    } finally {
+      this.isLoading = false;
+    }
   }
+
 
   onTabChange(index: number) {
     this.selectedTabIndex = index;
@@ -41,22 +58,46 @@ export class PerfilComponent implements OnInit {
     this.historialTabIndex = index;
   }
 
-  getDatos(){
-     this.apiSv.getLocales().then(lo => {
-      this.locales = lo.filter(r => 
-        r.propietarios?.some(p => p.id === this.usuario!.id))
-    });
-  }
-  buscarRe(id : string){
-    this.apiSv.getRegion(id).then(r => this.region = r.nombre);
-    return this.region
-  }  
-  cargarReservas() {
-    this.apiSv.getReservas().then(reservas => {
-      // Realizadas: reservas hechas por el usuario (como cliente)
-      this.reservasRealizadas = reservas.filter(r => r.cliente?.id === this.usuario!.id);
+  async getDatos() {
+    try {
+      const locales = await this.apiSv.getLocales();
+      this.locales = locales.filter(local =>
+        local.propietarios?.some(p => p.id === this.usuario!.id)
+      );
 
-      // Recibidas: reservas hechas a propiedades del usuario (si es propietario)
+      // Pre-cargar nombres de región
+      const regionIds = [...new Set(this.locales.map(l => l.comuna?.region_id).filter(Boolean))];
+      await Promise.all(regionIds.map(async id => {
+        if (id && !this.regionMap[id]) {
+          const region = await this.apiSv.getRegion(id);
+          this.regionMap[id] = region.nombre;
+        }
+      }));
+    } catch (error) {
+      console.error('Error al obtener locales o regiones:', error);
+    }
+  }
+
+
+  async buscarRe(id: string): Promise<string> {
+    try {
+      const region = await this.apiSv.getRegion(id);
+      this.region = region.nombre;
+      return this.region;
+    } catch (error) {
+      console.error('Error al buscar región:', error);
+      return '';
+    }
+  }
+
+  async cargarReservas() {
+    try {
+      const reservas = await this.apiSv.getReservas();
+
+      this.reservasRealizadas = reservas.filter(r =>
+        r.cliente?.id === this.usuario!.id
+      );
+
       if (this.usuario!.tipo === 'propietario') {
         this.reservasRecibidas = reservas.filter(r =>
           r.propiedad?.propietarios?.some(p => p.id === this.usuario!.id)
@@ -64,8 +105,11 @@ export class PerfilComponent implements OnInit {
       } else {
         this.reservasRecibidas = [];
       }
-    });
+    } catch (error) {
+      console.error('Error al cargar reservas:', error);
+    }
   }
+
 
 
   solicitarPropietario() {

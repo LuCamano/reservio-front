@@ -48,6 +48,13 @@
 
 <!-- Contenido de los tabs  -->
 <div class="px-4 lg:px-20 py-4">
+    <!-- Spinner de carga -->
+  <div *ngIf="isLoading" class="spinner">
+    <div class="spinner-icon"></div>
+  </div>
+  <ng-container *ngIf="!isLoading">
+
+  
     <!-- Contenido del Perfil de usuario  -->
     <div *ngIf="selectedTabIndex === 0" class="px-4 md:px-10 xl:px-40">
         <h1 class="text-4xl font-medium text-gray-700 mb-1 text-start">Información personal</h1>
@@ -206,10 +213,10 @@
     </div>
 
     <!-- Contenido de propiedades si en propietario  -->
-    <a *ngIf="selectedTabIndex === 2" class="bg-white min-h-screen py-10 px-4 sm:px-6 lg:px-8">
-        <a class="max-w-6xl mx-auto">
+    <div *ngIf="selectedTabIndex === 2" class="bg-white min-h-screen py-10 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto">
             <h2 class="text-3xl font-bold text-gray-800 mb-8">Mis propiedades</h2>
-            <a class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div *ngFor="let local of locales"
                     class="bg-white shadow-sm hover:shadow-lg transition-shadow rounded-xl border border-gray-200 overflow-hidden">
                     <img [src]="local.imagenes![0]" [alt]="local.nombre" class="w-full h-48 object-cover" />
@@ -218,7 +225,8 @@
                             <h3 class="text-lg font-semibold text-gray-900">{{ local.nombre }}</h3>
                         </div>
                         <p class="text-sm text-gray-600 mb-1">
-                            <span class="font-medium">Región:</span> {{ buscarRe(local.comuna!.region_id) }}
+                            <span class="font-medium">Región:</span> {{ regionMap[local.comuna?.region_id!] || 'Cargando...'
+                            }}
                         </p>
                         <p class="text-sm text-gray-600 mb-1">
                             <span class="font-medium">Comuna:</span> {{ local.comuna?.nombre }}
@@ -227,23 +235,24 @@
                             <span class="font-medium">Capacidad:</span> {{ local.capacidad }} personas
                         </p>
                         <p class="text-sm text-gray-600 mb-1">
-                            <span class="font-medium">Precio/Hora:</span> ${{ local.precio_hora| number:'1.0-0' }}
+                            <span class="font-medium">Precio/Hora:</span> ${{ local.precio_hora | number:'1.0-0' }}
                         </p>
                         <p class="text-sm text-gray-600 mb-4" *ngIf="local.direccion">
                             <span class="font-medium">Dirección:</span> {{ local.direccion }}
                         </p>
-
                         <div class="text-right">
-                            <button (click)="verDetallesPropiedad(local)" 
+                            <button (click)="verDetallesPropiedad(local)"
                                 class="text-sm px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
                                 Ver Detalles
                             </button>
                         </div>
                     </div>
                 </div>
-                <a routerLink="/perfil/add-propiedad"
+    
+                <!-- Botón para agregar nueva propiedad -->
+                <div routerLink="/perfil/add-propiedad"
                     class="bg-white shadow-sm hover:shadow-lg transition-shadow rounded-2xl border border-dashed border-gray-300 flex flex-col justify-center items-center text-center p-8 cursor-pointer hover:border-blue-500">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-600 mb-4" fill="Normal"
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-600 mb-4" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
@@ -252,8 +261,9 @@
                     <button class="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition">
                         Agregar propiedad
                     </button>
-                </a>
-            </a>
-        </a>
-    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </ng-container>
 </div>
