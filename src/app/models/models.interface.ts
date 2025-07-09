@@ -50,6 +50,7 @@ export interface Usuario{
     password?: string; 
     tipo?: 'cliente' | 'propietario' | 'admin';
     fecha_creacion?: Date;
+    bloqueos?: BloqueoUsuario[];
 }
 
 export interface BloqueoUsuario {
