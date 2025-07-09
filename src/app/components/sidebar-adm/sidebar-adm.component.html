@@ -38,11 +38,16 @@
   </nav>
 
   <!-- Footer -->
-  <div class="px-4 py-3 border-t border-gray-200">
-    <a routerLink="/login" routerLinkActive="bg-gradient-to-r from-sky-900 to-gray-700 text-white rounded"
-          class="flex items-center space-x-2 text-gray-800 hover:bg-gray-100 rounded px-3 py-2 transition">
-          <mat-icon class="text-gray-600">logout</mat-icon>
-          <span class="text-xs font-medium">Cerrar sesión</span>
-        </a>
+  <div class="px-4 py-3 border-t border-gray-200 flex flex-col gap-2">
+    <a routerLink="/" class="flex items-center space-x-2 text-gray-800 hover:bg-blue-100 rounded px-3 py-2 transition w-full text-left">
+      <mat-icon class="text-gray-600">home</mat-icon>
+      <span class="text-xs font-medium">Ir al sitio</span>
+    </a>
+    <hr>
+    <button (click)="logout()"
+      class="flex items-center space-x-2 text-gray-800 hover:bg-gray-100 rounded px-3 py-2 transition w-full text-left">
+      <mat-icon class="text-gray-600">logout</mat-icon>
+      <span class="text-xs font-medium">Cerrar sesión</span>
+  </button>
   </div>
 </aside>

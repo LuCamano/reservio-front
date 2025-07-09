@@ -24,4 +24,9 @@ export class SidebarAdmComponent implements OnInit{
     // Aquí deberías emitir un evento o usar un servicio para comunicar a app.component.ts
   }
   @Output() closeMenu = new EventEmitter<void>();
+
+  logout() {
+    this.authSvc.logout();
+    window.location.href = '/login';
+  }
 }
