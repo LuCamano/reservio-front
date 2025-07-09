@@ -1,4 +1,4 @@
-<div class="max-w-7xl mx-auto px-4 py-6">
+<div class="max-w-7xl mx-auto px-4 py-16">
   <h1 class="text-2xl font-bold text-gray-800 mb-6">Administración de Usuarios</h1>
 
   <!-- Barra de búsqueda y filtros -->
@@ -7,7 +7,7 @@
     <div class="relative flex-1">
       <input 
         type="text" 
-        (ngModel)="searchTerm"
+        [(ngModel)]="searchTerm"
         (input)="filterUsuarios()"
         placeholder="Buscar usuarios..."
         class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm sm:text-base"
@@ -19,12 +19,12 @@
 
     <!-- Filtros -->
     <div class="flex flex-wrap gap-2 sm:gap-4">
-      <select (ngModel)="selectedTipo" (change)="filterUsuarios()" class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <select [(ngModel)]="selectedTipo" (change)="filterUsuarios()" class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
         <option value="">Todos los tipos</option>
         <option *ngFor="let tipo of tiposUsuario" [value]="tipo">{{ tipo }}</option>
       </select>
 
-      <select (ngModel)="selectedEstado" (change)="filterUsuarios()" class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <select [(ngModel)]="selectedEstado" (change)="filterUsuarios()" class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
         <option value="">Todos los estados</option>
         <option *ngFor="let estado of estados" [value]="estado">{{ estado }}</option>
       </select>
@@ -146,5 +146,64 @@
     <i class="fas fa-user-slash text-4xl text-gray-300 mb-4"></i>
     <h3 class="text-lg font-semibold text-gray-500">No se encontraron usuarios</h3>
     <p class="text-gray-400 mt-2">Intenta con otro término de búsqueda o ajusta los filtros</p>
+  </div>
+
+  <!-- Modal para nuevo usuario -->
+  <div *ngIf="mostrarModalNuevoUsuario" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+    <div class="bg-white rounded-xl shadow-lg w-full max-w-lg p-8 relative">
+      <button (click)="cerrarModalNuevoUsuario()" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+      <h2 class="text-2xl font-bold mb-4">Nuevo Usuario</h2>
+      <form [formGroup]="nuevoUsuarioForm" (ngSubmit)="guardarNuevoUsuario()" class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium mb-1">Correo</label>
+            <input type="email" formControlName="email" class="w-full border rounded-lg px-3 py-2" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">RUT</label>
+            <input type="text" formControlName="rut" maxlength="12" class="w-full border rounded-lg px-3 py-2" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Nombres</label>
+            <input type="text" formControlName="nombres" class="w-full border rounded-lg px-3 py-2" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Apellido paterno</label>
+            <input type="text" formControlName="appaterno" class="w-full border rounded-lg px-3 py-2" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Apellido materno</label>
+            <input type="text" formControlName="apmaterno" class="w-full border rounded-lg px-3 py-2" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Fecha de nacimiento</label>
+            <input type="date" formControlName="fecha_nacimiento" class="w-full border rounded-lg px-3 py-2" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Tipo de usuario</label>
+            <select formControlName="tipo" class="w-full border rounded-lg px-3 py-2">
+              <option value="cliente">Cliente</option>
+              <option value="propietario">Propietario</option>
+              <option value="admin">Administrador</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium mb-1">Contraseña</label>
+            <input type="password" formControlName="password" class="w-full border rounded-lg px-3 py-2" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Repetir Contraseña</label>
+            <input type="password" formControlName="repeatPassword" class="w-full border rounded-lg px-3 py-2" />
+          </div>
+        </div>
+        <div *ngIf="nuevoUsuarioError" class="text-red-600 text-sm text-center">{{ nuevoUsuarioError }}</div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" (click)="cerrarModalNuevoUsuario()" class="px-4 py-2 rounded-lg border">Cancelar</button>
+          <button type="submit" [disabled]="nuevoUsuarioForm.invalid || loadingNuevoUsuario" class="px-4 py-2 rounded-lg bg-indigo-700 text-white hover:bg-indigo-800">Crear Usuario</button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>

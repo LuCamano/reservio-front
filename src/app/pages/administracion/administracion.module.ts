@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AdministracionRoutingModule } from './administracion-routing.module';
 import { AdministracionComponent } from './administracion.component';
@@ -27,7 +28,9 @@ import { GoogleChartsModule } from 'angular-google-charts';
     MatSidenavModule,
     MatIconModule,
     MatButtonModule,
-    GoogleChartsModule
+    GoogleChartsModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class AdministracionModule { }
