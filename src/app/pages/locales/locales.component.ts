@@ -68,12 +68,19 @@ export class LocalesComponent implements OnInit {
     this.isLoading = false;
   }
 
-  async cargarUsuarioActual() {
-    try {
-      this.usuarioActual = await lastValueFrom(this.authService.getCurrentUser());
-    } catch (e) {
-      this.usuarioActual = null;
-    }
+  cargarUsuarioActual(): Promise<void> {
+    return new Promise((resolve) => {
+      this.authService.getCurrentUser().subscribe({
+        next: user => {
+          this.usuarioActual = user;
+          resolve();
+        },
+        error: () => {
+          this.usuarioActual = null;
+          resolve();
+        }
+      });
+    });
   }
 
   async cargarDatos() {
@@ -81,19 +88,22 @@ export class LocalesComponent implements OnInit {
       this.regiones = await this.apiService.getRegiones();
       this.comunas = await this.apiService.getComunas();
       let todosLocales = await this.apiService.getLocales();
-      // Filtrar solo locales validados
-      todosLocales = todosLocales.filter(local => local.validada);
-      this.totalLocales = todosLocales.length;
-      // Filtrar locales que NO pertenezcan al usuario actual
+      // Si hay usuario, filtrar solo validados y que NO le pertenezcan
       if (this.usuarioActual) {
         todosLocales = todosLocales.filter(local =>
+          local.validada &&
           !local.propietarios?.some(p => p.id === this.usuarioActual!.id)
         );
       }
+      // Si no hay usuario, mostrar todos los locales (sin filtrar)
       this.locales = todosLocales;
       this.localesFiltrados = [...this.locales];
+      this.totalLocales = this.locales.length;
     } catch (error) {
       console.error('Error al obtener datos desde la API:', error);
+      this.locales = [];
+      this.localesFiltrados = [];
+      this.totalLocales = 0;
     }
   }
 
