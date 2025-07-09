@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { OpenStreetMapService } from '../../../services/open-street-map.service';
 import { AuthService } from '../../../services/auth.service';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-local',
@@ -36,7 +37,7 @@ export class LocalComponent implements OnDestroy {
     inicio: new FormControl('', [Validators.required]),
     fin: new FormControl('', [Validators.required]),
     cant_horas: new FormControl(1, [Validators.required, Validators.min(1)]),
-    descripcion: new FormControl('', [Validators.required])
+    
   });
 
   reservas: Reserva[] = [];
@@ -63,6 +64,7 @@ export class LocalComponent implements OnDestroy {
   imagenModalUrl: string = '';
 
   async ngOnInit(): Promise<void> {
+    this.authSvc.getCurrentUser().subscribe(u => this.usuario = u)
     this.idLocal = this.route.snapshot.paramMap.get('id')!;
     await this.getLocal(this.idLocal);
   }
@@ -123,14 +125,14 @@ export class LocalComponent implements OnDestroy {
       inicio: '',
       fin: '',
       cant_horas: 1,
-      descripcion: ''
     });
     this.reservaError = '';
     this.renderer.removeClass(document.body, 'overflow-hidden');
   }
 
-  enviarReserva() {
+  async enviarReserva() {
     this.reservaError = '';
+    
     if (this.reservaForm.valid && this.local) {
       const form = this.reservaForm.value;
       const inicio = new Date(form.inicio!);
@@ -138,33 +140,33 @@ export class LocalComponent implements OnDestroy {
 
       if (fin <= inicio) {
         this.reservaError = 'La fecha de término debe ser posterior a la fecha de inicio.';
+        console.log('a1');
         return;
       }
-
+      console.log('a');
       // Obtener usuario autenticado de forma pública
-      const usuario = (this.authSvc as any).currentUserSubject?.value;
-      if (!usuario) {
+      
+      console.log('a2');
+      if (!this.usuario) {
         alert('Debes iniciar sesión para reservar.');
         this.router.navigate(['/login']);
         return;
       }
-
       const reserva: Reserva = {
-        id: crypto.randomUUID(),
         inicio,
         fin,
         cant_horas: form.cant_horas!,
         estado: 'pendiente',
-        cliente: usuario,
-        propiedad: this.local, // Incluye el local completo
+        cliente: this.usuario!,
+        propiedad: this.local,
         fecha_creacion: new Date()
       };
-
+      
       // Guardar la reserva actual para el pago (incluye el local)
-      localStorage.setItem('reservaPagoActual', JSON.stringify(reserva));
+      this.apiService.createReserva(reserva);
       this.cerrarModalReserva();
       // Redirigir a la página de pago
-      this.router.navigate(['/pago']);
+      /* this.router.navigate(['/pago']); */
     }
   }
 
