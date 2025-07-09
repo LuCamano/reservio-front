@@ -203,39 +203,96 @@
     <div class="bg-white rounded-xl shadow-lg w-full max-w-md p-8 relative">
       <button (click)="cerrarModalNuevoUsuario()" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
       <h2 class="text-2xl font-bold mb-4">Nuevo Usuario</h2>
-      <form #nuevoUsuarioForm="ngForm" (ngSubmit)="registrarNuevoUsuario()" autocomplete="off">
-        <div class="mb-3">
+      <form [formGroup]="nuevoUsuarioForm" (ngSubmit)="registrarNuevoUsuario()" autocomplete="off">
+        <div class="mb-3 relative">
           <label class="block text-sm font-medium mb-1">Correo electrónico</label>
-          <input type="email" name="email" [(ngModel)]="nuevoUsuario.email" required email class="w-full border rounded-lg px-3 py-2" />
+          <input type="email" formControlName="email"
+            class="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 transition"
+            [ngClass]="{
+              'border-red-500 focus:ring-red-200': emailCtrl.touched && errorEmailNuevoUsuario,
+              'border-green-500 focus:ring-green-200': emailCtrl.touched && !errorEmailNuevoUsuario
+            }"
+          />
+          <span *ngIf="emailCtrl.touched && !errorEmailNuevoUsuario" class="absolute right-3 top-9 text-green-600 material-icons text-lg">check_circle</span>
+          <div *ngIf="emailCtrl.touched && errorEmailNuevoUsuario" class="text-red-600 text-xs mt-1">{{ errorEmailNuevoUsuario }}</div>
         </div>
-        <div class="mb-3">
+        <div class="mb-3 relative">
           <label class="block text-sm font-medium mb-1">RUT</label>
-          <input type="text" name="rut" [(ngModel)]="nuevoUsuario.rut" required class="w-full border rounded-lg px-3 py-2" />
+          <input type="text" formControlName="rut" maxlength="12"
+            class="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 transition"
+            (input)="formatearRutNuevoUsuario()"
+            [ngClass]="{
+              'border-red-500 focus:ring-red-200': rutCtrl.touched && errorRutNuevoUsuario,
+              'border-green-500 focus:ring-green-200': rutCtrl.touched && !errorRutNuevoUsuario
+            }"
+          />
+          <span *ngIf="rutCtrl.touched && !errorRutNuevoUsuario" class="absolute right-3 top-9 text-green-600 material-icons text-lg">check_circle</span>
+          <div *ngIf="rutCtrl.touched && errorRutNuevoUsuario" class="text-red-600 text-xs mt-1">{{ errorRutNuevoUsuario }}</div>
         </div>
-        <div class="mb-3">
+        <div class="mb-3 relative">
           <label class="block text-sm font-medium mb-1">Nombres</label>
-          <input type="text" name="nombres" [(ngModel)]="nuevoUsuario.nombres" required class="w-full border rounded-lg px-3 py-2" />
+          <input type="text" formControlName="nombres"
+            class="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 transition"
+            [ngClass]="{
+              'border-red-500 focus:ring-red-200': nombresCtrl.touched && errorNombresNuevoUsuario,
+              'border-green-500 focus:ring-green-200': nombresCtrl.touched && !errorNombresNuevoUsuario
+            }"
+          />
+          <span *ngIf="nombresCtrl.touched && !errorNombresNuevoUsuario" class="absolute right-3 top-9 text-green-600 material-icons text-lg">check_circle</span>
+          <div *ngIf="nombresCtrl.touched && errorNombresNuevoUsuario" class="text-red-600 text-xs mt-1">{{ errorNombresNuevoUsuario }}</div>
         </div>
-        <div class="mb-3">
+        <div class="mb-3 relative">
           <label class="block text-sm font-medium mb-1">Apellido paterno</label>
-          <input type="text" name="appaterno" [(ngModel)]="nuevoUsuario.appaterno" required class="w-full border rounded-lg px-3 py-2" />
+          <input type="text" formControlName="appaterno"
+            class="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 transition"
+            [ngClass]="{
+              'border-red-500 focus:ring-red-200': appaternoCtrl.touched && errorAppaternoNuevoUsuario,
+              'border-green-500 focus:ring-green-200': appaternoCtrl.touched && !errorAppaternoNuevoUsuario
+            }"
+          />
+          <span *ngIf="appaternoCtrl.touched && !errorAppaternoNuevoUsuario" class="absolute right-3 top-9 text-green-600 material-icons text-lg">check_circle</span>
+          <div *ngIf="appaternoCtrl.touched && errorAppaternoNuevoUsuario" class="text-red-600 text-xs mt-1">{{ errorAppaternoNuevoUsuario }}</div>
         </div>
-        <div class="mb-3">
+        <div class="mb-3 relative">
           <label class="block text-sm font-medium mb-1">Apellido materno</label>
-          <input type="text" name="apmaterno" [(ngModel)]="nuevoUsuario.apmaterno" required class="w-full border rounded-lg px-3 py-2" />
+          <input type="text" formControlName="apmaterno"
+            class="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 transition"
+            [ngClass]="{
+              'border-red-500 focus:ring-red-200': apmaternoCtrl.touched && errorApmaternoNuevoUsuario,
+              'border-green-500 focus:ring-green-200': apmaternoCtrl.touched && !errorApmaternoNuevoUsuario
+            }"
+          />
+          <span *ngIf="apmaternoCtrl.touched && !errorApmaternoNuevoUsuario" class="absolute right-3 top-9 text-green-600 material-icons text-lg">check_circle</span>
+          <div *ngIf="apmaternoCtrl.touched && errorApmaternoNuevoUsuario" class="text-red-600 text-xs mt-1">{{ errorApmaternoNuevoUsuario }}</div>
         </div>
-        <div class="mb-3">
+        <div class="mb-3 relative">
           <label class="block text-sm font-medium mb-1">Fecha de nacimiento</label>
-          <input type="date" name="fecha_nacimiento" [(ngModel)]="nuevoUsuario.fecha_nacimiento" required class="w-full border rounded-lg px-3 py-2" />
+          <input type="date" formControlName="fecha_nacimiento"
+            class="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 transition"
+            [ngClass]="{
+              'border-red-500 focus:ring-red-200': fechaNacimientoCtrl.touched && errorFechaNacimientoNuevoUsuario,
+              'border-green-500 focus:ring-green-200': fechaNacimientoCtrl.touched && !errorFechaNacimientoNuevoUsuario
+            }"
+          />
+          <span *ngIf="fechaNacimientoCtrl.touched && !errorFechaNacimientoNuevoUsuario" class="absolute right-3 top-9 text-green-600 material-icons text-lg">check_circle</span>
+          <div *ngIf="fechaNacimientoCtrl.touched && errorFechaNacimientoNuevoUsuario" class="text-red-600 text-xs mt-1">{{ errorFechaNacimientoNuevoUsuario }}</div>
         </div>
-        <div class="mb-3">
+        <div class="mb-3 relative">
           <label class="block text-sm font-medium mb-1">Contraseña</label>
-          <input type="password" name="password" [(ngModel)]="nuevoUsuario.password" required minlength="6" class="w-full border rounded-lg px-3 py-2" />
+          <input type="password" formControlName="password"
+            class="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 transition"
+            [ngClass]="{
+              'border-red-500 focus:ring-red-200': passwordCtrl.touched && errorPasswordNuevoUsuario,
+              'border-green-500 focus:ring-green-200': passwordCtrl.touched && !errorPasswordNuevoUsuario
+            }"
+          />
+          <span *ngIf="passwordCtrl.touched && !errorPasswordNuevoUsuario" class="absolute right-3 top-9 text-green-600 material-icons text-lg">check_circle</span>
+          <div *ngIf="passwordCtrl.touched && errorPasswordNuevoUsuario" class="text-red-600 text-xs mt-1">{{ errorPasswordNuevoUsuario }}</div>
         </div>
         <div *ngIf="errorNuevoUsuario" class="text-red-600 text-sm mb-2">{{ errorNuevoUsuario }}</div>
         <div class="flex justify-end gap-2 mt-4">
           <button type="button" (click)="cerrarModalNuevoUsuario()" class="px-4 py-2 rounded-lg border">Cancelar</button>
-          <button type="submit" [disabled]="nuevoUsuarioCargando" class="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700">
+          <button type="submit" [disabled]="!isNuevoUsuarioValido() || nuevoUsuarioCargando" [ngClass]="{'opacity-50 cursor-not-allowed': !isNuevoUsuarioValido() || nuevoUsuarioCargando}" class="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700">
             <span *ngIf="!nuevoUsuarioCargando">Registrar</span>
             <span *ngIf="nuevoUsuarioCargando"><i class="fas fa-spinner fa-spin"></i> Registrando...</span>
           </button>

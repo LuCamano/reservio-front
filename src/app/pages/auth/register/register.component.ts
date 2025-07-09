@@ -19,14 +19,21 @@ export class RegisterComponent {
 
   loading = false;
 
+  // Validador personalizado para solo letras (sin números)
+  soloLetrasValidator(control: AbstractControl): { soloLetras: boolean } | null {
+    const value = control.value || '';
+    // Permite letras, espacios y tildes, pero no números ni caracteres especiales
+    return /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s'-]+$/.test(value) ? null : { soloLetras: true };
+  }
+
   registerForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(6)]),
     repeatPassword: new FormControl('', [Validators.required, this.identicalPasswordsValidation('password')]),
     rut: new FormControl('', [Validators.required, rutValidator]),
-    nombres: new FormControl('', [Validators.required]),
-    appaterno: new FormControl('', [Validators.required]),
-    apmaterno: new FormControl('', [Validators.required]),
+    nombres: new FormControl('', [Validators.required, Validators.minLength(2), this.soloLetrasValidator]),
+    appaterno: new FormControl('', [Validators.required, Validators.minLength(2), this.soloLetrasValidator]),
+    apmaterno: new FormControl('', [Validators.required, Validators.minLength(2), this.soloLetrasValidator]),
     fecha_nacimiento: new FormControl((new Date().toISOString().split('T')[0]), [Validators.required, this.validarEdad])
   });
 
@@ -49,15 +56,18 @@ export class RegisterComponent {
   };
   nombresErrors = {
     required: 'Los nombres son obligatorios.',
-    minlength: 'Los nombres deben tener al menos 2 caracteres.'
+    minlength: 'Los nombres deben tener al menos 2 caracteres.',
+    soloLetras: 'Solo se permiten letras.'
   };
   appaternoErrors = {
     required: 'El apellido paterno es obligatorio.',
-    minlength: 'El apellido paterno debe tener al menos 2 caracteres.'
+    minlength: 'El apellido paterno debe tener al menos 2 caracteres.',
+    soloLetras: 'Solo se permiten letras.'
   };
   apmaternoErrors = {
     required: 'El apellido materno es obligatorio.',
-    minlength: 'El apellido materno debe tener al menos 2 caracteres.'
+    minlength: 'El apellido materno debe tener al menos 2 caracteres.',
+    soloLetras: 'Solo se permiten letras.'
   };
   fechaNacimientoErrors = {
     required: 'La fecha de nacimiento es obligatoria.',

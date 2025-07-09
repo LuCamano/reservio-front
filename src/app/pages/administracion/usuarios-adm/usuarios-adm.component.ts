@@ -1,8 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { Usuario, BloqueoUsuario } from '../../../models/models.interface';
+import { Usuario } from '../../../models/models.interface';
 import { ApiService } from '../../../services/api.service';
 import { AdminService } from '../../../services/admin.service';
 import { AuthService } from '../../../services/auth.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { rutValidator } from '../../../validators/rut.validator';
 
 @Component({
   selector: 'app-usuarios-adm',
@@ -36,17 +38,85 @@ export class UsuariosAdmComponent {
   loadingBloqueo: boolean = false;
   adminId: string | null = null;
   mostrarModalNuevoUsuario: boolean = false;
-  nuevoUsuario: any = {
-    email: '',
-    rut: '',
-    nombres: '',
-    appaterno: '',
-    apmaterno: '',
-    fecha_nacimiento: '',
-    password: ''
-  };
   errorNuevoUsuario: string = '';
   nuevoUsuarioCargando: boolean = false;
+
+  // Validador personalizado para solo letras (sin números)
+  soloLetrasValidator(control: import('@angular/forms').AbstractControl): { soloLetras: boolean } | null {
+    const value = control.value || '';
+    // Permite letras, espacios y tildes, pero no números ni caracteres especiales
+    return /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s'-]+$/.test(value) ? null : { soloLetras: true };
+  }
+
+  nuevoUsuarioForm = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    rut: new FormControl('', [Validators.required, rutValidator]),
+    nombres: new FormControl('', [Validators.required, Validators.minLength(2), this.soloLetrasValidator]),
+    appaterno: new FormControl('', [Validators.required, Validators.minLength(2), this.soloLetrasValidator]),
+    apmaterno: new FormControl('', [Validators.required, Validators.minLength(2), this.soloLetrasValidator]),
+    fecha_nacimiento: new FormControl('', [Validators.required, this.validarEdad]),
+    password: new FormControl('', [Validators.required, Validators.minLength(6)])
+  });
+
+  get emailCtrl() { return this.nuevoUsuarioForm.controls.email; }
+  get rutCtrl() { return this.nuevoUsuarioForm.controls.rut; }
+  get nombresCtrl() { return this.nuevoUsuarioForm.controls.nombres; }
+  get appaternoCtrl() { return this.nuevoUsuarioForm.controls.appaterno; }
+  get apmaternoCtrl() { return this.nuevoUsuarioForm.controls.apmaterno; }
+  get fechaNacimientoCtrl() { return this.nuevoUsuarioForm.controls.fecha_nacimiento; }
+  get passwordCtrl() { return this.nuevoUsuarioForm.controls.password; }
+  get errorEmailNuevoUsuario(): string | null {
+    if (this.emailCtrl.touched || this.emailCtrl.dirty) {
+      if (this.emailCtrl.hasError('required')) return 'El email es obligatorio.';
+      if (this.emailCtrl.hasError('email')) return 'El email debe ser válido.';
+    }
+    return null;
+  }
+  get errorRutNuevoUsuario(): string | null {
+    if (this.rutCtrl.touched || this.rutCtrl.dirty) {
+      if (this.rutCtrl.hasError('required')) return 'El RUT es obligatorio.';
+      if (this.rutCtrl.hasError('invalidRut')) return 'El RUT es inválido.';
+    }
+    return null;
+  }
+  get errorNombresNuevoUsuario(): string | null {
+    if (this.nombresCtrl.touched || this.nombresCtrl.dirty) {
+      if (this.nombresCtrl.hasError('required')) return 'Los nombres son obligatorios.';
+      if (this.nombresCtrl.hasError('minlength')) return 'Los nombres deben tener al menos 2 caracteres.';
+      if (this.nombresCtrl.hasError('soloLetras')) return 'Solo se permiten letras.';
+    }
+    return null;
+  }
+  get errorAppaternoNuevoUsuario(): string | null {
+    if (this.appaternoCtrl.touched || this.appaternoCtrl.dirty) {
+      if (this.appaternoCtrl.hasError('required')) return 'El apellido paterno es obligatorio.';
+      if (this.appaternoCtrl.hasError('minlength')) return 'El apellido paterno debe tener al menos 2 caracteres.';
+      if (this.appaternoCtrl.hasError('soloLetras')) return 'Solo se permiten letras.';
+    }
+    return null;
+  }
+  get errorApmaternoNuevoUsuario(): string | null {
+    if (this.apmaternoCtrl.touched || this.apmaternoCtrl.dirty) {
+      if (this.apmaternoCtrl.hasError('required')) return 'El apellido materno es obligatorio.';
+      if (this.apmaternoCtrl.hasError('minlength')) return 'El apellido materno debe tener al menos 2 caracteres.';
+      if (this.apmaternoCtrl.hasError('soloLetras')) return 'Solo se permiten letras.';
+    }
+    return null;
+  }
+  get errorFechaNacimientoNuevoUsuario(): string | null {
+    if (this.fechaNacimientoCtrl.touched || this.fechaNacimientoCtrl.dirty) {
+      if (this.fechaNacimientoCtrl.hasError('required')) return 'La fecha de nacimiento es obligatoria.';
+      if (this.fechaNacimientoCtrl.hasError('invalidDate')) return 'Debe ser mayor de 18 años.';
+    }
+    return null;
+  }
+  get errorPasswordNuevoUsuario(): string | null {
+    if (this.passwordCtrl.touched || this.passwordCtrl.dirty) {
+      if (this.passwordCtrl.hasError('required')) return 'La contraseña es obligatoria.';
+      if (this.passwordCtrl.hasError('minlength')) return 'La contraseña debe tener al menos 6 caracteres.';
+    }
+    return null;
+  }
 
   constructor() {
     this.authSvc.getCurrentUser().subscribe((user: Usuario | null) => {
@@ -256,15 +326,7 @@ export class UsuariosAdmComponent {
 
   abrirModalNuevoUsuario(): void {
     this.mostrarModalNuevoUsuario = true;
-    this.nuevoUsuario = {
-      email: '',
-      rut: '',
-      nombres: '',
-      appaterno: '',
-      apmaterno: '',
-      fecha_nacimiento: '',
-      password: ''
-    };
+    this.nuevoUsuarioForm.reset();
     this.errorNuevoUsuario = '';
     this.nuevoUsuarioCargando = false;
   }
@@ -275,43 +337,34 @@ export class UsuariosAdmComponent {
     this.nuevoUsuarioCargando = false;
   }
 
-  async registrarNuevoUsuario() {
-    this.errorNuevoUsuario = '';
-    this.nuevoUsuarioCargando = true;
-    // Validaciones básicas
-    if (!this.nuevoUsuario.email || !this.nuevoUsuario.rut || !this.nuevoUsuario.nombres || !this.nuevoUsuario.appaterno || !this.nuevoUsuario.apmaterno || !this.nuevoUsuario.fecha_nacimiento || !this.nuevoUsuario.password) {
-      this.errorNuevoUsuario = 'Todos los campos son obligatorios.';
-      this.nuevoUsuarioCargando = false;
-      return;
-    }
-    if (this.nuevoUsuario.password.length < 6) {
-      this.errorNuevoUsuario = 'La contraseña debe tener al menos 6 caracteres.';
-      this.nuevoUsuarioCargando = false;
-      return;
-    }
-    // Validar edad >= 18
-    const fechaNacimientoDate = new Date(this.nuevoUsuario.fecha_nacimiento);
+  validarEdad(control: import('@angular/forms').AbstractControl): { invalidDate: boolean } | null {
+    const fechaNacimientoDate = new Date(control.value);
     const hoy = new Date();
     let edad = hoy.getFullYear() - fechaNacimientoDate.getFullYear();
     const mes = hoy.getMonth() - fechaNacimientoDate.getMonth();
     if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNacimientoDate.getDate())) {
       edad--;
     }
-    if (edad < 18) {
-      this.errorNuevoUsuario = 'El usuario debe ser mayor de 18 años.';
+    return edad >= 18 ? null : { invalidDate: true };
+  }
+
+  async registrarNuevoUsuario() {
+    this.errorNuevoUsuario = '';
+    this.nuevoUsuarioCargando = true;
+    if (!this.nuevoUsuarioForm.valid) {
+      this.errorNuevoUsuario = 'Por favor completa todos los campos correctamente.';
       this.nuevoUsuarioCargando = false;
       return;
     }
-    // Construir objeto usuario
     const usuario = {
-      email: this.nuevoUsuario.email,
-      rut: this.nuevoUsuario.rut,
-      nombres: this.nuevoUsuario.nombres,
-      appaterno: this.nuevoUsuario.appaterno,
-      apmaterno: this.nuevoUsuario.apmaterno,
-      fecha_nacimiento: fechaNacimientoDate,
-      password: this.nuevoUsuario.password,
-      tipo: 'cliente' as 'cliente' // Por defecto, no editable aquí
+      email: this.emailCtrl.value!,
+      rut: this.rutCtrl.value!,
+      nombres: this.nombresCtrl.value!,
+      appaterno: this.appaternoCtrl.value!,
+      apmaterno: this.apmaternoCtrl.value!,
+      fecha_nacimiento: new Date(this.fechaNacimientoCtrl.value!),
+      password: this.passwordCtrl.value!,
+      tipo: 'cliente' as 'cliente'
     };
     try {
       await this.authSvc.register(usuario);
@@ -322,5 +375,23 @@ export class UsuariosAdmComponent {
     } finally {
       this.nuevoUsuarioCargando = false;
     }
+  }
+
+  formatearRutNuevoUsuario() {
+    let rut = (this.rutCtrl.value || '').replace(/[^0-9kK]/g, '').toUpperCase();
+    if (rut.length > 9) rut = rut.slice(0, 9);
+    let cuerpo = rut.slice(0, -1);
+    let dv = rut.slice(-1);
+    let cuerpoFormateado = '';
+    while (cuerpo.length > 3) {
+      cuerpoFormateado = '.' + cuerpo.slice(-3) + cuerpoFormateado;
+      cuerpo = cuerpo.slice(0, -3);
+    }
+    cuerpoFormateado = cuerpo + cuerpoFormateado;
+    this.rutCtrl.setValue(cuerpoFormateado + (dv ? '-' + dv : ''));
+  }
+
+  isNuevoUsuarioValido(): boolean {
+    return this.nuevoUsuarioForm.valid;
   }
 }

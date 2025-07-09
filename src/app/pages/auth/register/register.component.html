@@ -62,6 +62,8 @@
           [ngClass]="{'border-red-500': registerForm.controls.nombres.touched && registerForm.controls.nombres.invalid, 'border-green-500': registerForm.controls.nombres.touched && registerForm.controls.nombres.valid}">
         <span *ngIf="registerForm.controls.nombres.touched && registerForm.controls.nombres.valid" class="absolute right-3 top-9 text-green-600 material-icons text-lg">check_circle</span>
         <div *ngIf="registerForm.controls.nombres.touched && registerForm.controls.nombres.errors?.['required']" class="text-red-600 text-xs mt-1">{{ nombresErrors.required }}</div>
+        <div *ngIf="registerForm.controls.nombres.touched && registerForm.controls.nombres.errors?.['minlength']" class="text-red-600 text-xs mt-1">{{ nombresErrors.minlength }}</div>
+        <div *ngIf="registerForm.controls.nombres.touched && registerForm.controls.nombres.errors?.['soloLetras']" class="text-red-600 text-xs mt-1">{{ nombresErrors.soloLetras }}</div>
       </div>
       
       <!-- Apellido paterno -->
@@ -72,6 +74,8 @@
           [ngClass]="{'border-red-500': registerForm.controls.appaterno.touched && registerForm.controls.appaterno.invalid, 'border-green-500': registerForm.controls.appaterno.touched && registerForm.controls.appaterno.valid}">
         <span *ngIf="registerForm.controls.appaterno.touched && registerForm.controls.appaterno.valid" class="absolute right-3 top-9 text-green-600 material-icons text-lg">check_circle</span>
         <div *ngIf="registerForm.controls.appaterno.touched && registerForm.controls.appaterno.errors?.['required']" class="text-red-600 text-xs mt-1">{{ appaternoErrors.required }}</div>
+        <div *ngIf="registerForm.controls.appaterno.touched && registerForm.controls.appaterno.errors?.['minlength']" class="text-red-600 text-xs mt-1">{{ appaternoErrors.minlength }}</div>
+        <div *ngIf="registerForm.controls.appaterno.touched && registerForm.controls.appaterno.errors?.['soloLetras']" class="text-red-600 text-xs mt-1">{{ appaternoErrors.soloLetras }}</div>
       </div>
       
       <!-- Apellido materno -->
@@ -82,6 +86,8 @@
           [ngClass]="{'border-red-500': registerForm.controls.apmaterno.touched && registerForm.controls.apmaterno.invalid, 'border-green-500': registerForm.controls.apmaterno.touched && registerForm.controls.apmaterno.valid}">
         <span *ngIf="registerForm.controls.apmaterno.touched && registerForm.controls.apmaterno.valid" class="absolute right-3 top-9 text-green-600 material-icons text-lg">check_circle</span>
         <div *ngIf="registerForm.controls.apmaterno.touched && registerForm.controls.apmaterno.errors?.['required']" class="text-red-600 text-xs mt-1">{{ apmaternoErrors.required }}</div>
+        <div *ngIf="registerForm.controls.apmaterno.touched && registerForm.controls.apmaterno.errors?.['minlength']" class="text-red-600 text-xs mt-1">{{ apmaternoErrors.minlength }}</div>
+        <div *ngIf="registerForm.controls.apmaterno.touched && registerForm.controls.apmaterno.errors?.['soloLetras']" class="text-red-600 text-xs mt-1">{{ apmaternoErrors.soloLetras }}</div>
       </div>
       
       <!-- Fecha de nacimiento -->
