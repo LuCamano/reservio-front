@@ -20,8 +20,7 @@ const routes: Routes = [
   },
   {
     path: 'locales',
-    loadChildren: () => import("./pages/locales/locales.module").then(m => m.LocalesModule),
-    canActivate: [authGuard]
+    loadChildren: () => import("./pages/locales/locales.module").then(m => m.LocalesModule)
   },
   {
     path: 'admin',

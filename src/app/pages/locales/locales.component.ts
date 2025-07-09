@@ -18,7 +18,6 @@ export class LocalesComponent implements OnInit {
   filtrosForm: FormGroup = new FormGroup({
     precioMax: new FormControl(null),
     capacidadMin: new FormControl(null),
-    fecha: new FormControl(this.getToday()),
     region: new FormControl(null),
     comuna: new FormControl(null)
   });
@@ -60,7 +59,7 @@ export class LocalesComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.isLoading = true;
-    await this.cargarUsuarioActual();
+    this.cargarUsuarioActual();
     await this.cargarDatos();
     this.comunasFiltradas = [...this.comunas];
     this.filtrosForm.get('comuna')?.disable();
@@ -68,18 +67,9 @@ export class LocalesComponent implements OnInit {
     this.isLoading = false;
   }
 
-  cargarUsuarioActual(): Promise<void> {
-    return new Promise((resolve) => {
-      this.authService.getCurrentUser().subscribe({
-        next: user => {
-          this.usuarioActual = user;
-          resolve();
-        },
-        error: () => {
-          this.usuarioActual = null;
-          resolve();
-        }
-      });
+  cargarUsuarioActual(): void {
+    this.authService.currentUser$.subscribe(usuario => {
+      this.usuarioActual = usuario;
     });
   }
 
@@ -91,9 +81,12 @@ export class LocalesComponent implements OnInit {
       // Si hay usuario, filtrar solo validados y que NO le pertenezcan
       if (this.usuarioActual) {
         todosLocales = todosLocales.filter(local =>
-          local.validada &&
+          local.validada && local.activo &&
           !local.propietarios?.some(p => p.id === this.usuarioActual!.id)
         );
+      } else {
+        // Si no hay usuario, filtrar solo validados
+        todosLocales = todosLocales.filter(local => local.validada && local.activo);
       }
       // Si no hay usuario, mostrar todos los locales (sin filtrar)
       this.locales = todosLocales;

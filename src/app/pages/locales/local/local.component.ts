@@ -65,7 +65,6 @@ export class LocalComponent implements OnDestroy {
   reservasLocal: Reserva[] = [];
 
   // Nueva lógica para valoraciones
-  valoraciones: Valoracion[] = [];
   valoracionForm: FormGroup;
   isSendingValoracion = false;
 
@@ -81,7 +80,6 @@ export class LocalComponent implements OnDestroy {
     this.idLocal = this.route.snapshot.paramMap.get('id')!;
     await this.getLocal(this.idLocal);
     await this.cargarReservasLocal();
-    await this.cargarValoraciones();
   }
 
   async getLocal(id: string) {
@@ -116,24 +114,6 @@ export class LocalComponent implements OnDestroy {
       this.reservasLocal = todas.filter(r => r.propiedad_id === this.idLocal && r.estado !== 'cancelada');
     } catch (e) {
       this.reservasLocal = [];
-    }
-  }
-
-  async cargarValoraciones() {
-    try {
-      const todas = await this.apiService.getValoraciones(0, 1000);
-      this.valoraciones = todas.filter(v => v.propiedad_id === this.idLocal);
-      // Opcional: cargar datos de usuario para cada valoración
-      for (const v of this.valoraciones) {
-        if (v.cliente_id) {
-          try {
-            const usuario = await this.apiService.getUsuario(v.cliente_id);
-            (v as any).usuario = usuario;
-          } catch {}
-        }
-      }
-    } catch (e) {
-      this.valoraciones = [];
     }
   }
 
@@ -256,7 +236,6 @@ export class LocalComponent implements OnDestroy {
     try {
       await this.apiService.createValoracion(valoracion);
       this.valoracionForm.reset({ puntaje: 0, comentario: '' });
-      await this.cargarValoraciones();
     } catch (e) {
       // Manejar error
     }
