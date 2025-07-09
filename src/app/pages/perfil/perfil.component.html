@@ -170,9 +170,9 @@
             <div *ngFor="let reserva of reservasRecibidas" class="border rounded-lg p-4 mb-4 shadow-sm">
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between">
                     <div>
-                        <div class="font-bold text-lg">{{ reserva.propiedad.nombre }}</div>
-                        <div class="text-sm text-gray-600">Cliente: {{ reserva.cliente.nombres }} {{
-                            reserva.cliente.appaterno }} ({{ reserva.cliente.email }})</div>
+                        <div class="font-bold text-lg">{{ reserva.propiedad_id }}</div>
+                        <div class="text-sm text-gray-600">Cliente: {{ reserva.cliente_id }} {{
+                            reserva.cliente_id }} ({{ reserva.cliente_id }})</div>
                         <div class="text-sm text-gray-600">Estado: <span class="font-semibold">{{ reserva.estado
                                 }}</span></div>
                     </div>
@@ -193,11 +193,11 @@
             <div *ngFor="let reserva of reservasRealizadas" class="border rounded-lg p-4 mb-4 shadow-sm">
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between">
                     <div>
-                        <div class="font-bold text-lg">{{ reserva.propiedad.nombre }}</div>
+                        <div class="font-bold text-lg">{{ reserva.propiedad_id }}</div>
                         <div class="text-sm text-gray-600">
                             Propietarios:
-                            <span *ngFor="let propietario of reserva.propiedad.propietarios; let last = last">
-                                {{ propietario.nombres }} {{ propietario.appaterno }}<span *ngIf="!last">, </span>
+                            <span *ngFor="let propietario of reserva.propiedad_id; let last = last">
+                                {{ propietario }} {{ propietario }}<span *ngIf="!last">, </span>
                             </span>
                         </div>
                         <div class="text-sm text-gray-600">Estado: <span class="font-semibold">{{ reserva.estado

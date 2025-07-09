@@ -10,14 +10,14 @@
           <ng-container *ngIf="reserva; else sinReserva">
             <div class="mb-4">
               <h3 class="text-lg font-semibold mb-2 text-indigo-700">Local reservado</h3>
-              <p class="text-gray-800 font-medium">{{ reserva.propiedad.nombre }}</p>
-              <p class="text-gray-500 text-sm">Dirección: {{ reserva.propiedad.direccion }}</p>
+              <p class="text-gray-800 font-medium">{{ reserva.propiedad_id }}</p>
+              <p class="text-gray-500 text-sm">Dirección: {{ reserva.propiedad_id }}</p>
             </div>
             <hr class="my-4 border-gray-300">
             <div class="mb-4">
               <h3 class="text-lg font-semibold mb-2 text-indigo-700">Datos del usuario</h3>
-              <p class="text-gray-800">{{ reserva.cliente.nombres }} {{ reserva.cliente.appaterno }} {{ reserva.cliente.apmaterno }}</p>
-              <p class="text-gray-500 text-sm">Correo: {{ reserva.cliente.email }}</p>
+              <p class="text-gray-800">{{ reserva.cliente_id }} {{ reserva.cliente_id }} {{ reserva.cliente_id }}</p>
+              <p class="text-gray-500 text-sm">Correo: {{ reserva.cliente_id }}</p>
             </div>
             <hr class="my-4 border-gray-300">
             <div class="mb-4">
@@ -25,7 +25,7 @@
               <p class="text-gray-800">Desde: <span class="font-medium">{{ reserva.inicio | date:'short' }}</span></p>
               <p class="text-gray-800">Hasta: <span class="font-medium">{{ reserva.fin | date:'short' }}</span></p>
               <p class="text-gray-800">Cantidad de horas: <span class="font-medium">{{ reserva.cant_horas }}</span></p>
-              <p class="text-gray-800">Precio por hora: <span class="font-medium">${{ reserva.propiedad.precio_hora }}</span></p>
+              <p class="text-gray-800">Costo total: <span class="font-medium">${{ reserva.costo_total }}</span></p>
             </div>
           </ng-container>
           <ng-template #sinReserva>
