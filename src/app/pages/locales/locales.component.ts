@@ -81,6 +81,8 @@ export class LocalesComponent implements OnInit {
       this.regiones = await this.apiService.getRegiones();
       this.comunas = await this.apiService.getComunas();
       let todosLocales = await this.apiService.getLocales();
+      // Filtrar solo locales validados
+      todosLocales = todosLocales.filter(local => local.validada);
       this.totalLocales = todosLocales.length;
       // Filtrar locales que NO pertenezcan al usuario actual
       if (this.usuarioActual) {
