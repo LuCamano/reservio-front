@@ -122,3 +122,23 @@
     </div>
   </div>
 </section>
+
+<!-- Modal de valoración -->
+<div *ngIf="mostrarModalValoracion && reservaAValorar" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-lg w-full max-w-md shadow-lg">
+    <h2 class="text-xl font-bold mb-4">Valora tu experiencia</h2>
+    <p class="mb-2">¿Cómo calificarías la propiedad que reservaste?</p>
+    <div class="flex items-center gap-1 mb-4">
+      <ng-container *ngFor="let star of [1,2,3,4,5]">
+        <button type="button" (click)="valoracionForm.puntaje = star" [ngClass]="valoracionForm.puntaje >= star ? 'text-yellow-400' : 'text-gray-300'">
+          <mat-icon>star</mat-icon>
+        </button>
+      </ng-container>
+    </div>
+    <textarea [(ngModel)]="valoracionForm.comentario" rows="3" class="w-full border rounded p-2 mb-4" placeholder="Deja un comentario (opcional)"></textarea>
+    <div class="flex justify-end gap-2">
+      <button (click)="cerrarModalValoracion()" class="px-4 py-2 bg-gray-200 rounded">Cancelar</button>
+      <button (click)="enviarValoracion()" [disabled]="valoracionForm.puntaje === 0" class="px-4 py-2 bg-blue-600 text-white rounded">Enviar</button>
+    </div>
+  </div>
+</div>

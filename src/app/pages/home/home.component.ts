@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { ConnectionService } from '../../services/connection.service';
-import { Local } from '../../models/models.interface';
+import { Local, Reserva, Valoracion, Usuario } from '../../models/models.interface';
 import { ApiService } from '../../services/api.service';
-
+import { AuthService } from '../../services/auth.service';
+import { lastValueFrom } from 'rxjs';
 
 export interface Ciudad {
   name: string;
@@ -18,6 +19,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   // Inyecciones
   private svgLocales = inject(ConnectionService);
   private apiService = inject(ApiService);
+  private authService = inject(AuthService);
 
   heroImages = [
     'assets/homeassets/hero/conciertopequeno.jpg',
@@ -35,6 +37,15 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   regionesMap: { [id: string]: string } = {};
 
+  usuario: Usuario | null = null;
+  reservasPendientesValoracion: Reserva[] = [];
+  mostrarModalValoracion = false;
+  reservaAValorar: Reserva | null = null;
+  valoracionForm = {
+    puntaje: 0,
+    comentario: ''
+  };
+
   ngOnInit() {
     // Duplicamos la primera imagen al final
     this.extendedImages = [...this.heroImages, this.heroImages[0]];
@@ -42,6 +53,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.nextSlide();
     }, 4000);
     this.getDatos();
+    this.cargarUsuarioYReservas();
   }
 
   nextSlide() {
@@ -82,6 +94,51 @@ export class HomeComponent implements OnInit, OnDestroy {
     } catch (error) {
       console.error('Error al obtener los datos de los locales:', error);
     }
+  }
+
+  async cargarUsuarioYReservas() {
+    try {
+      this.usuario = await lastValueFrom(this.authService.getCurrentUser());
+      if (this.usuario) {
+        const reservas = await this.apiService.getReservas();
+        const ahora = new Date();
+        // Filtrar reservas realizadas por el usuario, finalizadas y no valoradas
+        this.reservasPendientesValoracion = reservas.filter(r =>
+          r.cliente_id === this.usuario!.id &&
+          new Date(r.fin) < ahora
+        );
+        // Aquí deberías consultar si ya existe una valoración para esa reserva/propiedad
+        // Por simplicidad, mostramos el modal para la primera pendiente
+        if (this.reservasPendientesValoracion.length > 0) {
+          this.reservaAValorar = this.reservasPendientesValoracion[0];
+          this.mostrarModalValoracion = true;
+        }
+      }
+    } catch (e) {
+      this.usuario = null;
+    }
+  }
+
+  async enviarValoracion() {
+    if (!this.reservaAValorar || !this.usuario) return;
+    const valoracion: Valoracion = {
+      puntaje: this.valoracionForm.puntaje,
+      comentario: this.valoracionForm.comentario,
+      cliente_id: this.usuario.id!,
+      propiedad_id: this.reservaAValorar.propiedad_id,
+      fecha: new Date().toISOString()
+    };
+    try {
+      await this.apiService.createValoracion(valoracion);
+      this.mostrarModalValoracion = false;
+      // Opcional: marcar la reserva como valorada en el backend o refrescar lista
+    } catch (e) {
+      alert('Error al enviar valoración');
+    }
+  }
+
+  cerrarModalValoracion() {
+    this.mostrarModalValoracion = false;
   }
 
 }

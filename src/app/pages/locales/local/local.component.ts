@@ -61,10 +61,14 @@ export class LocalComponent implements OnDestroy {
   mostrarImagenModal: boolean = false;
   imagenModalUrl: string = '';
 
+  // Nueva variable para reservas del local
+  reservasLocal: Reserva[] = [];
+
   async ngOnInit(): Promise<void> {
     this.authSvc.getCurrentUser().subscribe(u => this.usuario = u)
     this.idLocal = this.route.snapshot.paramMap.get('id')!;
     await this.getLocal(this.idLocal);
+    await this.cargarReservasLocal();
   }
 
   async getLocal(id: string) {
@@ -90,6 +94,15 @@ export class LocalComponent implements OnDestroy {
     } catch (error) {
       console.error('Error al obtener el local:', error);
       this.router.navigate(['/locales']);
+    }
+  }
+
+  async cargarReservasLocal() {
+    try {
+      const todas = await this.apiService.getReservas(0, 1000); // Asume menos de 1000 reservas
+      this.reservasLocal = todas.filter(r => r.propiedad_id === this.idLocal && r.estado !== 'cancelada');
+    } catch (e) {
+      this.reservasLocal = [];
     }
   }
 
@@ -149,6 +162,32 @@ export class LocalComponent implements OnDestroy {
         return;
       }
 
+      // Validar solapamiento SOLO POR FECHA (ignorar hora)
+      const getDateString = (d: Date) => {
+        return d.getFullYear() + '-' + (d.getMonth()+1).toString().padStart(2,'0') + '-' + d.getDate().toString().padStart(2,'0');
+      };
+      // Generar set de fechas de la nueva reserva
+      const fechasNueva = new Set<string>();
+      let d = new Date(inicio);
+      while (d <= fin) {
+        fechasNueva.add(getDateString(d));
+        d.setDate(d.getDate() + 1);
+      }
+      // Revisar si alguna fecha de la nueva reserva ya está ocupada
+      const solapada = this.reservasLocal.some(r => {
+        let d1 = new Date(r.inicio);
+        let d2 = new Date(r.fin);
+        while (d1 <= d2) {
+          if (fechasNueva.has(getDateString(d1))) return true;
+          d1.setDate(d1.getDate() + 1);
+        }
+        return false;
+      });
+      if (solapada) {
+        this.reservaError = 'Ya existe una reserva en ese día para este local. Por favor elige otra fecha.';
+        return;
+      }
+
       const reserva: Reserva = {
         inicio: inicio,
         fin: fin,
@@ -164,6 +203,8 @@ export class LocalComponent implements OnDestroy {
         this.cerrarModalReserva();
         this.router.navigate(['/pago', nuevaReserva.id]);
         this.mostrarAlerta = true;
+        // Recargar reservas para reflejar la nueva
+        await this.cargarReservasLocal();
       } catch (error) {
         console.error('Error al crear la reserva:', error);
         this.reservaError = 'No se pudo crear la reserva. Inténtalo nuevamente más tarde.';

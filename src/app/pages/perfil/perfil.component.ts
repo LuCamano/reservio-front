@@ -97,12 +97,38 @@ export class PerfilComponent implements OnInit {
     }
   }
 
+  ajustarReservaZonaLocal(reserva: Reserva): Reserva {
+    // Ajusta inicio y fin a GMT-4 (resta 4 horas)
+    return {
+      ...reserva,
+      inicio: reserva.inicio ? new Date(new Date(reserva.inicio).getTime() - 240 * 60000) : reserva.inicio,
+      fin: reserva.fin ? new Date(new Date(reserva.fin).getTime() - 240 * 60000) : reserva.fin
+    };
+  }
+
   async cargarReservas() {
     this.isLoadingReservas = true;
     try {
       const reservas = await this.apiSv.getReservas();
-
-      this.reservasRealizadas = reservas.filter(r =>
+      // Ajustar fechas a zona local
+      const reservasAjustadas = reservas.map(r => this.ajustarReservaZonaLocal(r));
+      // Marcar como completadas las reservas finalizadas
+      const now = new Date();
+      await Promise.all(reservasAjustadas.map(async r => {
+        if (
+          r.estado !== 'completada' &&
+          r.estado !== 'cancelada' &&
+          r.fin && new Date(r.fin) < now
+        ) {
+          try {
+            await this.apiSv.updateReserva(r.id!, { ...r, estado: 'completada' });
+            r.estado = 'completada'; // Reflejar en frontend
+          } catch (e) {
+            console.error('Error actualizando estado de reserva a completada:', e);
+          }
+        }
+      }));
+      this.reservasRealizadas = reservasAjustadas.filter(r =>
         r.cliente_id === this.usuario!.id
       );
 
@@ -120,7 +146,7 @@ export class PerfilComponent implements OnInit {
 
       if (this.esPropietario) {
         const propiedadIds = this.locales.map(l => l.id);
-        this.reservasRecibidas = reservas.filter(r =>
+        this.reservasRecibidas = reservasAjustadas.filter(r =>
           propiedadIds.includes(r.propiedad_id)
         );
         const clienteIds = Array.from(new Set(this.reservasRecibidas.map(r => r.cliente_id)));
