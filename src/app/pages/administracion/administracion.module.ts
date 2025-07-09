@@ -13,13 +13,15 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { LocalesAdmComponent } from './locales-adm/locales-adm.component';
 import { UsuariosAdmComponent } from './usuarios-adm/usuarios-adm.component';
 import { GoogleChartsModule } from 'angular-google-charts';
+import { ComisionesComponent } from './comisiones/comisiones.component';
 
 @NgModule({
   declarations: [
     AdministracionComponent,
     DashboardComponent,
     LocalesAdmComponent,
-    UsuariosAdmComponent
+    UsuariosAdmComponent,
+    ComisionesComponent
   ],
   imports: [
     CommonModule,

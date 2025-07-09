@@ -39,6 +39,7 @@ export class AdminService {
 
   validarPropiedad(propiedad_id: string) {
     const reqUrl = `${this.apiUrl}api/v1/propiedades/${propiedad_id}/validar`;
+    console.log(this.authService.isAdmin());
     if (this.authService.isAdmin()) {
       return lastValueFrom(this.http.post(reqUrl, {}));
     } else {
