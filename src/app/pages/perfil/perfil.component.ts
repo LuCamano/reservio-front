@@ -29,7 +29,6 @@ export class PerfilComponent implements OnInit {
 
   regionMap: { [regionId: string]: string } = {};
 
-
   isLoading = true;
   async ngOnInit() {
     try {
@@ -110,29 +109,38 @@ export class PerfilComponent implements OnInit {
     }
   }
 
-
-
-  solicitarPropietario() {
+  async solicitarPropietario() {
+    const usuarioID = this.usuario?.id;
     if (confirm('¿Estás seguro que deseas convertirte en propietario? Esto te permitirá agregar y administrar propiedades.')) {
-      this.usuario!.tipo = 'propietario';
-      this.svgLocales.setSesionUsuario(this.usuario);
+      try {
+        await this.apiSv.cambiarTipoUsuario(usuarioID!, 'propietario');
+        console.log('Tipo de usuario actualizado correctamente');
+        window.location.reload();
+      } catch (error) {
+        console.error('Error al cambiar el tipo de usuario:', error);
+      }
     }
   }
 
-  dejarDeSerPropietario() {
-    if (confirm('¿Estás seguro que deseas dejar de ser propietario? Todas las propiedades asociadas a tu cuenta serán eliminadas del sistema.')) {
-      this.usuario!.tipo = 'cliente';
-      this.svgLocales.setSesionUsuario(this.usuario);
-      this.selectedTabIndex = 0;
-      // Eliminar todas las propiedades del usuario
-      this.locales.forEach(local => {
-        this.svgLocales.deleteLocal(local.id!);
-      });
-      this.locales = [];
+
+  async dejarDeSerPropietario() {
+    const usuarioID = this.usuario?.id;
+    if (confirm('¿Estás seguro que deseas convertirte en propietario? Esto te permitirá agregar y administrar propiedades.')) {
+      try {
+        await this.apiSv.cambiarTipoUsuario(usuarioID!, 'cliente');
+        console.log('Tipo de usuario actualizado correctamente');
+        window.location.reload();
+      } catch (error) {
+        console.error('Error al cambiar el tipo de usuario:', error);
+      }
     }
   }
 
   verDetallesPropiedad(local: Local) {
     this.Router.navigate(['/perfil/ver-propiedad', local.id]);
+  }
+
+  cambioContra(){
+    
   }
 }

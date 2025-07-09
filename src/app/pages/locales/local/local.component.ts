@@ -27,10 +27,6 @@ export class LocalComponent implements OnDestroy {
   local!: Local;
 
   idLocal!: string;
-<<<<<<< HEAD
-
-=======
->>>>>>> master
   isLoading = true;
   mapError = false;
 
