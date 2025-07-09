@@ -219,9 +219,6 @@
           <div class="text-right text-base font-semibold text-gray-700" *ngIf="local && reservaForm.get('cant_horas')?.value">
             Total a pagar: <span class="text-indigo-700">${{ local.precio_hora * reservaForm.get('cant_horas')?.value! }}</span>
           </div>
-          <div class="text-sm text-blue-700 bg-blue-50 rounded-lg px-3 py-2 mb-2" *ngIf="local && reservaForm.get('cant_horas')?.value">
-            <span class="font-semibold">Importante:</span> El 50% del costo de la reserva deberá ser pagado al inicio de la reserva y el otro 50% al finalizar el periodo de reserva.
-          </div>
           <div *ngIf="reservaError" class="text-red-600 text-sm text-center">{{ reservaError }}</div>
           <div class="flex justify-end gap-2 pt-2">
             <button type="button" (click)="cerrarModalReserva()" class="px-4 py-2 rounded-lg border">Cancelar</button>
