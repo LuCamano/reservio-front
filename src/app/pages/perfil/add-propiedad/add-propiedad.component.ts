@@ -40,6 +40,7 @@ export class AddPropiedadComponent implements OnInit {
     region: new FormControl('', [Validators.required]),
     comuna: new FormControl('', [Validators.required]),
     cod_postal: new FormControl('', [Validators.required]), 
+    tipo: new FormControl('', [Validators.required]), 
     capacidad: new FormControl(null, [Validators.required, Validators.min(1)]),
     precioH: new FormControl(0, [Validators.required, Validators.min(0)]),
     hora_apertura: new FormControl('', [Validators.required]),
@@ -131,7 +132,7 @@ export class AddPropiedadComponent implements OnInit {
     formData.append('nombre', fv.nombre);
     formData.append('descripcion', fv.descripcion);
     formData.append('direccion', fv.direccion);
-    formData.append('tipo', 'local');
+    formData.append('tipo', fv.tipo);
     formData.append('cod_postal', fv.cod_postal || '4000');
     formData.append('capacidad', fv.capacidad.toString());
     formData.append('precio_hora', fv.precioH);
@@ -139,6 +140,7 @@ export class AddPropiedadComponent implements OnInit {
     formData.append('hora_cierre', fv.hora_cierre);
     formData.append('comuna_id', fv.comuna);
     formData.append('usuario_id', this.usuario!.id || '');
+    
     
     // Archivos: parámetro se llama “images”
     const files: FileList = fv.images;
