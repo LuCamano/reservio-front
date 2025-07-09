@@ -209,6 +209,7 @@ export class ApiService {
   async createReserva(reserva: Reserva): Promise<Reserva> {
     const reservia = await this.post<Reserva>('reservas/', reserva);
     const prefResponse = await this.pagosService.crearPreferenciaPago(reservia.id!);
+    console.log('Respuesta de la preferencia de pago:', prefResponse);
     if (prefResponse.success) {
       window.location.href = prefResponse.data.init_point;
     } else {

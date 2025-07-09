@@ -131,42 +131,44 @@ export class LocalComponent implements OnDestroy {
   }
 
   async enviarReserva() {
-    this.reservaError = '';
-    
-    if (this.reservaForm.valid && this.local) {
-      const form = this.reservaForm.value;
-      const inicio = new Date(form.inicio!);
-      const fin = new Date(form.fin!);
+    if (this.reservaForm.valid) {
+      const inicio = new Date(this.reservaForm.get('inicio')?.value!);
+      const fin = new Date(this.reservaForm.get('fin')?.value!);
+      const cantHoras = this.reservaForm.get('cant_horas')?.value;
 
-      if (fin <= inicio) {
-        this.reservaError = 'La fecha de término debe ser posterior a la fecha de inicio.';
-        console.log('a1');
+      if (inicio >= fin) {
+        this.reservaError = 'La fecha de inicio debe ser anterior a la fecha de fin.';
         return;
       }
-      console.log('a');
-      // Obtener usuario autenticado de forma pública
-      
-      console.log('a2');
-      if (!this.usuario) {
-        alert('Debes iniciar sesión para reservar.');
-        this.router.navigate(['/login']);
+
+      if (!cantHoras) {
+        this.reservaError = 'La cantidad de horas es requerida.';
         return;
       }
+
+      if (cantHoras < 1) {
+        this.reservaError = 'La cantidad de horas debe ser al menos 1.';
+        return;
+      }
+
       const reserva: Reserva = {
-        inicio,
-        fin,
-        cant_horas: form.cant_horas!,
+        inicio: inicio,
+        fin: fin,
+        cant_horas: cantHoras,
         estado: 'pendiente',
-        cliente: this.usuario!,
-        propiedad: this.local,
-        fecha_creacion: new Date()
+        cliente_id: this.usuario?.id!,
+        propiedad_id: this.local.id!,
       };
-      
-      // Guardar la reserva actual para el pago (incluye el local)
-      this.apiService.createReserva(reserva);
-      this.cerrarModalReserva();
-      // Redirigir a la página de pago
-      /* this.router.navigate(['/pago']); */
+
+      try {
+        const nuevaReserva = await this.apiService.createReserva(reserva);
+        this.reservas.push(nuevaReserva);
+        this.cerrarModalReserva();
+        this.mostrarAlerta = true;
+      } catch (error) {
+        console.error('Error al crear la reserva:', error);
+        this.reservaError = 'No se pudo crear la reserva. Inténtalo nuevamente más tarde.';
+      }
     }
   }
 
@@ -177,6 +179,7 @@ export class LocalComponent implements OnDestroy {
   reservar() {
     if (this.authSvc.isLoggedIn()) {
       this.mostrarModalReserva = true;
+      console.log('Abriendo modal, cambios aplicados');
       this.renderer.addClass(document.body, 'overflow-hidden');
     } else {
       this.router.navigate(['/login']);
