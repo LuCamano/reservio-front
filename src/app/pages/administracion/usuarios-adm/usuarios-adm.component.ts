@@ -1,7 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { Usuario } from '../../../models/models.interface';
 import { Router } from '@angular/router';
-import { ConnectionService } from '../../../services/connection.service';
+import { ApiService } from '../../../services/api.service';
+import { AuthService } from '../../../services/auth.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { rutValidator } from '../../../validators/rut.validator';
 
 @Component({
   selector: 'app-usuarios-adm',
@@ -10,26 +13,41 @@ import { ConnectionService } from '../../../services/connection.service';
   styleUrl: './usuarios-adm.component.scss'
 })
 export class UsuariosAdmComponent {
-  userService = inject(ConnectionService);
+  apiService = inject(ApiService);
+  private authSvc = inject(AuthService);
   usuarios: Usuario[] = [];
   filteredUsuarios: Usuario[] = [];
+  // Cambiar a [(ngModel)] para que los filtros sean reactivos
   searchTerm: string = '';
-  sortField: keyof Usuario | null = null;
-  sortDirection: 'asc' | 'desc' = 'asc';
-  tiposUsuario: string[] = ['Administrador', 'Propietario', 'Cliente', 'Superadmin'];
-  estados: string[] = ['Activo', 'Inactivo'];
   selectedTipo: string = '';
   selectedEstado: string = '';
+  sortField: keyof Usuario | null = null;
+  sortDirection: 'asc' | 'desc' = 'asc';
+  tiposUsuario: string[] = ['admin', 'propietario', 'cliente'];
+  estados: string[] = ['Activo', 'Inactivo'];
+  mostrarModalNuevoUsuario: boolean = false;
+  nuevoUsuarioForm: FormGroup = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+    repeatPassword: new FormControl('', [Validators.required]),
+    rut: new FormControl('', [Validators.required, rutValidator]),
+    nombres: new FormControl('', [Validators.required]),
+    appaterno: new FormControl('', [Validators.required]),
+    apmaterno: new FormControl('', [Validators.required]),
+    fecha_nacimiento: new FormControl('', [Validators.required]),
+    tipo: new FormControl('cliente', [Validators.required])
+  });
+  nuevoUsuarioError: string = '';
+  loadingNuevoUsuario: boolean = false;
 
   constructor(private router: Router) {}
 
-  ngOnInit(): void {
-    // Datos de ejemplo
-    this.cargarUsuarios();
+  async ngOnInit(): Promise<void> {
+    await this.cargarUsuarios();
   }
 
-  cargarUsuarios(): void {
-    this.usuarios = this.userService.getUsuarios();
+  async cargarUsuarios(): Promise<void> {
+    this.usuarios = await this.apiService.getUsuarios(0, 100);
     this.filteredUsuarios = [...this.usuarios];
   }
 
@@ -121,6 +139,47 @@ export class UsuariosAdmComponent {
   }
 
   crearUsuario(): void {
-    
+    this.nuevoUsuarioForm.reset({ tipo: 'cliente' });
+    this.nuevoUsuarioError = '';
+    this.mostrarModalNuevoUsuario = true;
+  }
+
+  cerrarModalNuevoUsuario(): void {
+    this.mostrarModalNuevoUsuario = false;
+    this.nuevoUsuarioForm.reset({ tipo: 'cliente' });
+    this.nuevoUsuarioError = '';
+  }
+
+  async guardarNuevoUsuario() {
+    this.nuevoUsuarioError = '';
+    if (this.nuevoUsuarioForm.invalid) {
+      this.nuevoUsuarioError = 'Por favor completa todos los campos correctamente.';
+      return;
+    }
+    const form = this.nuevoUsuarioForm.value;
+    if (form.password !== form.repeatPassword) {
+      this.nuevoUsuarioError = 'Las contraseñas no coinciden.';
+      return;
+    }
+    this.loadingNuevoUsuario = true;
+    try {
+      const usuario = {
+        email: form.email,
+        password: form.password,
+        rut: form.rut,
+        nombres: form.nombres,
+        appaterno: form.appaterno,
+        apmaterno: form.apmaterno,
+        fecha_nacimiento: form.fecha_nacimiento,
+        tipo: form.tipo
+      };
+      await this.authSvc.register(usuario);
+      await this.cargarUsuarios();
+      this.cerrarModalNuevoUsuario();
+    } catch (error: any) {
+      this.nuevoUsuarioError = error?.error?.message || 'Error al crear usuario.';
+    } finally {
+      this.loadingNuevoUsuario = false;
+    }
   }
 }
