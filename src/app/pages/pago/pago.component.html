@@ -44,7 +44,7 @@
           <span class="block text-gray-600 text-base mb-1">Total primer pago (50%):</span>
           <span class="text-3xl font-bold text-indigo-700">${{ montoPagar | number:'1.0-0' }}</span>
         </div>
-        <button class="w-full bg-indigo-700 hover:bg-indigo-800 text-white py-3 px-4 rounded-xl shadow transition duration-200 text-lg font-semibold mb-4">Realizar Pago</button>
+        <button (click)="pagar()" class="w-full bg-indigo-700 hover:bg-indigo-800 text-white py-3 px-4 rounded-xl shadow transition duration-200 text-lg font-semibold mb-4">Realizar Pago</button>
         <button class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 px-4 rounded-xl shadow transition duration-200 text-lg font-semibold" (click)="cancelarPago()">Cancelar Pago</button>
       </div>
     </section>

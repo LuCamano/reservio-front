@@ -39,8 +39,6 @@ export class LocalComponent implements OnDestroy {
     cant_horas: new FormControl(1, [Validators.required, Validators.min(1)]),
     
   });
-
-  reservas: Reserva[] = [];
   reservaError: string = '';
 
   dato_lng: number = 0;
@@ -163,8 +161,8 @@ export class LocalComponent implements OnDestroy {
 
       try {
         const nuevaReserva = await this.apiService.createReserva(reserva);
-        this.reservas.push(nuevaReserva);
         this.cerrarModalReserva();
+        this.router.navigate(['/pago', nuevaReserva.id]);
         this.mostrarAlerta = true;
       } catch (error) {
         console.error('Error al crear la reserva:', error);

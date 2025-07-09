@@ -206,16 +206,8 @@ export class ApiService {
     return this.getOne<Reserva>('reservas/', id);
   }
 
-  async createReserva(reserva: Reserva): Promise<Reserva> {
-    const reservia = await this.post<Reserva>('reservas/', reserva);
-    const prefResponse = await this.pagosService.crearPreferenciaPago(reservia.id!);
-    console.log('Respuesta de la preferencia de pago:', prefResponse);
-    if (prefResponse.success) {
-      window.location.href = prefResponse.data.init_point;
-    } else {
-      console.error('Error al crear la preferencia de pago:', prefResponse.message);
-    }
-    return reservia;
+  createReserva(reserva: Reserva): Promise<Reserva> {
+    return this.post<Reserva>('reservas/', reserva);
   }
 
   updateReserva(id: string, reserva: Reserva): Promise<Reserva> {
