@@ -32,6 +32,7 @@ export class PerfilComponent implements OnInit {
   isLoading = true;
   isLoadingReservas = false;
   usuariosClientes: { [id: string]: Usuario } = {};
+  propiedadesReservadas: { [id: string]: Local } = {};
 
   async ngOnInit() {
     try {
@@ -105,20 +106,29 @@ export class PerfilComponent implements OnInit {
         r.cliente_id === this.usuario!.id
       );
 
+      // Cargar propiedades reservadas por el usuario (que pueden no estar en this.locales)
+      const propiedadIdsReservadas = Array.from(new Set(this.reservasRealizadas.map(r => r.propiedad_id)));
+      await Promise.all(propiedadIdsReservadas.map(async id => {
+        if (id && !this.propiedadesReservadas[id]) {
+          try {
+            this.propiedadesReservadas[id] = await this.apiSv.getLocal(id);
+          } catch (e) {
+            this.propiedadesReservadas[id] = { id, nombre: id, descripcion: '', direccion: '', tipo: '', cod_postal: '', precio_hora: 0, comuna_id: '', validada: false, activo: false };
+          }
+        }
+      }));
+
       if (this.esPropietario) {
         const propiedadIds = this.locales.map(l => l.id);
         this.reservasRecibidas = reservas.filter(r =>
           propiedadIds.includes(r.propiedad_id)
         );
-        // Obtener IDs únicos de clientes de reservas recibidas
         const clienteIds = Array.from(new Set(this.reservasRecibidas.map(r => r.cliente_id)));
-        // Cargar datos de cada cliente solo si no están ya cargados
         await Promise.all(clienteIds.map(async id => {
           if (id && !this.usuariosClientes[id]) {
             try {
               this.usuariosClientes[id] = await this.apiSv.getUsuario(id);
             } catch (e) {
-              // Si falla, dejar el id como fallback
               this.usuariosClientes[id] = { id, email: id, rut: '', nombres: '', appaterno: '', apmaterno: '', fecha_nacimiento: new Date() };
             }
           }
@@ -170,7 +180,8 @@ export class PerfilComponent implements OnInit {
   }
 
   getNombrePropiedad(id: string): string {
-    const local = this.locales.find(l => l.id === id);
+    // Buscar primero en las propiedades reservadas, luego en las propias
+    const local = this.propiedadesReservadas[id] || this.locales.find(l => l.id === id);
     return local?.nombre || id;
   }
 
