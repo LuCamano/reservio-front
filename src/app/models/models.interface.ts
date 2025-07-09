@@ -66,8 +66,10 @@ export interface Reserva {
     inicio: Date;
     fin: Date;
     cant_horas: number;
-    estado: 'pendiente' | 'confirmada' | 'cancelada';
-    cliente: Usuario;
-    propiedad: Local;
-    fecha_creacion: Date;
+    estado: 'pendiente' | 'completada' | 'cancelada';
+    costo_pagado?: number;
+    costo_total?: number;
+    fecha_creacion?: Date;
+    cliente_id: string;
+    propiedad_id: string;
 }

@@ -225,7 +225,7 @@
           <div *ngIf="reservaError" class="text-red-600 text-sm text-center">{{ reservaError }}</div>
           <div class="flex justify-end gap-2 pt-2">
             <button type="button" (click)="cerrarModalReserva()" class="px-4 py-2 rounded-lg border">Cancelar</button>
-            <button type="submit" [disabled]="reservaForm.invalid" class="px-4 py-2 rounded-lg bg-indigo-700 text-white hover:bg-indigo-800">Reservar</button>
+            <button type="submit" [disabled]="reservaForm.invalid" class="px-4 py-2 rounded-lg bg-indigo-700 text-white hover:bg-indigo-800 disabled:opacity-50 disabled:cursor-not-allowed">Reservar</button>
           </div>
         </form>
       </div>
