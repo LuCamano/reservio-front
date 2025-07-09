@@ -33,7 +33,7 @@
                         Historial
                     </button>
                 </div>
-                <div class="w-1/2 p-1 md:w-auto md:flex-1" *ngIf="usuario!.tipo === 'propietario'">
+                <div class="w-1/2 p-1 md:w-auto md:flex-1" *ngIf="esPropietario">
                     <button (click)="onTabChange(2)"
                         [ngClass]="selectedTabIndex === 2 ? 'bg-blue-600 text-white shadow' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
                         class="w-full text-center rounded-full px-4 py-2 text-sm font-medium transition duration-300">
@@ -114,13 +114,18 @@
 
                 <!-- Cambiar tipo de cuenta -->
                 <div class="mt-4 border-t pt-4 flex items-center justify-between"
-                    *ngIf="usuario!.tipo !== 'propietario'">
+                    *ngIf="usuario!.tipo !== 'propietario' && usuario!.tipo !== 'admin'">
                     <p class="text-sm text-gray-500 hidden sm:block">Quiero ser propietario</p>
                     <button
                         class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition w-full md:w-auto"
                         (click)="solicitarPropietario()">
                         Actualizar cuenta
                     </button>
+                </div>
+                <!-- Mostrar texto especial para admin -->
+                <div class="mt-4 border-t pt-4 flex items-center justify-between"
+                    *ngIf="usuario!.tipo === 'admin'">
+                    <p class="text-sm text-gray-500">Cuenta de Administrador</p>
                 </div>
                 <!-- Dejar de ser propietario -->
                 <div class="mt-4 border-t pt-4 flex items-center justify-between"
@@ -150,66 +155,94 @@
         <h3 class="text-lg font-semibold text-gray-700 mb-2">Historial de Reservas</h3>
         <!-- Tabs internas -->
         <div class="flex flex-col sm:flex-row gap-2 mb-6">
-            <button *ngIf="usuario?.tipo === 'propietario'" (click)="onHistorialTabChange(0)"
-                [ngClass]="historialTabIndex === 0 ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-                class="px-4 py-2 rounded-full font-medium transition w-full sm:w-auto">
-                Reservas recibidas
-            </button>
-            <button (click)="onHistorialTabChange(usuario?.tipo === 'propietario' ? 1 : 0)"
-                [ngClass]="historialTabIndex === (usuario?.tipo === 'propietario' ? 1 : 0) ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-                class="px-4 py-2 rounded-full font-medium transition w-full sm:w-auto">
-                Reservas realizadas
-            </button>
+          <button *ngIf="esPropietario" (click)="onHistorialTabChange(0)"
+            [ngClass]="historialTabIndex === 0 ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+            class="px-4 py-2 rounded-full font-medium transition w-full sm:w-auto">
+            Reservas recibidas
+          </button>
+          <button (click)="onHistorialTabChange(esPropietario ? 1 : 0)"
+            [ngClass]="historialTabIndex === (esPropietario ? 1 : 0) ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+            class="px-4 py-2 rounded-full font-medium transition w-full sm:w-auto">
+            Reservas realizadas
+          </button>
         </div>
 
-        <!-- Reservas recibidas SOLO para propietarios -->
-        <div *ngIf="usuario?.tipo === 'propietario' && historialTabIndex === 0">
-            <div *ngIf="reservasRecibidas.length === 0" class="text-gray-500 text-center py-8">
-                No tienes reservas recibidas en tus propiedades.
-            </div>
-            <div *ngFor="let reserva of reservasRecibidas" class="border rounded-lg p-4 mb-4 shadow-sm">
-                <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                    <div>
-                        <div class="font-bold text-lg">{{ reserva.propiedad_id }}</div>
-                        <div class="text-sm text-gray-600">Cliente: {{ reserva.cliente_id }} {{
-                            reserva.cliente_id }} ({{ reserva.cliente_id }})</div>
-                        <div class="text-sm text-gray-600">Estado: <span class="font-semibold">{{ reserva.estado
-                                }}</span></div>
-                    </div>
-                    <div class="mt-2 md:mt-0 text-sm text-gray-700">
-                        <div>Desde: {{ reserva.inicio | date:'dd/MM/yyyy HH:mm' }}</div>
-                        <div>Hasta: {{ reserva.fin | date:'dd/MM/yyyy HH:mm' }}</div>
-                        <div>Horas: {{ reserva.cant_horas }}</div>
-                    </div>
-                </div>
-            </div>
+        <!-- Reservas recibidas para propietarios o admin -->
+        <div *ngIf="esPropietario && historialTabIndex === 0">
+          <div *ngIf="isLoadingReservas" class="spinner"><div class="spinner-icon"></div></div>
+          <div *ngIf="!isLoadingReservas && reservasRecibidas.length === 0" class="text-gray-500 text-center py-8">
+            No tienes reservas recibidas en tus propiedades.
+          </div>
+          <div class="overflow-x-auto rounded-xl shadow bg-white" *ngIf="!isLoadingReservas && reservasRecibidas.length > 0">
+            <table class="min-w-full divide-y divide-gray-200 text-sm">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Propiedad</th>
+                  <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
+                  <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Desde</th>
+                  <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Hasta</th>
+                  <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Horas</th>
+                  <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <tr *ngFor="let reserva of reservasRecibidas" class="hover:bg-gray-50">
+                  <td class="px-6 py-4">{{ getNombrePropiedad(reserva.propiedad_id) }}</td>
+                  <td class="px-6 py-4">{{ getNombreCliente(reserva.cliente_id) }}</td>
+                  <td class="px-6 py-4">{{ reserva.inicio | date:'dd/MM/yyyy HH:mm' }}</td>
+                  <td class="px-6 py-4">{{ reserva.fin | date:'dd/MM/yyyy HH:mm' }}</td>
+                  <td class="px-6 py-4">{{ reserva.cant_horas }}</td>
+                  <td class="px-6 py-4">
+                    <span [ngClass]="{
+                      'bg-yellow-100 text-yellow-700': reserva.estado === 'pendiente',
+                      'bg-green-100 text-green-700': reserva.estado === 'completada',
+                      'bg-red-100 text-red-700': reserva.estado === 'cancelada'
+                    }" class="px-2 py-1 rounded-full text-xs font-semibold">
+                      {{ reserva.estado }}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <!-- Reservas realizadas -->
-        <div *ngIf="(usuario?.tipo !== 'propietario' && historialTabIndex === 0) || (usuario?.tipo === 'propietario' && historialTabIndex === 1)">
-            <div *ngIf="reservasRealizadas.length === 0" class="text-gray-500 text-center py-8">
-                No has realizado reservas aún.
-            </div>
-            <div *ngFor="let reserva of reservasRealizadas" class="border rounded-lg p-4 mb-4 shadow-sm">
-                <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                    <div>
-                        <div class="font-bold text-lg">{{ reserva.propiedad_id }}</div>
-                        <div class="text-sm text-gray-600">
-                            Propietarios:
-                            <span *ngFor="let propietario of reserva.propiedad_id; let last = last">
-                                {{ propietario }} {{ propietario }}<span *ngIf="!last">, </span>
-                            </span>
-                        </div>
-                        <div class="text-sm text-gray-600">Estado: <span class="font-semibold">{{ reserva.estado
-                                }}</span></div>
-                    </div>
-                    <div class="mt-2 md:mt-0 text-sm text-gray-700">
-                        <div>Desde: {{ reserva.inicio | date:'dd/MM/yyyy HH:mm' }}</div>
-                        <div>Hasta: {{ reserva.fin | date:'dd/MM/yyyy HH:mm' }}</div>
-                        <div>Horas: {{ reserva.cant_horas }}</div>
-                    </div>
-                </div>
-            </div>
+        <div *ngIf="(!esPropietario && historialTabIndex === 0) || (esPropietario && historialTabIndex === 1)">
+          <div *ngIf="isLoadingReservas" class="spinner"><div class="spinner-icon"></div></div>
+          <div *ngIf="!isLoadingReservas && reservasRealizadas.length === 0" class="text-gray-500 text-center py-8">
+            No has realizado reservas aún.
+          </div>
+          <div class="overflow-x-auto rounded-xl shadow bg-white" *ngIf="!isLoadingReservas && reservasRealizadas.length > 0">
+            <table class="min-w-full divide-y divide-gray-200 text-sm">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Propiedad</th>
+                  <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Desde</th>
+                  <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Hasta</th>
+                  <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Horas</th>
+                  <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <tr *ngFor="let reserva of reservasRealizadas" class="hover:bg-gray-50">
+                  <td class="px-6 py-4">{{ getNombrePropiedad(reserva.propiedad_id) }}</td>
+                  <td class="px-6 py-4">{{ reserva.inicio | date:'dd/MM/yyyy HH:mm' }}</td>
+                  <td class="px-6 py-4">{{ reserva.fin | date:'dd/MM/yyyy HH:mm' }}</td>
+                  <td class="px-6 py-4">{{ reserva.cant_horas }}</td>
+                  <td class="px-6 py-4">
+                    <span [ngClass]="{
+                      'bg-yellow-100 text-yellow-700': reserva.estado === 'pendiente',
+                      'bg-green-100 text-green-700': reserva.estado === 'completada',
+                      'bg-red-100 text-red-700': reserva.estado === 'cancelada'
+                    }" class="px-2 py-1 rounded-full text-xs font-semibold">
+                      {{ reserva.estado }}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
     </div>
 

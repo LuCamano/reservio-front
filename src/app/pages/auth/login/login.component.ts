@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -26,10 +27,16 @@ export class LoginComponent {
       this.error = '';
 
       const { email, password } = this.loginForm.value;
-      
       this.authService.login(email!, password!).subscribe({
         next: () => {
-          this.router.navigate(['/']);
+          this.authService.currentUser$.pipe(first(user => !!user)).subscribe(user => {
+            if (user?.tipo === 'admin') {
+              this.router.navigate(['/admin']);
+            } else {
+              this.router.navigate(['/']);
+            }
+            this.loading = false;
+          });
         },
         error: err => {
           this.error = 'Error de autenticación. Por favor, verifica tus credenciales.';

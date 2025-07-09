@@ -30,6 +30,10 @@ export class PerfilComponent implements OnInit {
   regionMap: { [regionId: string]: string } = {};
 
   isLoading = true;
+  isLoadingReservas = false;
+  usuariosClientes: { [id: string]: Usuario } = {};
+  propiedadesReservadas: { [id: string]: Local } = {};
+
   async ngOnInit() {
     try {
       this.isLoading = true;
@@ -55,6 +59,10 @@ export class PerfilComponent implements OnInit {
 
   onHistorialTabChange(index: number) {
     this.historialTabIndex = index;
+  }
+
+  get esPropietario(): boolean {
+    return this.usuario?.tipo === 'propietario' || this.usuario?.tipo === 'admin';
   }
 
   async getDatos() {
@@ -90,6 +98,7 @@ export class PerfilComponent implements OnInit {
   }
 
   async cargarReservas() {
+    this.isLoadingReservas = true;
     try {
       const reservas = await this.apiSv.getReservas();
 
@@ -97,15 +106,41 @@ export class PerfilComponent implements OnInit {
         r.cliente_id === this.usuario!.id
       );
 
-      if (this.usuario!.tipo === 'propietario') {
+      // Cargar propiedades reservadas por el usuario (que pueden no estar en this.locales)
+      const propiedadIdsReservadas = Array.from(new Set(this.reservasRealizadas.map(r => r.propiedad_id)));
+      await Promise.all(propiedadIdsReservadas.map(async id => {
+        if (id && !this.propiedadesReservadas[id]) {
+          try {
+            this.propiedadesReservadas[id] = await this.apiSv.getLocal(id);
+          } catch (e) {
+            this.propiedadesReservadas[id] = { id, nombre: id, descripcion: '', direccion: '', tipo: '', cod_postal: '', precio_hora: 0, comuna_id: '', validada: false, activo: false };
+          }
+        }
+      }));
+
+      if (this.esPropietario) {
+        const propiedadIds = this.locales.map(l => l.id);
         this.reservasRecibidas = reservas.filter(r =>
-          r.propiedad_id === this.usuario!.id
+          propiedadIds.includes(r.propiedad_id)
         );
+        const clienteIds = Array.from(new Set(this.reservasRecibidas.map(r => r.cliente_id)));
+        await Promise.all(clienteIds.map(async id => {
+          if (id && !this.usuariosClientes[id]) {
+            try {
+              this.usuariosClientes[id] = await this.apiSv.getUsuario(id);
+            } catch (e) {
+              this.usuariosClientes[id] = { id, email: id, rut: '', nombres: '', appaterno: '', apmaterno: '', fecha_nacimiento: new Date() };
+            }
+          }
+        }));
       } else {
         this.reservasRecibidas = [];
+        this.usuariosClientes = {};
       }
     } catch (error) {
       console.error('Error al cargar reservas:', error);
+    } finally {
+      this.isLoadingReservas = false;
     }
   }
 
@@ -142,5 +177,17 @@ export class PerfilComponent implements OnInit {
 
   cambioContra(){
     
+  }
+
+  getNombrePropiedad(id: string): string {
+    // Buscar primero en las propiedades reservadas, luego en las propias
+    const local = this.propiedadesReservadas[id] || this.locales.find(l => l.id === id);
+    return local?.nombre || id;
+  }
+
+  getNombreCliente(id: string): string {
+    const usuario = this.usuariosClientes[id];
+    if (!usuario) return id;
+    return `${usuario.nombres} ${usuario.appaterno} (${usuario.email})`;
   }
 }
