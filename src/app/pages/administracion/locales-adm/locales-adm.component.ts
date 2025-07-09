@@ -1,5 +1,5 @@
 import { Component , inject, OnInit } from '@angular/core';
-import { Local } from '../../../models/models.interface';
+import { Local, Valoracion } from '../../../models/models.interface';
 import { ConnectionService } from '../../../services/connection.service';
 import { ApiService } from '../../../services/api.service';
 import { Router } from '@angular/router';
@@ -29,6 +29,11 @@ export class LocalesAdmComponent implements OnInit {
   
   localSeleccionado?: Local;
   mostrarModalEdicion = false;
+
+  valoraciones: Valoracion[] = [];
+  mostrarModalComentarios = false;
+  localNombre = '';
+
 
   
   ngOnInit(): void {
@@ -100,7 +105,7 @@ export class LocalesAdmComponent implements OnInit {
         local.direccion?.toLowerCase().includes(term);
 
       const matchesTipo =
-        !this.selectedTipo || local.tipo === this.selectedTipo;
+        !this.selectedTipo || local.tipo === this.selectedTipo.toLowerCase();
 
       const matchesEstado =
         this.selectedEstado === ''
@@ -112,9 +117,14 @@ export class LocalesAdmComponent implements OnInit {
 
   }
 
-  verDetalles(id: string){
+  verComent(id: string) {
+  this.apisv.getLocal(id).then(local => {
+    this.valoraciones = local.valoraciones || [];
+    this.localNombre = local.nombre!;
+    this.mostrarModalComentarios = true;
+  });
+}
 
-  }
 
   eliminarLocal(id: string): void {
     if (confirm('¿Estás seguro de eliminar este local?')) {
@@ -181,6 +191,11 @@ esImagen(nombre: string): boolean {
 
 esPDF(nombre: string): boolean {
   return /\.pdf$/i.test(nombre);
+}
+
+cerrarModalComentarios() {
+  this.mostrarModalComentarios = false;
+  this.valoraciones = [];
 }
 
 

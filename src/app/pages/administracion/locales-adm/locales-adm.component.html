@@ -63,6 +63,7 @@
             </span>
           </td>
           <td class="px-7 py-4 text-center space-x-2">
+            <button (click)="verComent(local.id!)" class="text-blue-600 hover:text-blue-800"><i class="fas fa-eye mr-1"></i></button>
             <button (click)="editarLocal(local.id!)" class="text-yellow-600 hover:text-yellow-900"><i class="fa-solid fa-check" style="color: #74c0fc"></i></button>
           </td>
         </tr>
@@ -92,9 +93,8 @@
       </div>
 
       <div class="flex justify-between text-xs font-medium mt-2">
-        <button (click)="verDetalles(local.id!)" class="text-blue-600 hover:text-blue-800"><i class="fas fa-eye mr-1"></i>Ver</button>
+        <button (click)="verComent(local.id!)" class="text-blue-600 hover:text-blue-800"><i class="fas fa-eye mr-1"></i>Ver</button>
         <button (click)="editarLocal(local.id!)" class="text-yellow-600 hover:text-yellow-800"><i class="fas fa-edit mr-1"></i>Editar</button>
-        <button (click)="eliminarLocal(local.id!)" class="text-red-600 hover:text-red-800"><i class="fas fa-trash mr-1"></i>Eliminar</button>
       </div>
     </div>
   </div>
@@ -138,3 +138,31 @@
     </div>
   </div>
 </div>
+
+<!-- Modal de comentarios -->
+<div *ngIf="mostrarModalComentarios" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-lg w-full max-w-2xl shadow-lg max-h-[80vh] overflow-y-auto">
+    <h2 class="text-xl font-bold mb-4">Comentarios de {{ localNombre }}</h2>
+
+    <div *ngIf="valoraciones.length > 0; else sinComentarios" class="space-y-4">
+      <div *ngFor="let val of valoraciones" class="border border-gray-200 rounded p-4 shadow-sm">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-yellow-500">
+            <i class="fas fa-star" *ngFor="let star of [].constructor(val.puntaje)"></i>
+          </span>
+        </div>
+        <p class="text-sm text-gray-700">{{ val.comentario }}</p>
+        <p class="text-xs text-gray-400 mt-2">{{ val.fecha | date:'dd/MM/yyyy' }}</p>
+      </div>
+    </div>
+
+    <ng-template #sinComentarios>
+      <p class="text-gray-500 text-sm">Este local aún no tiene comentarios.</p>
+    </ng-template>
+
+    <div class="mt-6 flex justify-end">
+      <button (click)="cerrarModalComentarios()" class="px-4 py-2 bg-gray-300 rounded">Cerrar</button>
+    </div>
+  </div>
+</div>
+
