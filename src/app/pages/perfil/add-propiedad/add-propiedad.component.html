@@ -1,126 +1,126 @@
 <app-header-simple></app-header-simple>
+<div class ="bg-gray-100 min-h-screen px-2 sm:px-4 md:px-10 lg:px-20 xl:px-40 pt-20 pb-20">
+    <div class="max-w-3xl mx-auto bg-white shadow-md p-8 rounded-2xl border border-gray-300">
+        <h2 class="text-2xl font-bold mb-4 text-gray-800">Agregar Propiedad</h2>
 
-<div class="max-w-3xl mx-auto bg-white shadow-md p-6 rounded-2xl border border-gray-200 mt-6">
-    <h2 class="text-2xl font-bold mb-4 text-gray-800">Agregar Propiedad</h2>
+        <form [formGroup]="localForm" (ngSubmit)="crearPropiedad()" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Nombre</label>
+                    <input type="text" formControlName="nombre" class="w-full border border-gray-300 p-2 rounded-lg" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Región</label>
+                    <select formControlName="region" class="w-full border border-gray-300 p-2 rounded-lg">
+                        <option value="">Seleccione Región</option>
+                        <option *ngFor="let reg of regiones" [value]="reg.id">{{ reg.nombre }}</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Comuna</label>
+                    <select formControlName="comuna" 
+                    [ngClass]="localForm.get('comuna')?.disabled ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : ''"
+                    class="w-full border border-gray-300 p-2 rounded-lg">
+                        <option value="">Seleccione Comuna</option>
+                        <option *ngFor="let com of comunasFiltradas" [value]="com.id">{{ com.nombre }}</option>
+                    </select>
+                </div>
 
-    <form [formGroup]="localForm" (ngSubmit)="crearPropiedad()" class="space-y-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Nombre</label>
-                <input type="text" formControlName="nombre" class="w-full border border-gray-300 p-2 rounded-lg" />
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Capacidad</label>
+                    <input type="number" formControlName="capacidad" class="w-full border border-gray-300 p-2 rounded-lg" />
+                </div>
+
+                <div>
+                    <label class="block">Código Postal</label>
+                    <input type="text" formControlName="cod_postal" class="w-full border p-2 rounded" />
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Precio por hora</label>
+                    <input type="number" formControlName="precioH" class="w-full border border-gray-300 p-2 rounded-lg" />
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Hora de apertura</label>
+                    <input type="time" formControlName="hora_apertura" class="w-full border border-gray-300 p-2 rounded-lg" />
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Hora de cierre</label>
+                    <input type="time" formControlName="hora_cierre" class="w-full border border-gray-300 p-2 rounded-lg" />
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Dirección (opcional)</label>
+                    <input type="text" formControlName="direccion" class="w-full border border-gray-300 p-2 rounded-lg" />
+                </div>
+
+                <div>
+                    <label for="disponible" class="block text-sm font-medium text-gray-700 mb-1">Disponible</label>
+
+                    <label for="disponible" class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="disponible" formControlName="disponible" class="sr-only peer" />
+
+                        <!-- fondo del switch -->
+                        <div class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-blue-600 transition-colors">
+                        </div>
+
+                        <!-- círculo del switch -->
+                        <div
+                            class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full transition-transform peer-checked:translate-x-full">
+                        </div>
+                    </label>
+                </div>
+
+                <div class="col-span-2">
+                    <label class="block mb-1">Imágenes</label>
+                    <input type="file" formControlName="images" multiple accept="image/*" (change)="onFileSelected($event)" class="block w-full text-sm text-gray-600
+                        file:py-2 file:px-4
+                        file:rounded file:border-0
+                        file:text-sm file:font-semibold
+                        file:bg-blue-50 file:text-blue-700
+                        hover:file:bg-blue-100" />
+                </div>
+                <!-- Preview de Imágenes -->
+                <div class="col-span-2 flex flex-wrap gap-4">
+                    <img *ngFor="let src of previews" [src]="src" class="w-24 h-24 object-cover rounded border" />
+                </div>
+
+                <div class="col-span-2">
+                    <label class="block mb-1 text-sm font-medium">Documento (PDF/DOC)</label>
+                    <input type="file" formControlName="documento" accept="application/pdf,image/*"
+                        (change)="onDocumentSelected($event)" class="…tus clases…" class="block w-full text-sm text-gray-600
+                        file:py-2 file:px-4
+                        file:rounded file:border-0
+                        file:text-sm file:font-semibold
+                        file:bg-blue-50 file:text-blue-700
+                        hover:file:bg-blue-100" />
+                    <p *ngIf="selectedDoc">Archivo: {{ selectedDoc.name }}</p>
+                    <p *ngIf="localForm.get('documento')?.value === null">No hay documento seleccionado</p>
+                
+                </div>
+
+
+                <!-- NUEVO: Campo Descripción -->
+                <div class="col-span-2">
+                    <label class="block text-sm font-medium text-gray-700">Descripción</label>
+                    <textarea formControlName="descripcion" rows="3"
+                        class="w-full border border-gray-300 p-2 rounded-lg resize-none"></textarea>
+                </div>
             </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Región</label>
-                <select formControlName="region" class="w-full border border-gray-300 p-2 rounded-lg">
-                    <option value="">Seleccione Región</option>
-                    <option *ngFor="let reg of regiones" [value]="reg.id">{{ reg.nombre }}</option>
-                </select>
+
+            <div class="sm:col-span-2 flex items-center justify-between pt-6">
+                <button type="button" (click)="onCancel()" routerLink="/perfil"
+                    class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition">
+                    Cancelar
+                </button>
+                
+                <button type="submit"
+                    class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow-md">
+                    Guardar Propiedad
+                </button>
             </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Comuna</label>
-                <select formControlName="comuna" 
-                  [ngClass]="localForm.get('comuna')?.disabled ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : ''"
-                  class="w-full border border-gray-300 p-2 rounded-lg">
-                    <option value="">Seleccione Comuna</option>
-                    <option *ngFor="let com of comunasFiltradas" [value]="com.id">{{ com.nombre }}</option>
-                </select>
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Capacidad</label>
-                <input type="number" formControlName="capacidad" class="w-full border border-gray-300 p-2 rounded-lg" />
-            </div>
-
-            <div>
-                <label class="block">Código Postal</label>
-                <input type="text" formControlName="cod_postal" class="w-full border p-2 rounded" />
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Precio por hora</label>
-                <input type="number" formControlName="precioH" class="w-full border border-gray-300 p-2 rounded-lg" />
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Hora de apertura</label>
-                <input type="time" formControlName="hora_apertura" class="w-full border border-gray-300 p-2 rounded-lg" />
-            </div>
-            
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Hora de cierre</label>
-                <input type="time" formControlName="hora_cierre" class="w-full border border-gray-300 p-2 rounded-lg" />
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Dirección (opcional)</label>
-                <input type="text" formControlName="direccion" class="w-full border border-gray-300 p-2 rounded-lg" />
-            </div>
-
-            <div>
-                <label for="disponible" class="block text-sm font-medium text-gray-700 mb-1">Disponible</label>
-
-                <label for="disponible" class="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" id="disponible" formControlName="disponible" class="sr-only peer" />
-
-                    <!-- fondo del switch -->
-                    <div class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-blue-600 transition-colors">
-                    </div>
-
-                    <!-- círculo del switch -->
-                    <div
-                        class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full transition-transform peer-checked:translate-x-full">
-                    </div>
-                </label>
-            </div>
-
-            <div class="col-span-2">
-                <label class="block mb-1">Imágenes</label>
-                <input type="file" formControlName="images" multiple accept="image/*" (change)="onFileSelected($event)" class="block w-full text-sm text-gray-600
-                       file:py-2 file:px-4
-                       file:rounded file:border-0
-                       file:text-sm file:font-semibold
-                       file:bg-blue-50 file:text-blue-700
-                       hover:file:bg-blue-100" />
-            </div>
-            <!-- Preview de Imágenes -->
-            <div class="col-span-2 flex flex-wrap gap-4">
-                <img *ngFor="let src of previews" [src]="src" class="w-24 h-24 object-cover rounded border" />
-            </div>
-
-            <div class="col-span-2">
-                <label class="block mb-1 text-sm font-medium">Documento (PDF/DOC)</label>
-                <input type="file" formControlName="documento" accept="application/pdf,image/*"
-                    (change)="onDocumentSelected($event)" class="…tus clases…" class="block w-full text-sm text-gray-600
-                       file:py-2 file:px-4
-                       file:rounded file:border-0
-                       file:text-sm file:font-semibold
-                       file:bg-blue-50 file:text-blue-700
-                       hover:file:bg-blue-100" />
-                <p *ngIf="selectedDoc">Archivo: {{ selectedDoc.name }}</p>
-                <p *ngIf="localForm.get('documento')?.value === null">No hay documento seleccionado</p>
-            
-            </div>
-
-
-            <!-- NUEVO: Campo Descripción -->
-            <div class="col-span-2">
-                <label class="block text-sm font-medium text-gray-700">Descripción</label>
-                <textarea formControlName="descripcion" rows="3"
-                    class="w-full border border-gray-300 p-2 rounded-lg resize-none"></textarea>
-            </div>
-        </div>
-
-        <div class="sm:col-span-2 flex items-center justify-between pt-6">
-            <button type="button" (click)="onCancel()" routerLink="/perfil"
-                class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition">
-                Cancelar
-            </button>
-            
-            <button type="submit"
-                class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow-md">
-                Guardar Propiedad
-            </button>
-        </div>
-    </form>
-    
+        </form>
+    </div>
 </div>
