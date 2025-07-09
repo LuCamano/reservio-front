@@ -39,12 +39,12 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   usuario: Usuario | null = null;
   reservasPendientesValoracion: Reserva[] = [];
-  mostrarModalValoracion = false;
-  reservaAValorar: Reserva | null = null;
-  valoracionForm = {
-    puntaje: 0,
-    comentario: ''
-  };
+  // mostrarModalValoracion = false;
+  // reservaAValorar: Reserva | null = null;
+  // valoracionForm = {
+  //   puntaje: 0,
+  //   comentario: ''
+  // };
 
   ngOnInit() {
     // Duplicamos la primera imagen al final
@@ -80,7 +80,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       for (const region of regiones) {
         if (region.id) this.regionesMap[region.id] = region.nombre;
       }
-      this.locales = await this.apiService.getLocales();
+      this.locales = (await this.apiService.getLocales()).filter(local => local.validada);
       // Elegir 3 locales al azar para recomendados
       if (this.locales.length > 3) {
         const indices = new Set<number>();
@@ -96,6 +96,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
+  get isAdmin(): boolean {
+    return this.usuario?.tipo === 'admin';
+  }
+
   async cargarUsuarioYReservas() {
     try {
       this.usuario = await lastValueFrom(this.authService.getCurrentUser());
@@ -107,38 +111,32 @@ export class HomeComponent implements OnInit, OnDestroy {
           r.cliente_id === this.usuario!.id &&
           new Date(r.fin) < ahora
         );
-        // Aquí deberías consultar si ya existe una valoración para esa reserva/propiedad
-        // Por simplicidad, mostramos el modal para la primera pendiente
-        if (this.reservasPendientesValoracion.length > 0) {
-          this.reservaAValorar = this.reservasPendientesValoracion[0];
-          this.mostrarModalValoracion = true;
-        }
       }
     } catch (e) {
       this.usuario = null;
     }
   }
 
-  async enviarValoracion() {
-    if (!this.reservaAValorar || !this.usuario) return;
-    const valoracion: Valoracion = {
-      puntaje: this.valoracionForm.puntaje,
-      comentario: this.valoracionForm.comentario,
-      cliente_id: this.usuario.id!,
-      propiedad_id: this.reservaAValorar.propiedad_id,
-      fecha: new Date().toISOString()
-    };
-    try {
-      await this.apiService.createValoracion(valoracion);
-      this.mostrarModalValoracion = false;
-      // Opcional: marcar la reserva como valorada en el backend o refrescar lista
-    } catch (e) {
-      alert('Error al enviar valoración');
-    }
-  }
+  // async enviarValoracion() {
+  //   if (!this.reservaAValorar || !this.usuario) return;
+  //   const valoracion: Valoracion = {
+  //     puntaje: this.valoracionForm.puntaje,
+  //     comentario: this.valoracionForm.comentario,
+  //     cliente_id: this.usuario.id!,
+  //     propiedad_id: this.reservaAValorar.propiedad_id,
+  //     fecha: new Date().toISOString()
+  //   };
+  //   try {
+  //     await this.apiService.createValoracion(valoracion);
+  //     this.mostrarModalValoracion = false;
+  //     // Opcional: marcar la reserva como valorada en el backend o refrescar lista
+  //   } catch (e) {
+  //     alert('Error al enviar valoración');
+  //   }
+  // }
 
-  cerrarModalValoracion() {
-    this.mostrarModalValoracion = false;
-  }
+  // cerrarModalValoracion() {
+  //   this.mostrarModalValoracion = false;
+  // }
 
 }

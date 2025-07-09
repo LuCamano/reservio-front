@@ -123,22 +123,10 @@
   </div>
 </section>
 
-<!-- Modal de valoración -->
-<div *ngIf="mostrarModalValoracion && reservaAValorar" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-  <div class="bg-white p-6 rounded-lg w-full max-w-md shadow-lg">
-    <h2 class="text-xl font-bold mb-4">Valora tu experiencia</h2>
-    <p class="mb-2">¿Cómo calificarías la propiedad que reservaste?</p>
-    <div class="flex items-center gap-1 mb-4">
-      <ng-container *ngFor="let star of [1,2,3,4,5]">
-        <button type="button" (click)="valoracionForm.puntaje = star" [ngClass]="valoracionForm.puntaje >= star ? 'text-yellow-400' : 'text-gray-300'">
-          <mat-icon>star</mat-icon>
-        </button>
-      </ng-container>
-    </div>
-    <textarea [(ngModel)]="valoracionForm.comentario" rows="3" class="w-full border rounded p-2 mb-4" placeholder="Deja un comentario (opcional)"></textarea>
-    <div class="flex justify-end gap-2">
-      <button (click)="cerrarModalValoracion()" class="px-4 py-2 bg-gray-200 rounded">Cancelar</button>
-      <button (click)="enviarValoracion()" [disabled]="valoracionForm.puntaje === 0" class="px-4 py-2 bg-blue-600 text-white rounded">Enviar</button>
-    </div>
-  </div>
-</div>
+<!-- Botón flotante solo para admin -->
+<button *ngIf="isAdmin" routerLink="/admin"
+  class="fixed bottom-6 right-6 z-50 bg-blue-700 hover:bg-blue-900 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-200 text-lg flex items-center gap-2"
+  style="box-shadow: 0 4px 24px rgba(0,0,0,0.18);">
+  <span class="material-icons">admin_panel_settings</span>
+  Admin
+</button>
