@@ -9,6 +9,7 @@ import { SidebarAdmComponent } from './sidebar-adm/sidebar-adm.component';
 import { MapComponent } from './map/map.component';
 import { ImageUploaderComponent } from './image-uploader/image-uploader.component';
 import { HeaderAdmComponent } from './header-adm/header-adm.component';
+import { SafeUrlPipe } from './pipe/safe-url.pipe'; 
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { HeaderAdmComponent } from './header-adm/header-adm.component';
     MapComponent,
     ImageUploaderComponent,
     HeaderAdmComponent,
+    SafeUrlPipe,
     
   ],
   imports: [
@@ -33,6 +35,7 @@ import { HeaderAdmComponent } from './header-adm/header-adm.component';
     MapComponent,
     ImageUploaderComponent,
     HeaderAdmComponent,
+    SafeUrlPipe,
     
   ]
 })

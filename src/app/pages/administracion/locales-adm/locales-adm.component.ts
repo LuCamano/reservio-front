@@ -175,4 +175,13 @@ convertirLocalAFormData(local: Local): FormData {
   return formData;
 }
 
+esImagen(nombre: string): boolean {
+  return /\.(jpg|jpeg|png|gif|webp)$/i.test(nombre);
+}
+
+esPDF(nombre: string): boolean {
+  return /\.pdf$/i.test(nombre);
+}
+
+
 }
