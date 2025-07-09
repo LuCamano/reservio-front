@@ -1,0 +1,110 @@
+<div class="max-w-7xl mx-auto px-4 py-6">
+  <h1 class="text-2xl font-bold text-gray-800 mb-6">Administración de Locales</h1>
+
+  <!-- Barra de búsqueda y filtros -->
+  <div class="mb-6 flex flex-col sm:flex-row sm:items-center gap-4">
+    <!-- Búsqueda -->
+    <div class="relative flex-1">
+      <input 
+        type="text" 
+        (ngModel)="searchTerm"
+        (input)="filterLocales()"
+        placeholder="Buscar locales por nombre o dirección..."
+        class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm sm:text-base"
+      >
+      <span class="absolute left-3 top-2.5 text-gray-400">
+        <i class="fas fa-search"></i>
+      </span>
+    </div>
+
+    <!-- Filtros -->
+    <div class="flex flex-wrap gap-2 sm:gap-4">
+      <select (ngModel)="selectedTipo" (change)="filterLocales()" class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <option value="">Todos los tipos</option>
+        <option *ngFor="let tipo of tiposLocales" [value]="tipo">{{ tipo }}</option>
+      </select>
+
+      <select (ngModel)="selectedEstado" (change)="filterLocales()" class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <option value="">Todos los estados</option>
+        <option value="activo">Activos</option>
+        <option value="inactivo">Inactivos</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Tabla para escritorio -->
+  <div class="hidden md:block overflow-x-auto rounded-xl shadow bg-white">
+    <table class="min-w-full divide-y divide-gray-200 text-sm">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-6 py-3 cursor-pointer" (click)="sortTable('nombre')">Nombre</th>
+          <th class="px-6 py-3 cursor-pointer" (click)="sortTable('direccion')">Dirección</th>
+          <th class="px-6 py-3 cursor-pointer" (click)="sortTable('tipo')">Tipo</th>
+          <th class="px-6 py-3 cursor-pointer" (click)="sortTable('precio_hora')">Precio/Hora</th>
+          <th class="px-6 py-3 cursor-pointer" (click)="sortTable('validada')">Validado</th>
+          <th class="px-6 py-3 cursor-pointer" (click)="sortTable('activo')">Estado</th>
+          <th class="px-6 py-3 text-right">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <tr *ngFor="let local of filteredLocales" class="hover:bg-gray-50">
+          <td class="px-6 py-4 font-medium text-gray-900">{{ local.nombre }}</td>
+          <td class="px-6 py-4">{{ local.direccion }}</td>
+          <td class="px-6 py-4">{{ local.tipo }}</td>
+          <td class="px-6 py-4">${{ local.precio_hora }}</td>
+          <td class="px-6 py-4">
+            <span [ngClass]="{ 'text-green-600': local.validada, 'text-red-600': !local.validada }">
+              {{ local.validada ? 'Sí' : 'No' }}
+            </span>
+          </td>
+          <td class="px-6 py-4">
+            <span [ngClass]="{ 'text-green-600': local.activo, 'text-red-600': !local.activo }">
+              {{ local.activo ? 'Activo' : 'Inactivo' }}
+            </span>
+          </td>
+          <td class="px-6 py-4 text-right space-x-2">
+            <button (click)="verDetalles(local.id!)" class="text-blue-600 hover:text-blue-900"><i class="fas fa-eye"></i></button>
+            <button (click)="editarLocal(local.id!)" class="text-yellow-600 hover:text-yellow-900"><i class="fas fa-edit"></i></button>
+            <button (click)="eliminarLocal(local.id!)" class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Tarjetas para móviles -->
+  <div class="md:hidden">
+    <div *ngFor="let local of filteredLocales" class="bg-white rounded-xl shadow-md mb-4 p-4 space-y-3">
+      <div class="flex justify-between items-center">
+        <div>
+          <h3 class="text-base font-semibold text-gray-900">{{ local.nombre }}</h3>
+          <p class="text-sm text-gray-600">{{ local.direccion }}</p>
+        </div>
+        <span class="text-xs font-semibold px-2 py-1 rounded-full"
+              [ngClass]="{ 'bg-green-100 text-green-800': local.activo, 'bg-red-100 text-red-800': !local.activo }">
+          {{ local.activo ? 'Activo' : 'Inactivo' }}
+        </span>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2 text-sm">
+        <div><span class="text-gray-500">Tipo:</span> {{ local.tipo }}</div>
+        <div><span class="text-gray-500">Precio:</span> ${{ local.precio_hora }}</div>
+        <div><span class="text-gray-500">Validado:</span> {{ local.validada ? 'Sí' : 'No' }}</div>
+        <div><span class="text-gray-500">Comuna:</span> {{ local.comuna?.nombre }}</div>
+      </div>
+
+      <div class="flex justify-between text-xs font-medium mt-2">
+        <button (click)="verDetalles(local.id!)" class="text-blue-600 hover:text-blue-800"><i class="fas fa-eye mr-1"></i>Ver</button>
+        <button (click)="editarLocal(local.id!)" class="text-yellow-600 hover:text-yellow-800"><i class="fas fa-edit mr-1"></i>Editar</button>
+        <button (click)="eliminarLocal(local.id!)" class="text-red-600 hover:text-red-800"><i class="fas fa-trash mr-1"></i>Eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sin resultados -->
+  <div *ngIf="filteredLocales.length === 0" class="bg-white rounded-xl shadow p-8 text-center">
+    <i class="fas fa-store-slash text-4xl text-gray-300 mb-4"></i>
+    <h3 class="text-lg font-semibold text-gray-500">No se encontraron locales</h3>
+    <p class="text-gray-400 mt-2">Intenta con otro término de búsqueda o ajusta los filtros</p>
+  </div>
+</div>

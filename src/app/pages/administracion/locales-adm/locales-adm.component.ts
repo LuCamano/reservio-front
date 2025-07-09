@@ -14,20 +14,18 @@ export class LocalesAdmComponent implements OnInit {
   private apisv = inject(ApiService); 
   private router = inject(Router)
 
-  sortField: keyof Usuario | null = null;
-
+  sortField: string = '';
   userService = inject(ConnectionService);
-  usuarios: Usuario[] = [];
-  filteredUsuarios: Usuario[] = [];
-  searchTerm: string = '';
+  locales: Local[] = []; 
+  filteredLocales: Local[] = []; 
   
   sortDirection: 'asc' | 'desc' = 'asc';
-  tiposUsuario: string[] = ['Administrador', 'Propietario', 'Cliente', 'Superadmin'];
+  tiposLocales: string[] = ['Local', 'Sala' , 'Casa'];
   estados: string[] = ['Activo', 'Inactivo'];
   selectedTipo: string = '';
   selectedEstado: string = '';
-
-  locales: Local[] = []; 
+  searchTerm: string = '';
+  
   
   ngOnInit(): void {
     // cargar los locales
@@ -35,10 +33,13 @@ export class LocalesAdmComponent implements OnInit {
   }
 
   cargarLocales(): void {
-    this.apisv.getLocales().then(lo => this.locales = lo)
+    this.apisv.getLocales().then(lo =>{
+      this.locales = lo
+      this.filterLocales();
+    })
   }
 
-/*   sortTable(field: string): void {
+  sortTable(field: string): void {
     if (this.sortField === field) {
       this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
     } else {
@@ -72,7 +73,7 @@ export class LocalesAdmComponent implements OnInit {
 
       return 0;
     });
-  } */
+  }
 
 
   toggleDisponibilidad(local: Local): void {
@@ -90,97 +91,32 @@ export class LocalesAdmComponent implements OnInit {
     return path.split('.').reduce((acc, part) => acc?.[part], obj);
   }
 
+  filterLocales() {
+    const term = this.searchTerm.toLowerCase().trim();
 
-  filterUsuarios(): void {
-    if (!this.searchTerm && !this.selectedTipo && !this.selectedEstado) {
-      this.filteredUsuarios = [...this.usuarios];
-      return;
-    }
-    
-    const term = this.searchTerm.toLowerCase();
-    this.filteredUsuarios = this.usuarios.filter(usuario => {
-      const matchesSearch = term === '' || 
-        usuario.email.toLowerCase().includes(term) ||
-        usuario.rut.toLowerCase().includes(term) ||
-        usuario.nombres.toLowerCase().includes(term) ||
-        usuario.appaterno.toLowerCase().includes(term) ||
-        (usuario.apmaterno && usuario.apmaterno.toLowerCase().includes(term));
-      
-      const matchesTipo = !this.selectedTipo || usuario.tipo === this.selectedTipo;
-      
-      let matchesEstado = true;
-      // if (this.selectedEstado === 'Activo') {
-      //   matchesEstado = usuario.activo;
-      // } else if (this.selectedEstado === 'Inactivo') {
-      //   matchesEstado = !usuario.activo;
-      // }
-      
+    this.filteredLocales = this.locales.filter(local => {
+      const matchesSearch =
+        local.nombre?.toLowerCase().includes(term) ||
+        local.direccion?.toLowerCase().includes(term);
+
+      const matchesTipo =
+        !this.selectedTipo || local.tipo === this.selectedTipo;
+
+      const matchesEstado =
+        this.selectedEstado === ''
+        || (this.selectedEstado === 'activo' && local.activo === true)
+        || (this.selectedEstado === 'inactivo' && local.activo === false);
+
+
       return matchesSearch && matchesTipo && matchesEstado;
     });
+
   }
 
-  sortTable(field: keyof Usuario): void {
-    if (this.sortField === field) {
-      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
-    } else {
-      this.sortField = field;
-      this.sortDirection = 'asc';
-    }
+  verDetalles(id: string){}
 
-    this.filteredUsuarios.sort((a, b) => {
-      const valueA = a[field];
-      const valueB = b[field];
-      
-      if (valueA === undefined || valueB === undefined) return 0;
-      
-      if (valueA instanceof Date && valueB instanceof Date) {
-        return this.sortDirection === 'asc' 
-          ? valueA.getTime() - valueB.getTime()
-          : valueB.getTime() - valueA.getTime();
-      }
-      
-      if (typeof valueA === 'string' && typeof valueB === 'string') {
-        return this.sortDirection === 'asc' 
-          ? valueA.localeCompare(valueB)
-          : valueB.localeCompare(valueA);
-      }
-      
-      if (typeof valueA === 'boolean' && typeof valueB === 'boolean') {
-        return this.sortDirection === 'asc' 
-          ? (valueA === valueB ? 0 : valueA ? -1 : 1)
-          : (valueA === valueB ? 0 : valueA ? 1 : -1);
-      }
-      
-      return 0;
-    });
-  }
+  editarLocal(id: string){}
+  
 
-
-  toggleActivo(usuario: Usuario): void {
-    // usuario.activo = !usuario.activo;
-    // Aquí deberías agregar la lógica para actualizar en tu backend
-  }
-
-  eliminarUsuario(id: string): void {
-    if (confirm('¿Estás seguro de eliminar este usuario?')) {
-      this.usuarios = this.usuarios.filter(usuario => usuario.id !== id);
-      this.filterUsuarios();
-      // Aquí deberías agregar la lógica para eliminar en tu backend
-    }
-  }
-
-  editarUsuario(id: string): void {
-    // Navegar a la página de edición de usuario
-    this.router.navigate(['/admin/usuarios/editar', id]);
-  }
-
-  verDetalles(id: string): void {
-    // Navegar a la página de detalles de usuario
-    this.router.navigate(['/admin/usuarios', id]);
-  }
-
-  crearUsuario(): void {
-    
-  }
 
 }
