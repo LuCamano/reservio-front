@@ -64,7 +64,14 @@ export class AddPropiedadComponent implements OnInit {
       const comunasEnRegion = this.comunas.filter(comuna => comuna.region_id === regionId);
       this.comunasFiltradas = comunasEnRegion;
       this.localForm.get('comuna')?.setValue('');
+      if (regionId) {
+        this.localForm.get('comuna')?.enable();
+      } else {
+        this.localForm.get('comuna')?.disable();
+      }
     });
+    // Deshabilitar comuna al inicio
+    this.localForm.get('comuna')?.disable();
   }
 
   cargarDatos(){
@@ -97,11 +104,6 @@ export class AddPropiedadComponent implements OnInit {
     this.localForm.patchValue({ images: files });
     this.localForm.get('images')!.updateValueAndValidity();
   }
-
- /*  onDocumentSelected(e: Event) {
-    const file = (e.target as HTMLInputElement).files?.[0] ?? null;
-    this.selectedDoc = file;
-  } */
 
   onDocumentSelected(event: Event) {
   // 1) Garantiza que currentTarget es tu <input>

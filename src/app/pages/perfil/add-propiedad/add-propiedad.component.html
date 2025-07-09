@@ -18,7 +18,9 @@
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700">Comuna</label>
-                <select formControlName="comuna" class="w-full border border-gray-300 p-2 rounded-lg">
+                <select formControlName="comuna" 
+                  [ngClass]="localForm.get('comuna')?.disabled ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : ''"
+                  class="w-full border border-gray-300 p-2 rounded-lg">
                     <option value="">Seleccione Comuna</option>
                     <option *ngFor="let com of comunasFiltradas" [value]="com.id">{{ com.nombre }}</option>
                 </select>
