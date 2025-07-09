@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Reserva } from '../../models/models.interface';
+import { Local, Reserva, Usuario } from '../../models/models.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { Location } from '@angular/common';
@@ -20,6 +20,8 @@ export class PagoComponent implements OnInit {
   private location = inject(Location);
 
   reserva: Reserva | null = null;
+  local: Local | null = null;
+  cliente: Usuario | null = null;
   montoPagar: number = 0;
 
   ngOnInit(): void {
@@ -65,8 +67,12 @@ export class PagoComponent implements OnInit {
   async getPago(id: string) {
     try {
       const reserva = await this.apiService.getReserva(id);
-      if (reserva) {
+      const propiedad = await this.apiService.getLocal(reserva.propiedad_id!);
+      const cliente = await this.apiService.getUsuario(reserva.cliente_id!);
+      if (reserva && propiedad && cliente) {
         this.reserva = reserva;
+        this.local = propiedad;
+        this.cliente = cliente;
         this.montoPagar = reserva.costo_total! * 0.5;
       } else {
         console.error('No se pudo obtener la reserva con ID:', id);

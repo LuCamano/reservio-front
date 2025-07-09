@@ -10,14 +10,14 @@
           <ng-container *ngIf="reserva; else sinReserva">
             <div class="mb-4">
               <h3 class="text-lg font-semibold mb-2 text-indigo-700">Local reservado</h3>
-              <p class="text-gray-800 font-medium">{{ reserva.propiedad_id }}</p>
-              <p class="text-gray-500 text-sm">Dirección: {{ reserva.propiedad_id }}</p>
+              <p class="text-gray-800 font-medium">{{ local?.nombre }}</p>
+              <p class="text-gray-500 text-sm">Dirección: {{ local?.direccion }}</p>
             </div>
             <hr class="my-4 border-gray-300">
             <div class="mb-4">
               <h3 class="text-lg font-semibold mb-2 text-indigo-700">Datos del usuario</h3>
-              <p class="text-gray-800">{{ reserva.cliente_id }} {{ reserva.cliente_id }} {{ reserva.cliente_id }}</p>
-              <p class="text-gray-500 text-sm">Correo: {{ reserva.cliente_id }}</p>
+              <p class="text-gray-800">{{ cliente?.nombres }} {{ cliente?.appaterno }} {{ cliente?.apmaterno }}</p>
+              <p class="text-gray-500 text-sm">Correo: {{ cliente?.email }}</p>
             </div>
             <hr class="my-4 border-gray-300">
             <div class="mb-4">
