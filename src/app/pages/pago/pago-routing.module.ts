@@ -4,9 +4,14 @@ import { PagoComponent } from './pago.component';
 
 const routes: Routes = [
   {
-      path: '',
-      component: PagoComponent
-    }
+    path: ':id',
+    component: PagoComponent
+  },
+  {
+    path: '',
+    redirectTo: '/pago/',
+    pathMatch: 'full'
+  }
 ];
 
 @NgModule({
