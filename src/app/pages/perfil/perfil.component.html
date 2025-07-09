@@ -169,10 +169,11 @@
 
         <!-- Reservas recibidas para propietarios o admin -->
         <div *ngIf="esPropietario && historialTabIndex === 0">
-          <div *ngIf="reservasRecibidas.length === 0" class="text-gray-500 text-center py-8">
+          <div *ngIf="isLoadingReservas" class="spinner"><div class="spinner-icon"></div></div>
+          <div *ngIf="!isLoadingReservas && reservasRecibidas.length === 0" class="text-gray-500 text-center py-8">
             No tienes reservas recibidas en tus propiedades.
           </div>
-          <div class="overflow-x-auto rounded-xl shadow bg-white" *ngIf="reservasRecibidas.length > 0">
+          <div class="overflow-x-auto rounded-xl shadow bg-white" *ngIf="!isLoadingReservas && reservasRecibidas.length > 0">
             <table class="min-w-full divide-y divide-gray-200 text-sm">
               <thead class="bg-gray-50">
                 <tr>
@@ -187,7 +188,7 @@
               <tbody class="bg-white divide-y divide-gray-200">
                 <tr *ngFor="let reserva of reservasRecibidas" class="hover:bg-gray-50">
                   <td class="px-6 py-4">{{ getNombrePropiedad(reserva.propiedad_id) }}</td>
-                  <td class="px-6 py-4">{{ reserva.cliente_id }}</td>
+                  <td class="px-6 py-4">{{ getNombreCliente(reserva.cliente_id) }}</td>
                   <td class="px-6 py-4">{{ reserva.inicio | date:'dd/MM/yyyy HH:mm' }}</td>
                   <td class="px-6 py-4">{{ reserva.fin | date:'dd/MM/yyyy HH:mm' }}</td>
                   <td class="px-6 py-4">{{ reserva.cant_horas }}</td>

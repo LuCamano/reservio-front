@@ -30,6 +30,9 @@ export class PerfilComponent implements OnInit {
   regionMap: { [regionId: string]: string } = {};
 
   isLoading = true;
+  isLoadingReservas = false;
+  usuariosClientes: { [id: string]: Usuario } = {};
+
   async ngOnInit() {
     try {
       this.isLoading = true;
@@ -94,6 +97,7 @@ export class PerfilComponent implements OnInit {
   }
 
   async cargarReservas() {
+    this.isLoadingReservas = true;
     try {
       const reservas = await this.apiSv.getReservas();
 
@@ -106,11 +110,27 @@ export class PerfilComponent implements OnInit {
         this.reservasRecibidas = reservas.filter(r =>
           propiedadIds.includes(r.propiedad_id)
         );
+        // Obtener IDs únicos de clientes de reservas recibidas
+        const clienteIds = Array.from(new Set(this.reservasRecibidas.map(r => r.cliente_id)));
+        // Cargar datos de cada cliente solo si no están ya cargados
+        await Promise.all(clienteIds.map(async id => {
+          if (id && !this.usuariosClientes[id]) {
+            try {
+              this.usuariosClientes[id] = await this.apiSv.getUsuario(id);
+            } catch (e) {
+              // Si falla, dejar el id como fallback
+              this.usuariosClientes[id] = { id, email: id, rut: '', nombres: '', appaterno: '', apmaterno: '', fecha_nacimiento: new Date() };
+            }
+          }
+        }));
       } else {
         this.reservasRecibidas = [];
+        this.usuariosClientes = {};
       }
     } catch (error) {
       console.error('Error al cargar reservas:', error);
+    } finally {
+      this.isLoadingReservas = false;
     }
   }
 
@@ -152,5 +172,11 @@ export class PerfilComponent implements OnInit {
   getNombrePropiedad(id: string): string {
     const local = this.locales.find(l => l.id === id);
     return local?.nombre || id;
+  }
+
+  getNombreCliente(id: string): string {
+    const usuario = this.usuariosClientes[id];
+    if (!usuario) return id;
+    return `${usuario.nombres} ${usuario.appaterno} (${usuario.email})`;
   }
 }
