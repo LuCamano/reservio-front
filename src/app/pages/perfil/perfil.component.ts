@@ -57,6 +57,10 @@ export class PerfilComponent implements OnInit {
     this.historialTabIndex = index;
   }
 
+  get esPropietario(): boolean {
+    return this.usuario?.tipo === 'propietario' || this.usuario?.tipo === 'admin';
+  }
+
   async getDatos() {
     try {
       const locales = await this.apiSv.getLocales();
@@ -97,9 +101,10 @@ export class PerfilComponent implements OnInit {
         r.cliente_id === this.usuario!.id
       );
 
-      if (this.usuario!.tipo === 'propietario') {
+      if (this.esPropietario) {
+        const propiedadIds = this.locales.map(l => l.id);
         this.reservasRecibidas = reservas.filter(r =>
-          r.propiedad_id === this.usuario!.id
+          propiedadIds.includes(r.propiedad_id)
         );
       } else {
         this.reservasRecibidas = [];
@@ -142,5 +147,10 @@ export class PerfilComponent implements OnInit {
 
   cambioContra(){
     
+  }
+
+  getNombrePropiedad(id: string): string {
+    const local = this.locales.find(l => l.id === id);
+    return local?.nombre || id;
   }
 }
