@@ -1,6 +1,8 @@
 import { Component , inject, OnInit } from '@angular/core';
-import { Local } from '../../../models/models.interface';
+import { Local, Usuario } from '../../../models/models.interface';
 import { ConnectionService } from '../../../services/connection.service';
+import { ApiService } from '../../../services/api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-locales-adm',
@@ -9,22 +11,34 @@ import { ConnectionService } from '../../../services/connection.service';
   styleUrl: './locales-adm.component.scss'
 })
 export class LocalesAdmComponent implements OnInit {
-  localesService = inject(ConnectionService);
+  private apisv = inject(ApiService); 
+  private router = inject(Router)
 
+  sortField: string = '';
+  userService = inject(ConnectionService);
   locales: Local[] = []; 
-  sortField: keyof Local | null = null;
+  filteredLocales: Local[] = []; 
+  
   sortDirection: 'asc' | 'desc' = 'asc';
+  tiposLocales: string[] = ['Local', 'Sala' , 'Casa'];
+  estados: string[] = ['Activo', 'Inactivo'];
+  selectedTipo: string = '';
+  selectedEstado: string = '';
+  searchTerm: string = '';
+  
   
   ngOnInit(): void {
     // cargar los locales
     this.cargarLocales();
   }
 
-  cargarLocales(): void {
-    this.locales = this.localesService.getLocales();
+  async cargarLocales() {
+    this.locales = await this.apisv.getLocales();
+    this.filteredLocales = [...this.locales]
+
   }
 
-  sortTable(field: keyof Local): void {
+  sortTable(field: string): void {
     if (this.sortField === field) {
       this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
     } else {
@@ -33,28 +47,29 @@ export class LocalesAdmComponent implements OnInit {
     }
 
     this.locales.sort((a, b) => {
-      const valueA = a[field];
-      const valueB = b[field];
-      
+      const valueA = this.getNestedValue(a, field);
+      const valueB = this.getNestedValue(b, field);
+
       if (valueA === undefined || valueB === undefined) return 0;
-      
+
       if (typeof valueA === 'string' && typeof valueB === 'string') {
-        return this.sortDirection === 'asc' 
+        return this.sortDirection === 'asc'
           ? valueA.localeCompare(valueB)
           : valueB.localeCompare(valueA);
       }
-      
+
       if (typeof valueA === 'number' && typeof valueB === 'number') {
-        return this.sortDirection === 'asc' 
-          ? valueA - valueB 
+        return this.sortDirection === 'asc'
+          ? valueA - valueB
           : valueB - valueA;
       }
-      
+
       if (typeof valueA === 'boolean' && typeof valueB === 'boolean') {
-        return this.sortDirection === 'asc' 
+        return this.sortDirection === 'asc'
           ? (valueA === valueB ? 0 : valueA ? -1 : 1)
           : (valueA === valueB ? 0 : valueA ? 1 : -1);
       }
+
       return 0;
     });
   }
@@ -63,10 +78,50 @@ export class LocalesAdmComponent implements OnInit {
     local.activo = !local.activo;
   }
 
+  getNestedValue(obj: any, path: string): any {
+    return path.split('.').reduce((acc, part) => acc?.[part], obj);
+  }
+
+  filterLocales(): void {
+    if (!this.searchTerm && !this.selectedTipo && !this.selectedEstado) {
+      this.filteredLocales = [...this.locales];
+      return;
+    }
+
+    const term = this.searchTerm.toLowerCase().trim();
+
+    this.filteredLocales = this.locales.filter(local => {
+      const matchesSearch =
+        local.nombre?.toLowerCase().includes(term) ||
+        local.direccion?.toLowerCase().includes(term);
+
+      const matchesTipo =
+        !this.selectedTipo || local.tipo === this.selectedTipo;
+
+      const matchesEstado =
+        this.selectedEstado === ''
+        || (this.selectedEstado === 'activo' && local.activo === true)
+        || (this.selectedEstado === 'inactivo' && local.activo === false);
+
+      return matchesSearch && matchesTipo && matchesEstado;
+    });
+
+  }
+
+  verDetalles(id: string){
+
+  }
+
+  editarLocal(id: string){
+
+  }
+
   eliminarLocal(id: string): void {
     if (confirm('¿Estás seguro de eliminar este local?')) {
-      this.locales = this.locales.filter(local => local.id !== id);
-      this.cargarLocales();
+      
     }
   }
+  
+
+
 }

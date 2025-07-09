@@ -230,6 +230,6 @@ export class ApiService {
   }
 
   cambiarTipoUsuario(id: string, tipo: 'admin' | 'cliente' | 'propietario') {
-    return lastValueFrom(this.http.put(`${this.api_url}usuarios/${id}/cambiar-tipo`, {}, { params: { nuevo_tipo: tipo } }));
+    return lastValueFrom(this.http.put(`${this.api_url}usuarios/${id}/cambiar_tipo`, {} ,{ params: { nuevo_tipo: tipo } }));
   }
 }
