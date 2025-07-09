@@ -43,29 +43,28 @@
           <th class="px-6 py-3 cursor-pointer" (click)="sortTable('precio_hora')">Precio/Hora</th>
           <th class="px-6 py-3 cursor-pointer" (click)="sortTable('validada')">Validado</th>
           <th class="px-6 py-3 cursor-pointer" (click)="sortTable('activo')">Estado</th>
-          <th class="px-6 py-3 text-right">Acciones</th>
+          <th class="px-6 py-3">Acciones</th>
         </tr>
       </thead>
       <tbody class="bg-white divide-y divide-gray-200">
         <tr *ngFor="let local of filteredLocales" class="hover:bg-gray-50">
-          <td class="px-6 py-4 font-medium text-gray-900">{{ local.nombre }}</td>
-          <td class="px-6 py-4">{{ local.direccion }}</td>
-          <td class="px-6 py-4">{{ local.tipo }}</td>
-          <td class="px-6 py-4">${{ local.precio_hora }}</td>
-          <td class="px-6 py-4">
+          <td class="px-7 py-4 font-medium text-gray-900">{{ local.nombre }}</td>
+          <td class="px-7 py-4">{{ local.direccion }}</td>
+          <td class="px-7 py-4">{{ local.tipo }}</td>
+          <td class="px-7 py-4">${{ local.precio_hora }}</td>
+          <td class="px-7 py-4">
             <span [ngClass]="{ 'text-green-600': local.validada, 'text-red-600': !local.validada }">
               {{ local.validada ? 'Sí' : 'No' }}
             </span>
           </td>
-          <td class="px-6 py-4">
+          <td class="px-7 py-4">
             <span [ngClass]="{ 'text-green-600': local.activo, 'text-red-600': !local.activo }">
               {{ local.activo ? 'Activo' : 'Inactivo' }}
             </span>
           </td>
-          <td class="px-6 py-4 text-right space-x-2">
-            <button (click)="verDetalles(local.id!)" class="text-blue-600 hover:text-blue-900"><i class="fas fa-eye"></i></button>
-            <button (click)="editarLocal(local.id!)" class="text-yellow-600 hover:text-yellow-900"><i class="fas fa-edit"></i></button>
-            <button (click)="eliminarLocal(local.id!)" class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+          <td class="px-7 py-4 text-center space-x-2">
+            <button (click)="verComent(local.id!)" class="text-blue-600 hover:text-blue-800"><i class="fas fa-eye mr-1"></i></button>
+            <button (click)="editarLocal(local.id!)" class="text-yellow-600 hover:text-yellow-900"><i class="fa-solid fa-check" style="color: #74c0fc"></i></button>
           </td>
         </tr>
       </tbody>
@@ -94,13 +93,12 @@
       </div>
 
       <div class="flex justify-between text-xs font-medium mt-2">
-        <button (click)="verDetalles(local.id!)" class="text-blue-600 hover:text-blue-800"><i class="fas fa-eye mr-1"></i>Ver</button>
+        <button (click)="verComent(local.id!)" class="text-blue-600 hover:text-blue-800"><i class="fas fa-eye mr-1"></i>Ver</button>
         <button (click)="editarLocal(local.id!)" class="text-yellow-600 hover:text-yellow-800"><i class="fas fa-edit mr-1"></i>Editar</button>
-        <button (click)="eliminarLocal(local.id!)" class="text-red-600 hover:text-red-800"><i class="fas fa-trash mr-1"></i>Eliminar</button>
       </div>
     </div>
   </div>
-
+  
   <!-- Sin resultados -->
   <div *ngIf="filteredLocales.length === 0" class="bg-white rounded-xl shadow p-8 text-center">
     <i class="fas fa-store-slash text-4xl text-gray-300 mb-4"></i>
@@ -108,3 +106,63 @@
     <p class="text-gray-400 mt-2">Intenta con otro término de búsqueda o ajusta los filtros</p>
   </div>
 </div>
+
+
+<!-- Modal de edición -->
+<div *ngIf="mostrarModalEdicion && localSeleccionado" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-lg w-full max-w-md shadow-lg">
+    <h2 class="text-xl font-bold mb-4">Validar Local</h2>
+
+    <div *ngIf="localSeleccionado?.documento">
+      <ng-container *ngIf="esImagen(localSeleccionado.documento!); else mostrarPDF">
+        <img [src]="localSeleccionado.documento" alt="Documento" class="max-w-full h-auto rounded shadow" />
+      </ng-container>
+    
+      <ng-template #mostrarPDF>
+        <iframe [src]="localSeleccionado.documento! | safeUrl" width="100%" height="500px" class="rounded shadow border">
+        </iframe>
+      </ng-template>
+    </div>
+
+    <div class="space-y-4 pt-1">
+      <p class="text-gray-700">
+        ¿Deseas que el local <strong>{{ localSeleccionado.nombre }}</strong> como <span class="font-semibold" [ngClass]="{ 'text-green-600': !localSeleccionado.validada, 'text-red-600': localSeleccionado.validada }">
+          {{ localSeleccionado.validada ? 'no validado' : 'validado' }}
+        </span>?
+      </p>
+    </div>
+
+    <div class="mt-6 flex justify-end gap-2">
+      <button (click)="cerrarModal()" class="px-4 py-2 bg-gray-300 rounded">No Validar </button>
+      <button (click)="guardarCambios()" class="px-4 py-2 bg-blue-600 text-white rounded">Validar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de comentarios -->
+<div *ngIf="mostrarModalComentarios" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-lg w-full max-w-2xl shadow-lg max-h-[80vh] overflow-y-auto">
+    <h2 class="text-xl font-bold mb-4">Comentarios de {{ localNombre }}</h2>
+
+    <div *ngIf="valoraciones.length > 0; else sinComentarios" class="space-y-4">
+      <div *ngFor="let val of valoraciones" class="border border-gray-200 rounded p-4 shadow-sm">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-yellow-500">
+            <i class="fas fa-star" *ngFor="let star of [].constructor(val.puntaje)"></i>
+          </span>
+        </div>
+        <p class="text-sm text-gray-700">{{ val.comentario }}</p>
+        <p class="text-xs text-gray-400 mt-2">{{ val.fecha | date:'dd/MM/yyyy' }}</p>
+      </div>
+    </div>
+
+    <ng-template #sinComentarios>
+      <p class="text-gray-500 text-sm">Este local aún no tiene comentarios.</p>
+    </ng-template>
+
+    <div class="mt-6 flex justify-end">
+      <button (click)="cerrarModalComentarios()" class="px-4 py-2 bg-gray-300 rounded">Cerrar</button>
+    </div>
+  </div>
+</div>
+

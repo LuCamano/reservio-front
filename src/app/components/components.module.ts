@@ -9,7 +9,7 @@ import { SidebarAdmComponent } from './sidebar-adm/sidebar-adm.component';
 import { MapComponent } from './map/map.component';
 import { ImageUploaderComponent } from './image-uploader/image-uploader.component';
 import { HeaderAdmComponent } from './header-adm/header-adm.component';
-
+import { SafeUrlPipe } from './pipe/safe-url.pipe'; 
 
 
 @NgModule({
@@ -18,7 +18,9 @@ import { HeaderAdmComponent } from './header-adm/header-adm.component';
     SidebarAdmComponent,
     MapComponent,
     ImageUploaderComponent,
-    HeaderAdmComponent
+    HeaderAdmComponent,
+    SafeUrlPipe,
+    
   ],
   imports: [
     CommonModule,
@@ -32,7 +34,9 @@ import { HeaderAdmComponent } from './header-adm/header-adm.component';
     SidebarAdmComponent,
     MapComponent,
     ImageUploaderComponent,
-    HeaderAdmComponent
+    HeaderAdmComponent,
+    SafeUrlPipe,
+    
   ]
 })
 export class ComponentsModule {
