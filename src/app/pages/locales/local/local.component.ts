@@ -155,6 +155,7 @@ export class LocalComponent implements OnDestroy {
         inicio: inicio,
         fin: fin,
         cant_horas: cantHoras,
+        costo_total: this.local.precio_hora * cantHoras,
         estado: 'pendiente',
         cliente_id: this.usuario?.id!,
         propiedad_id: this.local.id!,
