@@ -94,12 +94,12 @@ export class PerfilComponent implements OnInit {
       const reservas = await this.apiSv.getReservas();
 
       this.reservasRealizadas = reservas.filter(r =>
-        r.cliente?.id === this.usuario!.id
+        r.cliente_id === this.usuario!.id
       );
 
       if (this.usuario!.tipo === 'propietario') {
         this.reservasRecibidas = reservas.filter(r =>
-          r.propiedad?.propietarios?.some(p => p.id === this.usuario!.id)
+          r.propiedad_id === this.usuario!.id
         );
       } else {
         this.reservasRecibidas = [];

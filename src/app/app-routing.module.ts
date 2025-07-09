@@ -42,7 +42,11 @@ const routes: Routes = [
     loadChildren: () => import("./pages/pago-erroneo/pago-erroneo.module").then(m => m.PagoErroneoModule),
     canActivate: [authGuard]
   },
-
+  {
+    path: 'pagoPendiente',
+    loadChildren: () => import("./pages/pago-pendiente/pago-pendiente.module").then(m => m.PagoPendienteModule),
+    canActivate: [authGuard]
+  }
 ];
 
 @NgModule({

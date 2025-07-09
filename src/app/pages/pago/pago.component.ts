@@ -18,8 +18,8 @@ export class PagoComponent implements OnInit {
     const reservaStr = localStorage.getItem('reservaPagoActual');
     if (reservaStr) {
       this.reserva = JSON.parse(reservaStr);
-      if (this.reserva && this.reserva.propiedad && this.reserva.cant_horas) {
-        this.montoPagar = (this.reserva.propiedad.precio_hora * this.reserva.cant_horas) * 0.5;
+      if (this.reserva && this.reserva.propiedad_id && this.reserva.cant_horas) {
+        this.montoPagar = this.reserva.costo_total! * 0.5;
       }
     }
   }
