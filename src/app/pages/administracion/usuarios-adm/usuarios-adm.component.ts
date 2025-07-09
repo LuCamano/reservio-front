@@ -26,6 +26,7 @@ export class UsuariosAdmComponent {
   tiposUsuario: string[] = ['admin', 'propietario', 'cliente'];
   estados: string[] = ['Activo', 'Inactivo'];
   mostrarModalNuevoUsuario: boolean = false;
+  
   nuevoUsuarioForm: FormGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(6)]),

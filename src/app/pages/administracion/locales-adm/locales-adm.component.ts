@@ -32,11 +32,10 @@ export class LocalesAdmComponent implements OnInit {
     this.cargarLocales();
   }
 
-  cargarLocales(): void {
-    this.apisv.getLocales().then(lo =>{
-      this.locales = lo
-      this.filterLocales();
-    })
+  async cargarLocales() {
+    this.locales = await this.apisv.getLocales();
+    this.filteredLocales = [...this.locales]
+
   }
 
   sortTable(field: string): void {
@@ -75,23 +74,20 @@ export class LocalesAdmComponent implements OnInit {
     });
   }
 
-
   toggleDisponibilidad(local: Local): void {
     local.activo = !local.activo;
-  }
-
-  eliminarLocal(id: string): void {
-    if (confirm('¿Estás seguro de eliminar este local?')) {
-      this.locales = this.locales.filter(local => local.id !== id);
-      this.cargarLocales();
-    }
   }
 
   getNestedValue(obj: any, path: string): any {
     return path.split('.').reduce((acc, part) => acc?.[part], obj);
   }
 
-  filterLocales() {
+  filterLocales(): void {
+    if (!this.searchTerm && !this.selectedTipo && !this.selectedEstado) {
+      this.filteredLocales = [...this.locales];
+      return;
+    }
+
     const term = this.searchTerm.toLowerCase().trim();
 
     this.filteredLocales = this.locales.filter(local => {
@@ -107,15 +103,24 @@ export class LocalesAdmComponent implements OnInit {
         || (this.selectedEstado === 'activo' && local.activo === true)
         || (this.selectedEstado === 'inactivo' && local.activo === false);
 
-
       return matchesSearch && matchesTipo && matchesEstado;
     });
 
   }
 
-  verDetalles(id: string){}
+  verDetalles(id: string){
 
-  editarLocal(id: string){}
+  }
+
+  editarLocal(id: string){
+
+  }
+
+  eliminarLocal(id: string): void {
+    if (confirm('¿Estás seguro de eliminar este local?')) {
+      
+    }
+  }
   
 
 

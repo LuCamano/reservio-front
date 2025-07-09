@@ -7,7 +7,7 @@
     <div class="relative flex-1">
       <input 
         type="text" 
-        (ngModel)="searchTerm"
+        [(ngModel)]="searchTerm"
         (input)="filterLocales()"
         placeholder="Buscar locales por nombre o dirección..."
         class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm sm:text-base"
@@ -19,12 +19,12 @@
 
     <!-- Filtros -->
     <div class="flex flex-wrap gap-2 sm:gap-4">
-      <select (ngModel)="selectedTipo" (change)="filterLocales()" class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <select [(ngModel)]="selectedTipo" (change)="filterLocales()" class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
         <option value="">Todos los tipos</option>
         <option *ngFor="let tipo of tiposLocales" [value]="tipo">{{ tipo }}</option>
       </select>
 
-      <select (ngModel)="selectedEstado" (change)="filterLocales()" class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <select [(ngModel)]="selectedEstado" (change)="filterLocales()" class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
         <option value="">Todos los estados</option>
         <option value="activo">Activos</option>
         <option value="inactivo">Inactivos</option>
