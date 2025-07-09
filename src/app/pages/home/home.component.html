@@ -25,23 +25,6 @@
         ¡Encuentra el local perfecto para tu evento!
       </p>
     </div>
-    <!-- Formulario de búsqueda -->
-    <div class="w-full max-w-2xl">
-      <div class="flex bg-white rounded-xl shadow-lg overflow-hidden outline outline-1">
-        <input
-          type="text"
-          placeholder="¿Donde será tu evento?"
-          class="flex-1 px-5 py-4 text-lg focus:outline-none rounded-l-xl"
-        />
-        <button
-          class="bg-blue-600 hover:bg-blue-700 text-white px-7 py-4 text-lg font-semibold rounded-r-xl transition"
-          routerLink="/locales"
-        >
-          <span class="material-icons align-middle mr-1">search</span>
-          Buscar
-        </button>
-      </div>
-    </div>
     <!-- Indicadores del carrusel -->
     <div class="flex gap-2 mt-8">
       <span
@@ -78,8 +61,8 @@
             <img src="assets/homeassets/paso2.png" alt="Enviar solicitud de arriendo" class="w-20 h-20 object-contain" />
           </div>
         </div>
-        <h3 class="text-xl font-semibold mb-2">Envia solicitud de arriendo</h3>
-        <p class="text-gray-600">Envía una solicitud rápida y sencilla al dueño del local, con información general acerca de tu evento.</p>
+        <h3 class="text-xl font-semibold mb-2">Realiza tu reserva</h3>
+        <p class="text-gray-600">Realiza tu reserva fácilmente ingresando las fechas de inicio y fin de tu estadía.</p>
       </div>
       <div class="flex-1 text-center">
         <!-- Paso 3 -->
@@ -89,8 +72,8 @@
             <img src="assets/homeassets/paso3.png" alt="Conectarse con el dueño" class="w-20 h-20 object-contain" />
           </div>
         </div>
-        <h3 class="text-xl font-semibold mb-2">Conéctate con el dueño</h3>
-        <p class="text-gray-600">El dueño del local revisará tu solicitud, y si es aprobada, pasarás a realizar el pago.</p>
+        <h3 class="text-xl font-semibold mb-2">Disfruta tu evento!</h3>
+        <p class="text-gray-600">Luego de pagar la suma inicial por la reserva, estás listo! Solo disfruta tu evento, y paga el restante al finalizar tu estadía.</p>
       </div>
     </div>
     <!-- Botón debajo de la sección -->
@@ -103,22 +86,22 @@
 </section>
 
 <!-- Sección 'Locales recomendados' -->
-<!-- <section class="w-full bg-gray-100 py-5 pb-24">
+<section class="w-full bg-gray-100 pb-24">
   <div class="max-w-6xl mx-auto">
     <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Locales recomendados</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div *ngFor="let local of locales"
+      <div *ngFor="let local of recomendados"
         class="bg-white shadow-sm hover:shadow-lg transition-shadow rounded-2xl border border-gray-200 overflow-hidden">
-        <img [src]="local.imagenes![0]" [alt]="local.nombre" class="w-full h-48 object-cover" />
+        <img [src]="local.imagenes && local.imagenes.length > 0 ? local.imagenes[0] : 'assets/fallback.jpg'" [alt]="local.nombre" class="w-full h-48 object-cover" />
         <div class="p-5">
           <div class="flex justify-between items-start mb-2">
             <h3 class="text-lg font-semibold text-gray-900">{{ local.nombre }}</h3>
           </div>
           <p class="text-sm text-gray-600 mb-1">
-            <span class="font-medium">Región:</span> {{ local.comuna?.region_id }}
+            <span class="font-medium">Región:</span> {{ local.comuna && local.comuna.region_id && regionesMap[local.comuna.region_id] ? regionesMap[local.comuna.region_id] : '-' }}
           </p>
           <p class="text-sm text-gray-600 mb-1">
-            <span class="font-medium">Comuna:</span> {{ local.comuna }}
+            <span class="font-medium">Comuna:</span> {{ local.comuna?.nombre }}
           </p>
           <p class="text-sm text-gray-600 mb-1">
             <span class="font-medium">Capacidad:</span> {{ local.capacidad }} personas
@@ -130,7 +113,7 @@
             <span class="font-medium">Dirección:</span> {{ local.direccion }}
           </p>
           <div class="text-right">
-            <button class="w-full text-sm px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition" routerLink="/locales/{{local.id}}">
+            <button class="w-full text-sm px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition" [routerLink]="['/locales', local.id]">
               Ver Detalles
             </button>
           </div>
@@ -138,4 +121,4 @@
       </div>
     </div>
   </div>
-</section> -->
+</section>

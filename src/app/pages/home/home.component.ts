@@ -26,11 +26,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   ];
 
   locales: Local[] = [];
+  recomendados: Local[] = [];
 
   extendedImages: string[] = [];
   currentImage = 0;
   private intervalId?: ReturnType<typeof setInterval>;
   animating = true;
+
+  regionesMap: { [id: string]: string } = {};
 
   ngOnInit() {
     // Duplicamos la primera imagen al final
@@ -59,8 +62,23 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   async getDatos(){
     try {
-      this.locales = await this.svgLocales.getLocales();
-      console.log(this.locales);
+      // Obtener regiones y armar un mapa id->nombre
+      const regiones = await this.apiService.getRegiones();
+      this.regionesMap = {};
+      for (const region of regiones) {
+        if (region.id) this.regionesMap[region.id] = region.nombre;
+      }
+      this.locales = await this.apiService.getLocales();
+      // Elegir 3 locales al azar para recomendados
+      if (this.locales.length > 3) {
+        const indices = new Set<number>();
+        while (indices.size < 3) {
+          indices.add(Math.floor(Math.random() * this.locales.length));
+        }
+        this.recomendados = Array.from(indices).map(i => this.locales[i]);
+      } else {
+        this.recomendados = [...this.locales];
+      }
     } catch (error) {
       console.error('Error al obtener los datos de los locales:', error);
     }
