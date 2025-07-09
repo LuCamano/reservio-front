@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit, inject } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
+import { Usuario } from '../../models/models.interface';
 
 @Component({
   selector: 'app-sidebar-adm',
@@ -6,9 +8,17 @@ import { Component, EventEmitter, Output } from '@angular/core';
   templateUrl: './sidebar-adm.component.html',
   styleUrl: './sidebar-adm.component.scss'
 })
-export class SidebarAdmComponent {
+export class SidebarAdmComponent implements OnInit{
   isSidenavOpen = true;
+  private authSvc = inject(AuthService);
+  usuario: Usuario | null = null;
 
+  ngOnInit(){
+    this.authSvc.getCurrentUser().subscribe(user => {
+      this.usuario = user;
+    });
+  } 
+  
   toggleSidenav() {
     this.isSidenavOpen = !this.isSidenavOpen;
     // Aquí deberías emitir un evento o usar un servicio para comunicar a app.component.ts

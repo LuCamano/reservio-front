@@ -1,8 +1,9 @@
 import { Component , inject, OnInit } from '@angular/core';
-import { Local, Usuario } from '../../../models/models.interface';
+import { Local } from '../../../models/models.interface';
 import { ConnectionService } from '../../../services/connection.service';
 import { ApiService } from '../../../services/api.service';
 import { Router } from '@angular/router';
+import { AdminService } from '../../../services/admin.service';
 
 @Component({
   selector: 'app-locales-adm',
@@ -12,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class LocalesAdmComponent implements OnInit {
   private apisv = inject(ApiService); 
-  private router = inject(Router)
+  private adminsv = inject(AdminService);
 
   sortField: string = '';
   userService = inject(ConnectionService);
@@ -26,6 +27,9 @@ export class LocalesAdmComponent implements OnInit {
   selectedEstado: string = '';
   searchTerm: string = '';
   
+  localSeleccionado?: Local;
+  mostrarModalEdicion = false;
+
   
   ngOnInit(): void {
     // cargar los locales
@@ -112,16 +116,63 @@ export class LocalesAdmComponent implements OnInit {
 
   }
 
-  editarLocal(id: string){
-
-  }
-
   eliminarLocal(id: string): void {
     if (confirm('¿Estás seguro de eliminar este local?')) {
       
     }
   }
-  
 
+editarLocal(id: string) {
+  const local = this.locales.find(l => l.id === id);
+  if (local) {
+    this.localSeleccionado = { ...local }; // copia para edición
+    this.mostrarModalEdicion = true;
+  }
+}
+
+cerrarModal() {
+  this.mostrarModalEdicion = false;
+}
+
+guardarCambios() {
+  this.adminsv.validarPropiedad(this.localSeleccionado!.id!).then(() => {
+    const index = this.locales.findIndex(l => l.id === this.localSeleccionado!.id);
+    if (index !== -1) this.locales[index].validada = true;
+    this.filterLocales();
+    this.cerrarModal();
+  }).catch(error => {
+    console.error('Error al validar la propiedad:', error);
+  });
+}
+
+convertirLocalAFormData(local: Local): FormData {
+  const formData = new FormData();
+
+  if (local.nombre) formData.append('nombre', local.nombre);
+  if (local.descripcion) formData.append('descripcion', local.descripcion);
+  if (local.direccion) formData.append('direccion', local.direccion);
+  if (local.tipo) formData.append('tipo', local.tipo);
+  if (local.cod_postal) formData.append('cod_postal', local.cod_postal);
+  if (local.capacidad !== undefined) formData.append('capacidad', local.capacidad.toString());
+  if (local.precio_hora !== undefined) formData.append('precio_hora', local.precio_hora.toString());
+  if (local.hora_apertura) formData.append('hora_apertura', local.hora_apertura);
+  if (local.hora_cierre) formData.append('hora_cierre', local.hora_cierre);
+  if (local.comuna_id) formData.append('comuna_id', local.comuna_id);
+  formData.append('validada', local.validada ? 'true' : 'false');
+  formData.append('activo', local.activo ? 'true' : 'false');
+
+  // Si tienes imágenes o documentos
+  if (local.imagenes && local.imagenes.length) {
+    local.imagenes.forEach((img: any, index: number) => {
+      formData.append(`imagenes`, img); // asegúrate de que sean tipo File
+    });
+  }
+
+  if (local.documento) {
+    formData.append('documento', local.documento); // asegúrate de que sea tipo File
+  }
+
+  return formData;
+}
 
 }

@@ -67,6 +67,7 @@
             <button (click)="editarLocal(local.id!)" class="text-yellow-600 hover:text-yellow-900"><i class="fas fa-edit"></i></button>
             <button (click)="eliminarLocal(local.id!)" class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
           </td>
+          
         </tr>
       </tbody>
     </table>
@@ -100,11 +101,37 @@
       </div>
     </div>
   </div>
-
+  
   <!-- Sin resultados -->
   <div *ngIf="filteredLocales.length === 0" class="bg-white rounded-xl shadow p-8 text-center">
     <i class="fas fa-store-slash text-4xl text-gray-300 mb-4"></i>
     <h3 class="text-lg font-semibold text-gray-500">No se encontraron locales</h3>
     <p class="text-gray-400 mt-2">Intenta con otro término de búsqueda o ajusta los filtros</p>
+  </div>
+</div>
+
+
+<!-- Modal de edición -->
+<div *ngIf="mostrarModalEdicion && localSeleccionado" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-lg w-full max-w-md shadow-lg">
+    <h2 class="text-xl font-bold mb-4">Validar Local</h2>
+
+    <div class="space-y-4">
+      <p class="text-gray-700">
+        ¿Deseas marcar el local <strong>{{ localSeleccionado.nombre }}</strong> como <span class="font-semibold" [ngClass]="{ 'text-green-600': !localSeleccionado.validada, 'text-red-600': localSeleccionado.validada }">
+          {{ localSeleccionado.validada ? 'no validado' : 'validado' }}
+        </span>?
+      </p>
+
+      <div class="flex items-center gap-2">
+        <label class="text-sm font-medium text-gray-700">Validado:</label>
+        <input type="checkbox" [(ngModel)]="localSeleccionado.validada" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" />
+      </div>
+    </div>
+
+    <div class="mt-6 flex justify-end gap-2">
+      <button (click)="cerrarModal()" class="px-4 py-2 bg-gray-300 rounded">Cancelar</button>
+      <button (click)="guardarCambios()" class="px-4 py-2 bg-blue-600 text-white rounded">Guardar</button>
+    </div>
   </div>
 </div>

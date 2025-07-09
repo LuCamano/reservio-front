@@ -11,14 +11,14 @@ import { ImageUploaderComponent } from './image-uploader/image-uploader.componen
 import { HeaderAdmComponent } from './header-adm/header-adm.component';
 
 
-
 @NgModule({
   declarations: [
     HeaderSimpleComponent,
     SidebarAdmComponent,
     MapComponent,
     ImageUploaderComponent,
-    HeaderAdmComponent
+    HeaderAdmComponent,
+    
   ],
   imports: [
     CommonModule,
@@ -32,7 +32,8 @@ import { HeaderAdmComponent } from './header-adm/header-adm.component';
     SidebarAdmComponent,
     MapComponent,
     ImageUploaderComponent,
-    HeaderAdmComponent
+    HeaderAdmComponent,
+    
   ]
 })
 export class ComponentsModule {
