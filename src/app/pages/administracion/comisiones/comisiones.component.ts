@@ -10,7 +10,7 @@ import { Datum, Pago } from '../../../models/payment.responses';
   styleUrl: './comisiones.component.scss'
 })
 export class ComisionesComponent implements OnInit {
-  private api = inject(AdminService)
+  private api = inject(AdminService);
   comisiones: Datum[] = [];
   cargando = false;
   error = '';
