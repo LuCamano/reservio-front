@@ -5,299 +5,298 @@
 </div>
 
 <!-- Card del perfil -->
-<div class="relative z-10 mx-5 lg:mx-15 -mt-10 mb-4 rounded-xl border p-7 shadow-md bg-white">
-    <div class="flex flex-col lg:flex-row justify-between items-center gap-4">
-        <div class="flex items-center gap-4">
-            <mat-icon fontIcon="account_circle" class="text-[80px] text-gray-500"></mat-icon>
-            <div>
-                <h2 class="text-xl font-bold text-gray-800">{{ usuario!.nombres }} {{ usuario!.appaterno }}
-                    {{ usuario!.apmaterno }}</h2>
-                <p class="text-sm text-gray-500">{{ usuario!.email }}</p>
-            </div>
-        </div>
+<div class="bg-gray-100 min-h-screen px-2 sm:px-4 md:px-10 lg:px-20 xl:px-40  pb-20">
+  <div class="relative z-10 mx-5 lg:mx-15 -mt-10 mb-4 rounded-xl border p-7 shadow-md bg-white">
+      <div class="flex flex-col lg:flex-row justify-between items-center gap-4">
+          <div class="flex items-center gap-4">
+              <div>
+                  <h2 class="text-xl font-bold text-gray-800">{{ usuario!.nombres }} {{ usuario!.appaterno }}
+                      {{ usuario!.apmaterno }}</h2>
+                  <p class="text-sm text-gray-500">{{ usuario!.email }}</p>
+              </div>
+          </div>
 
-        <!-- Tabs responsivos: 2 por fila en móvil, fila única en pantallas medianas o grandes -->
-        <div class="mt-4 lg:mt-0">
-            <nav class="flex flex-wrap md:flex-nowrap">
-                <div class="w-1/2 p-1 md:w-auto md:flex-1">
-                    <button (click)="onTabChange(0)"
-                        [ngClass]="selectedTabIndex === 0 ? 'bg-blue-600 text-white shadow' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-                        class="w-full text-center rounded-full px-4 py-2 text-sm font-medium transition duration-300">
-                        Perfil
-                    </button>
-                </div>
-                <div class="w-1/2 p-1 md:w-auto md:flex-1">
-                    <button (click)="onTabChange(1)"
-                        [ngClass]="selectedTabIndex === 1 ? 'bg-blue-600 text-white shadow' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-                        class="w-full text-center rounded-full px-4 py-2 text-sm font-medium transition duration-300">
-                        Historial
-                    </button>
-                </div>
-                <div class="w-1/2 p-1 md:w-auto md:flex-1" *ngIf="esPropietario">
-                    <button (click)="onTabChange(2)"
-                        [ngClass]="selectedTabIndex === 2 ? 'bg-blue-600 text-white shadow' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-                        class="w-full text-center rounded-full px-4 py-2 text-sm font-medium transition duration-300">
-                        Propiedades
-                    </button>
-                </div>
-            </nav>
-        </div>
+          <!-- Tabs responsivos: 2 por fila en móvil, fila única en pantallas medianas o grandes -->
+          <div class="mt-4 lg:mt-0">
+              <nav class="flex flex-wrap md:flex-nowrap">
+                  <div class="w-1/2 p-1 md:w-auto md:flex-1">
+                      <button (click)="onTabChange(0)"
+                          [ngClass]="selectedTabIndex === 0 ? 'bg-blue-600 text-white shadow' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                          class="w-full text-center rounded-full px-4 py-2 text-sm font-medium transition duration-300">
+                          Perfil
+                      </button>
+                  </div>
+                  <div class="w-1/2 p-1 md:w-auto md:flex-1">
+                      <button (click)="onTabChange(1)"
+                          [ngClass]="selectedTabIndex === 1 ? 'bg-blue-600 text-white shadow' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                          class="w-full text-center rounded-full px-4 py-2 text-sm font-medium transition duration-300">
+                          Historial
+                      </button>
+                  </div>
+                  <div class="w-1/2 p-1 md:w-auto md:flex-1" *ngIf="esPropietario">
+                      <button (click)="onTabChange(2)"
+                          [ngClass]="selectedTabIndex === 2 ? 'bg-blue-600 text-white shadow' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                          class="w-full text-center rounded-full px-4 py-2 text-sm font-medium transition duration-300">
+                          Propiedades
+                      </button>
+                  </div>
+              </nav>
+          </div>
 
-    </div>
-</div>
-
-<!-- Contenido de los tabs  -->
-<div class="px-4 lg:px-20 py-4">
-    <!-- Spinner de carga -->
-  <div *ngIf="isLoading" class="spinner">
-    <div class="spinner-icon"></div>
+      </div>
   </div>
-  <ng-container *ngIf="!isLoading">
 
-  
-    <!-- Contenido del Perfil de usuario  -->
-    <div *ngIf="selectedTabIndex === 0" class="px-4 md:px-10 xl:px-40">
-        <h1 class="text-4xl font-medium text-gray-700 mb-1 text-start">Información personal</h1>
-        <p class="text-lg text-gray-700 mb-6 text-start">Información sobre ti y tus preferencias</p>
-
-        <!-- Información básica -->
-        <div class="border rounded-xl p-6 shadow-sm">
-            <h2 class="text-2xl font-semibold mb-1">Información básica</h2>
-            <p class="text-sm text-gray-600 mb-4">Aquí puedes editar tus datos personales.</p>
-
-            <div class="mt-4 border-t pt-4">
-                <p class="text-sm text-gray-500">Nombre completo</p>
-                <p class="text-gray-800 font-medium">{{ usuario!.nombres }} {{ usuario!.appaterno }}
-                    {{ usuario!.apmaterno }}</p>
-            </div>
-
-            <div class="mt-4 border-t pt-4">
-                <p class="text-sm text-gray-500">Rut</p>
-                <p class="text-gray-800 font-medium">{{ usuario!.rut }}</p>
-            </div>
-
-            <div class="mt-4 border-t pt-4">
-                <p class="text-sm text-gray-500">Fecha de nacimiento</p>
-                <p class="text-gray-800 font-medium">
-                    {{ usuario!.fecha_nacimiento ? (usuario!.fecha_nacimiento | date:'dd/MM/yyyy') : '' }}
-                </p>
-            </div>
-        </div>
-
-        <!-- Informacion de contacto -->
-        <div class="border rounded-xl p-6 shadow-sm mt-6">
-            <h2 class="text-2xl font-semibold mb-1">Informacion de contacto</h2>
-            <p class="text-sm text-gray-600 mb-4">Aquí puedes editar tus datos personales.</p>
-
-            <div class="mt-4 border-t pt-4">
-                <p class="text-sm text-gray-500">Correo electronico</p>
-                <p class="text-gray-800 font-medium">{{ usuario!.email }}</p>
-            </div>
-        </div>
-
-        <!-- Opciones de cuenta -->
-        <div class="flex flex-col lg:flex-row mt-6 space-y-6 lg:space-y-0 lg:space-x-6">
-            <!-- Columna 1 -->
-            <div class="w-full lg:flex-1 border rounded-xl p-6 shadow-sm">
-                <h2 class="text-2xl font-semibold mb-1">Opciones de cuenta</h2>
-                <p class="text-sm text-gray-600 mb-4">Aquí puedes modificar tu cuenta.</p>
-
-                <!-- Cambiar contraseña -->
-                <div class="mt-4 border-t pt-4 flex items-center justify-between">
-                    <p class="text-sm text-gray-500 hidden sm:block">Cambiar contraseña</p>
-                    <button
-                        class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition w-full md:w-auto"
-                        (click)="cambioContra()">
-                        Actualizar contraseña
-                    </button>
-                </div>
-
-                <!-- Cambiar tipo de cuenta -->
-                <div class="mt-4 border-t pt-4 flex items-center justify-between"
-                    *ngIf="usuario!.tipo !== 'propietario' && usuario!.tipo !== 'admin'">
-                    <p class="text-sm text-gray-500 hidden sm:block">Quiero ser propietario</p>
-                    <button
-                        class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition w-full md:w-auto"
-                        (click)="solicitarPropietario()">
-                        Actualizar cuenta
-                    </button>
-                </div>
-                <!-- Mostrar texto especial para admin -->
-                <div class="mt-4 border-t pt-4 flex items-center justify-between"
-                    *ngIf="usuario!.tipo === 'admin'">
-                    <p class="text-sm text-gray-500">Cuenta de Administrador</p>
-                </div>
-                <!-- Dejar de ser propietario -->
-                <div class="mt-4 border-t pt-4 flex items-center justify-between"
-                    *ngIf="usuario!.tipo === 'propietario'">
-                    <p class="text-sm text-gray-500 hidden sm:block">Eres propietario</p>
-                    <button
-                        class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition w-full md:w-auto"
-                        (click)="dejarDeSerPropietario()">
-                        Quiero dejar de ser propietario
-                    </button>
-                </div>
-
-                <!-- Eliminar cuenta -->
-                <div class="mt-4 border-t pt-4 flex items-center justify-between ">
-                    <p class="text-sm text-gray-500 hidden sm:block">Eliminar cuenta</p>
-                    <button
-                        class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition w-full md:w-auto">
-                        Eliminar cuenta
-                    </button>
-                </div>
-            </div>
-        </div>
+  <!-- Contenido de los tabs  -->
+  <div class="px-4 lg:px-20 py-4">
+      <!-- Spinner de carga -->
+    <div *ngIf="isLoading" class="spinner">
+      <div class="spinner-icon"></div>
     </div>
+    <ng-container *ngIf="!isLoading">
 
-    <!-- Contenido del Historial de actividad  -->
-    <div *ngIf="selectedTabIndex === 1" class="bg-white shadow-md rounded-xl p-6 border">
-        <h3 class="text-lg font-semibold text-gray-700 mb-2">Historial de Reservas</h3>
-        <!-- Tabs internas -->
-        <div class="flex flex-col sm:flex-row gap-2 mb-6">
-          <button *ngIf="esPropietario" (click)="onHistorialTabChange(0)"
-            [ngClass]="historialTabIndex === 0 ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-            class="px-4 py-2 rounded-full font-medium transition w-full sm:w-auto">
-            Reservas recibidas
-          </button>
-          <button (click)="onHistorialTabChange(esPropietario ? 1 : 0)"
-            [ngClass]="historialTabIndex === (esPropietario ? 1 : 0) ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
-            class="px-4 py-2 rounded-full font-medium transition w-full sm:w-auto">
-            Reservas realizadas
-          </button>
-        </div>
-
-        <!-- Reservas recibidas para propietarios o admin -->
-        <div *ngIf="esPropietario && historialTabIndex === 0">
-          <div *ngIf="isLoadingReservas" class="spinner"><div class="spinner-icon"></div></div>
-          <div *ngIf="!isLoadingReservas && reservasRecibidas.length === 0" class="text-gray-500 text-center py-8">
-            No tienes reservas recibidas en tus propiedades.
-          </div>
-          <div class="overflow-x-auto rounded-xl shadow bg-white" *ngIf="!isLoadingReservas && reservasRecibidas.length > 0">
-            <table class="min-w-full divide-y divide-gray-200 text-sm">
-              <thead class="bg-gray-50">
-                <tr>
-                  <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Propiedad</th>
-                  <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
-                  <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Desde</th>
-                  <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Hasta</th>
-                  <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Horas</th>
-                  <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Estado</th>
-                </tr>
-              </thead>
-              <tbody class="bg-white divide-y divide-gray-200">
-                <tr *ngFor="let reserva of reservasRecibidas" class="hover:bg-gray-50">
-                  <td class="px-6 py-4">{{ getNombrePropiedad(reserva.propiedad_id) }}</td>
-                  <td class="px-6 py-4">{{ getNombreCliente(reserva.cliente_id) }}</td>
-                  <td class="px-6 py-4">{{ reserva.inicio | date:'dd/MM/yyyy HH:mm' }}</td>
-                  <td class="px-6 py-4">{{ reserva.fin | date:'dd/MM/yyyy HH:mm' }}</td>
-                  <td class="px-6 py-4">{{ reserva.cant_horas }}</td>
-                  <td class="px-6 py-4">
-                    <span [ngClass]="{
-                      'bg-yellow-100 text-yellow-700': reserva.estado === 'pendiente',
-                      'bg-green-100 text-green-700': reserva.estado === 'completada',
-                      'bg-red-100 text-red-700': reserva.estado === 'cancelada'
-                    }" class="px-2 py-1 rounded-full text-xs font-semibold">
-                      {{ reserva.estado }}
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- Reservas realizadas -->
-        <div *ngIf="(!esPropietario && historialTabIndex === 0) || (esPropietario && historialTabIndex === 1)">
-          <div *ngIf="isLoadingReservas" class="spinner"><div class="spinner-icon"></div></div>
-          <div *ngIf="!isLoadingReservas && reservasRealizadas.length === 0" class="text-gray-500 text-center py-8">
-            No has realizado reservas aún.
-          </div>
-          <div class="overflow-x-auto rounded-xl shadow bg-white" *ngIf="!isLoadingReservas && reservasRealizadas.length > 0">
-            <table class="min-w-full divide-y divide-gray-200 text-sm">
-              <thead class="bg-gray-50">
-                <tr>
-                  <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Propiedad</th>
-                  <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Desde</th>
-                  <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Hasta</th>
-                  <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Horas</th>
-                  <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Estado</th>
-                </tr>
-              </thead>
-              <tbody class="bg-white divide-y divide-gray-200">
-                <tr *ngFor="let reserva of reservasRealizadas" class="hover:bg-gray-50">
-                  <td class="px-6 py-4">{{ getNombrePropiedad(reserva.propiedad_id) }}</td>
-                  <td class="px-6 py-4">{{ reserva.inicio | date:'dd/MM/yyyy HH:mm' }}</td>
-                  <td class="px-6 py-4">{{ reserva.fin | date:'dd/MM/yyyy HH:mm' }}</td>
-                  <td class="px-6 py-4">{{ reserva.cant_horas }}</td>
-                  <td class="px-6 py-4">
-                    <span [ngClass]="{
-                      'bg-yellow-100 text-yellow-700': reserva.estado === 'pendiente',
-                      'bg-green-100 text-green-700': reserva.estado === 'completada',
-                      'bg-red-100 text-red-700': reserva.estado === 'cancelada'
-                    }" class="px-2 py-1 rounded-full text-xs font-semibold">
-                      {{ reserva.estado }}
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-    </div>
-
-    <!-- Contenido de propiedades si en propietario  -->
-    <div *ngIf="selectedTabIndex === 2" class="bg-white min-h-screen py-10 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-6xl mx-auto">
-            <h2 class="text-3xl font-bold text-gray-800 mb-8">Mis propiedades</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div *ngFor="let local of locales"
-                    class="bg-white shadow-sm hover:shadow-lg transition-shadow rounded-xl border border-gray-200 overflow-hidden">
-                    <img [src]="local.imagenes![0]" [alt]="local.nombre" class="w-full h-48 object-cover" />
-                    <div class="p-5">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-lg font-semibold text-gray-900">{{ local.nombre }}</h3>
-                        </div>
-                        <p class="text-sm text-gray-600 mb-1">
-                            <span class="font-medium">Región:</span> {{ regionMap[local.comuna?.region_id!] || 'Cargando...'
-                            }}
-                        </p>
-                        <p class="text-sm text-gray-600 mb-1">
-                            <span class="font-medium">Comuna:</span> {{ local.comuna?.nombre }}
-                        </p>
-                        <p class="text-sm text-gray-600 mb-1">
-                            <span class="font-medium">Capacidad:</span> {{ local.capacidad }} personas
-                        </p>
-                        <p class="text-sm text-gray-600 mb-1">
-                            <span class="font-medium">Precio/Hora:</span> ${{ local.precio_hora | number:'1.0-0' }}
-                        </p>
-                        <p class="text-sm text-gray-600 mb-4" *ngIf="local.direccion">
-                            <span class="font-medium">Dirección:</span> {{ local.direccion }}
-                        </p>
-                        <div class="text-right">
-                            <button (click)="verDetallesPropiedad(local)"
-                                class="text-sm px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
-                                Ver Detalles
-                            </button>
-                        </div>
-                    </div>
-                </div>
     
-                <!-- Botón para agregar nueva propiedad -->
-                <div routerLink="/perfil/add-propiedad"
-                    class="bg-white shadow-sm hover:shadow-lg transition-shadow rounded-2xl border border-dashed border-gray-300 flex flex-col justify-center items-center text-center p-8 cursor-pointer hover:border-blue-500">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-600 mb-4" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                    </svg>
-                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Añadir nueva propiedad</h3>
-                    <p class="text-sm text-gray-600 mb-4">Crea una nueva propiedad y comienza a ganar dinero.</p>
-                    <button class="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition">
-                        Agregar propiedad
-                    </button>
-                </div>
+      <!-- Contenido del Perfil de usuario  -->
+      <div *ngIf="selectedTabIndex === 0" class="px-4 md:px-10 xl:px-40">
+          <h1 class="text-4xl font-medium text-gray-700 mb-1 text-start">Información personal</h1>
+          <p class="text-lg text-gray-700 mb-6 text-start">Información sobre ti y tus preferencias</p>
+
+          <!-- Información básica -->
+          <div class="border rounded-xl p-6 shadow-md bg-white">
+              <h2 class="text-2xl font-semibold mb-1">Información básica</h2>
+              <p class="text-sm text-gray-600 mb-4">Aquí puedes ver tus datos personales.</p>
+
+              <div class="mt-4 border-t pt-4">
+                  <p class="text-sm text-gray-500">Nombre completo</p>
+                  <p class="text-gray-800 font-medium">{{ usuario!.nombres }} {{ usuario!.appaterno }}
+                      {{ usuario!.apmaterno }}</p>
+              </div>
+
+              <div class="mt-4 border-t pt-4">
+                  <p class="text-sm text-gray-500">Rut</p>
+                  <p class="text-gray-800 font-medium">{{ usuario!.rut }}</p>
+              </div>
+
+              <div class="mt-4 border-t pt-4">
+                  <p class="text-sm text-gray-500">Fecha de nacimiento</p>
+                  <p class="text-gray-800 font-medium">
+                      {{ usuario!.fecha_nacimiento ? (usuario!.fecha_nacimiento | date:'dd/MM/yyyy') : '' }}
+                  </p>
+              </div>
+          </div>
+
+          <!-- Informacion de contacto -->
+          <div class="border rounded-xl p-6 shadow-md mt-6 bg-white">
+              <h2 class="text-2xl font-semibold mb-1">Informacion de contacto</h2>
+              <div class="mt-4 border-t pt-4">
+                  <p class="text-sm text-gray-500">Correo electronico</p>
+                  <p class="text-gray-800 font-medium">{{ usuario!.email }}</p>
+              </div>
+          </div>
+
+          <!-- Opciones de cuenta -->
+          <div class="flex flex-col lg:flex-row mt-6 space-y-6 lg:space-y-0 lg:space-x-6">
+              <!-- Columna 1 -->
+              <div class="w-full lg:flex-1 border rounded-xl p-6 shadow-md bg-white">
+                  <h2 class="text-2xl font-semibold mb-1">Opciones de cuenta</h2>
+                  <p class="text-sm text-gray-600 mb-4">Aquí puedes modificar tu cuenta.</p>
+
+                  <!-- Cambiar contraseña -->
+                  <div class="mt-4 border-t pt-4 flex items-center justify-between">
+                      <p class="text-sm text-gray-500 hidden sm:block">Cambiar contraseña</p>
+                      <button
+                          class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition w-full md:w-auto"
+                          (click)="cambioContra()">
+                          Actualizar contraseña
+                      </button>
+                  </div>
+
+                  <!-- Cambiar tipo de cuenta -->
+                  <div class="mt-4 border-t pt-4 flex items-center justify-between"
+                      *ngIf="usuario!.tipo !== 'propietario' && usuario!.tipo !== 'admin'">
+                      <p class="text-sm text-gray-500 hidden sm:block">Quiero ser propietario</p>
+                      <button
+                          class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition w-full md:w-auto"
+                          (click)="solicitarPropietario()">
+                          Actualizar cuenta
+                      </button>
+                  </div>
+                  <!-- Mostrar texto especial para admin -->
+                  <div class="mt-4 border-t pt-4 flex items-center justify-between"
+                      *ngIf="usuario!.tipo === 'admin'">
+                      <p class="text-sm text-gray-500">Cuenta de Administrador</p>
+                  </div>
+                  <!-- Dejar de ser propietario -->
+                  <div class="mt-4 border-t pt-4 flex items-center justify-between"
+                      *ngIf="usuario!.tipo === 'propietario'">
+                      <p class="text-sm text-gray-500 hidden sm:block">Eres propietario</p>
+                      <button
+                          class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition w-full md:w-auto"
+                          (click)="dejarDeSerPropietario()">
+                          Quiero dejar de ser propietario
+                      </button>
+                  </div>
+
+                  <!-- Eliminar cuenta -->
+                  <div class="mt-4 border-t pt-4 flex items-center justify-between ">
+                      <p class="text-sm text-gray-500 hidden sm:block">Eliminar cuenta</p>
+                      <button
+                          class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition w-full md:w-auto">
+                          Eliminar cuenta
+                      </button>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Contenido del Historial de actividad  -->
+      <div *ngIf="selectedTabIndex === 1" class="bg-white shadow-md rounded-xl p-6 border">
+          <h3 class="text-lg font-semibold text-gray-700 mb-2">Historial de Reservas</h3>
+          <!-- Tabs internas -->
+          <div class="flex flex-col sm:flex-row gap-2 mb-6">
+            <button *ngIf="esPropietario" (click)="onHistorialTabChange(0)"
+              [ngClass]="historialTabIndex === 0 ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+              class="px-4 py-2 rounded-full font-medium transition w-full sm:w-auto">
+              Reservas recibidas
+            </button>
+            <button (click)="onHistorialTabChange(esPropietario ? 1 : 0)"
+              [ngClass]="historialTabIndex === (esPropietario ? 1 : 0) ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+              class="px-4 py-2 rounded-full font-medium transition w-full sm:w-auto">
+              Reservas realizadas
+            </button>
+          </div>
+
+          <!-- Reservas recibidas para propietarios o admin -->
+          <div *ngIf="esPropietario && historialTabIndex === 0">
+            <div *ngIf="isLoadingReservas" class="spinner"><div class="spinner-icon"></div></div>
+            <div *ngIf="!isLoadingReservas && reservasRecibidas.length === 0" class="text-gray-500 text-center py-8">
+              No tienes reservas recibidas en tus propiedades.
             </div>
-        </div>
-    </div>
-    </ng-container>
+            <div class="overflow-x-auto rounded-xl shadow bg-white" *ngIf="!isLoadingReservas && reservasRecibidas.length > 0">
+              <table class="min-w-full divide-y divide-gray-200 text-sm">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Propiedad</th>
+                    <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
+                    <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Desde</th>
+                    <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Hasta</th>
+                    <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Horas</th>
+                    <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <tr *ngFor="let reserva of reservasRecibidas" class="hover:bg-gray-50">
+                    <td class="px-6 py-4">{{ getNombrePropiedad(reserva.propiedad_id) }}</td>
+                    <td class="px-6 py-4">{{ getNombreCliente(reserva.cliente_id) }}</td>
+                    <td class="px-6 py-4">{{ reserva.inicio | date:'dd/MM/yyyy HH:mm' }}</td>
+                    <td class="px-6 py-4">{{ reserva.fin | date:'dd/MM/yyyy HH:mm' }}</td>
+                    <td class="px-6 py-4">{{ reserva.cant_horas }}</td>
+                    <td class="px-6 py-4">
+                      <span [ngClass]="{
+                        'bg-yellow-100 text-yellow-700': reserva.estado === 'pendiente',
+                        'bg-green-100 text-green-700': reserva.estado === 'completada',
+                        'bg-red-100 text-red-700': reserva.estado === 'cancelada'
+                      }" class="px-2 py-1 rounded-full text-xs font-semibold">
+                        {{ reserva.estado }}
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Reservas realizadas -->
+          <div *ngIf="(!esPropietario && historialTabIndex === 0) || (esPropietario && historialTabIndex === 1)">
+            <div *ngIf="isLoadingReservas" class="spinner"><div class="spinner-icon"></div></div>
+            <div *ngIf="!isLoadingReservas && reservasRealizadas.length === 0" class="text-gray-500 text-center py-8">
+              No has realizado reservas aún.
+            </div>
+            <div class="overflow-x-auto rounded-xl shadow bg-white" *ngIf="!isLoadingReservas && reservasRealizadas.length > 0">
+              <table class="min-w-full divide-y divide-gray-200 text-sm">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Propiedad</th>
+                    <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Desde</th>
+                    <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Hasta</th>
+                    <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Horas</th>
+                    <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <tr *ngFor="let reserva of reservasRealizadas" class="hover:bg-gray-50">
+                    <td class="px-6 py-4">{{ getNombrePropiedad(reserva.propiedad_id) }}</td>
+                    <td class="px-6 py-4">{{ reserva.inicio | date:'dd/MM/yyyy HH:mm' }}</td>
+                    <td class="px-6 py-4">{{ reserva.fin | date:'dd/MM/yyyy HH:mm' }}</td>
+                    <td class="px-6 py-4">{{ reserva.cant_horas }}</td>
+                    <td class="px-6 py-4">
+                      <span [ngClass]="{
+                        'bg-yellow-100 text-yellow-700': reserva.estado === 'pendiente',
+                        'bg-green-100 text-green-700': reserva.estado === 'completada',
+                        'bg-red-100 text-red-700': reserva.estado === 'cancelada'
+                      }" class="px-2 py-1 rounded-full text-xs font-semibold">
+                        {{ reserva.estado }}
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+      </div>
+
+      <!-- Contenido de propiedades si en propietario  -->
+      <div *ngIf="selectedTabIndex === 2" class="min-h-screen py-10 px-4 sm:px-6 lg:px-8">
+          <div class="max-w-6xl mx-auto">
+              <h2 class="text-3xl font-bold text-gray-800 mb-8">Mis propiedades</h2>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div *ngFor="let local of locales"
+                      class="bg-white shadow-sm hover:shadow-lg transition-shadow rounded-xl border border-gray-300 overflow-hidden">
+                      <img [src]="local.imagenes![0]" [alt]="local.nombre" class="w-full h-48 object-cover" />
+                      <div class="p-5">
+                          <div class="flex justify-between items-start mb-2">
+                              <h3 class="text-lg font-semibold text-gray-900">{{ local.nombre }}</h3>
+                          </div>
+                          <p class="text-sm text-gray-600 mb-1">
+                              <span class="font-medium">Región:</span> {{ regionMap[local.comuna?.region_id!] || 'Cargando...'
+                              }}
+                          </p>
+                          <p class="text-sm text-gray-600 mb-1">
+                              <span class="font-medium">Comuna:</span> {{ local.comuna?.nombre }}
+                          </p>
+                          <p class="text-sm text-gray-600 mb-1">
+                              <span class="font-medium">Capacidad:</span> {{ local.capacidad }} personas
+                          </p>
+                          <p class="text-sm text-gray-600 mb-1">
+                              <span class="font-medium">Precio/Hora:</span> ${{ local.precio_hora | number:'1.0-0' }}
+                          </p>
+                          <p class="text-sm text-gray-600 mb-4" *ngIf="local.direccion">
+                              <span class="font-medium">Dirección:</span> {{ local.direccion }}
+                          </p>
+                          <div class="text-right">
+                              <button (click)="verDetallesPropiedad(local)"
+                                  class="text-sm px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                                  Ver Detalles
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+      
+                  <!-- Botón para agregar nueva propiedad -->
+                  <div routerLink="/perfil/add-propiedad"
+                      class="bg-white shadow-sm hover:shadow-lg transition-shadow rounded-2xl border border-dashed border-gray-300 flex flex-col justify-center items-center text-center p-8 cursor-pointer hover:border-blue-500">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-600 mb-4" fill="none"
+                          viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                      </svg>
+                      <h3 class="text-lg font-semibold text-gray-800 mb-2">Añadir nueva propiedad</h3>
+                      <p class="text-sm text-gray-600 mb-4">Crea una nueva propiedad y comienza a ganar dinero.</p>
+                      <button class="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition">
+                          Agregar propiedad
+                      </button>
+                  </div>
+              </div>
+          </div>
+      </div>
+      </ng-container>
+  </div>
 </div>

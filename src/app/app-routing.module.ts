@@ -20,12 +20,14 @@ const routes: Routes = [
   },
   {
     path: 'locales',
-    loadChildren: () => import("./pages/locales/locales.module").then(m => m.LocalesModule)
+    loadChildren: () => import("./pages/locales/locales.module").then(m => m.LocalesModule),
+    canActivate: [authGuard]
   },
   {
     path: 'admin',
     loadChildren: () => import("./pages/administracion/administracion.module").then(m => m.AdministracionModule),
-    canActivate: [authGuard]
+    canActivate: [authGuard],
+    data: { adminOnly: true }
   },
   {
     path: 'pago',

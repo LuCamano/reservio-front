@@ -73,7 +73,7 @@
           </div>
         </div>
         <h3 class="text-xl font-semibold mb-2">Disfruta tu evento!</h3>
-        <p class="text-gray-600">Luego de pagar la suma inicial por la reserva, estás listo! Solo disfruta tu evento, y paga el restante al finalizar tu estadía.</p>
+        <p class="text-gray-600">Luego de pagar por la reserva, estás listo! Solo disfruta tu evento.</p>
       </div>
     </div>
     <!-- Botón debajo de la sección -->
@@ -122,3 +122,11 @@
     </div>
   </div>
 </section>
+
+<!-- Botón flotante solo para admin -->
+<button *ngIf="isAdmin" routerLink="/admin"
+  class="fixed bottom-6 right-6 z-50 bg-blue-700 hover:bg-blue-900 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-200 text-lg flex items-center gap-2"
+  style="box-shadow: 0 4px 24px rgba(0,0,0,0.18);">
+  <span class="material-icons">admin_panel_settings</span>
+  Admin
+</button>
