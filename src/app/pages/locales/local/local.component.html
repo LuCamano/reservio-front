@@ -131,64 +131,38 @@
         </div>
           
     </section>
-    <section class="bg-grey-100 py-10 px-5">
-      <div class="max-w-6xl mx-auto text-center">
-        <h2 class="text-3xl font-bold mb-4">Opiniones de los usuarios</h2>
-        <p class="text-xl text-gray-600 mb-10">
-          ⭐⭐⭐⭐ <span class="text-2xl font-semibold text-gray-800 ml-2">4.4</span> Puntuación media
-        </p>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-          <!-- Más útil -->
-          <div class="bg-white p-6 rounded-xl shadow-lg">
-            <h3 class="text-xl font-semibold mb-2">Los más útiles</h3>
-            <p class="text-sm text-gray-500 mb-4">2 de 2 personas encontraron útil esta opinión</p>
-            <div class="flex items-center gap-3 mb-3">
-              <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-lg">👤</div>
-              <div>
-                <p class="font-medium">usuario_123</p>
-                <p class="text-xs text-gray-500">Hace 10 meses</p>
-              </div>
-            </div>
-            <div class="text-yellow-500 mb-2 text-sm">⭐⭐⭐☆☆</div>
-            <p class="text-gray-700 text-sm">
-              El local tiene buen ambiente. Aunque al final del día estaba un poco lleno.
-            </p>
+    <!-- Sección de valoraciones -->
+    <section class="bg-gray-100 py-10 px-5">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-3xl font-bold mb-4">Reseñas del local</h2>
+        <form [formGroup]="valoracionForm" (ngSubmit)="enviarValoracion()" class="mb-8 bg-white p-6 rounded-xl shadow flex flex-col gap-4">
+          <div class="flex items-center gap-2">
+            <label class="font-semibold">Tu puntuación:</label>
+            <ng-container *ngFor="let star of [1,2,3,4,5]">
+              <button type="button" (click)="valoracionForm.get('puntaje')?.setValue(star)" [ngClass]="valoracionForm.value.puntaje >= star ? 'text-yellow-400' : 'text-gray-300'">
+                <span class="material-icons">star</span>
+              </button>
+            </ng-container>
           </div>
-
-          <!-- Más valorado -->
-          <div class="bg-white p-6 rounded-xl shadow-lg">
-            <h3 class="text-xl font-semibold mb-2">Los más valorados</h3>
-            <p class="text-sm text-gray-500 mb-4">5/5 estrellas</p>
-            <div class="flex items-center gap-3 mb-3">
-              <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-lg">👤</div>
-              <div>
-                <p class="font-medium">sandra_locales</p>
-                <p class="text-xs text-gray-500">Hace 6 meses</p>
-              </div>
-            </div>
-            <div class="text-yellow-500 mb-2 text-sm">⭐⭐⭐⭐⭐</div>
-            <p class="text-gray-700 text-sm">
-              Ideal para pasar el rato con amigos. La atención es excelente y puedes volver varias veces.
-            </p>
+          <textarea formControlName="comentario" rows="3" maxlength="500" class="w-full border rounded p-2" placeholder="Deja tu comentario (opcional)"></textarea>
+          <div class="flex justify-end">
+            <button type="submit" [disabled]="valoracionForm.invalid || isSendingValoracion" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50">Enviar reseña</button>
           </div>
-
-          <!-- Último -->
-          <div class="bg-white p-6 rounded-xl shadow-lg">
-            <h3 class="text-xl font-semibold mb-2">Último</h3>
-            <p class="text-sm text-gray-500 mb-4">Hace 6 meses</p>
-            <div class="flex items-center gap-3 mb-3">
-              <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-lg">👤</div>
-              <div>
-                <p class="font-medium">sandra_locales</p>
-                <p class="text-xs text-gray-500">Hace 6 meses</p>
-              </div>
+        </form>
+        <div *ngIf="local.valoraciones?.length === 0" class="text-gray-500 text-center">Aún no hay reseñas para este local.</div>
+        <div *ngFor="let v of local.valoraciones" class="bg-white rounded-xl shadow p-5 mb-4 flex flex-col">
+          <div class="flex items-center gap-3 mb-2">
+            <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-lg">👤</div>
+            <div>
+              <p class="font-medium">{{ v.cliente_id || 'Anónimo' }}</p>
+              <p class="text-xs text-gray-500">{{ v.fecha | date:'mediumDate' }}</p>
             </div>
-            <div class="text-yellow-500 mb-2 text-sm">⭐⭐⭐⭐⭐</div>
-            <p class="text-gray-700 text-sm">
-              Ideal para pasar el rato con amigos. La atención es excelente y puedes volver varias veces.
-            </p>
           </div>
+          <div class="text-yellow-500 mb-1 text-base">
+            <ng-container *ngFor="let s of [].constructor(v.puntaje)">★</ng-container>
+            <ng-container *ngFor="let s of [].constructor(5 - v.puntaje)">☆</ng-container>
+          </div>
+          <p class="text-gray-700 text-base">{{ v.comentario }}</p>
         </div>
       </div>
     </section>

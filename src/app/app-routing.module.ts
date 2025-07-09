@@ -6,7 +6,7 @@ import { loggedInGuard } from './guards/logged-in.guard';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import("./pages/home/home.module").then(m => m.HomeModule) // ← Cambia landing por home
+    loadChildren: () => import("./pages/home/home.module").then(m => m.HomeModule) 
   },
   {
     path: 'perfil',
@@ -20,8 +20,7 @@ const routes: Routes = [
   },
   {
     path: 'locales',
-    loadChildren: () => import("./pages/locales/locales.module").then(m => m.LocalesModule),
-    canActivate: [authGuard]
+    loadChildren: () => import("./pages/locales/locales.module").then(m => m.LocalesModule)
   },
   {
     path: 'admin',

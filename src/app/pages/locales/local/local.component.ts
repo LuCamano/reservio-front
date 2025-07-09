@@ -1,7 +1,7 @@
 import { Component, inject, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Renderer2 } from '@angular/core';
-import { Local, Reserva, Usuario } from '../../../models/models.interface';
+import { Local, Reserva, Usuario, Valoracion } from '../../../models/models.interface';
 import { ApiService } from '../../../services/api.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -63,6 +63,17 @@ export class LocalComponent implements OnDestroy {
 
   // Nueva variable para reservas del local
   reservasLocal: Reserva[] = [];
+
+  // Nueva lógica para valoraciones
+  valoracionForm: FormGroup;
+  isSendingValoracion = false;
+
+  constructor() {
+    this.valoracionForm = new FormGroup({
+      puntaje: new FormControl(0, [Validators.required, Validators.min(1), Validators.max(5)]),
+      comentario: new FormControl('', [Validators.maxLength(500)])
+    });
+  }
 
   async ngOnInit(): Promise<void> {
     this.authSvc.getCurrentUser().subscribe(u => this.usuario = u)
@@ -210,6 +221,25 @@ export class LocalComponent implements OnDestroy {
         this.reservaError = 'No se pudo crear la reserva. Inténtalo nuevamente más tarde.';
       }
     }
+  }
+
+  async enviarValoracion() {
+    if (this.valoracionForm.invalid) return;
+    this.isSendingValoracion = true;
+    const valoracion: Valoracion = {
+      puntaje: this.valoracionForm.value.puntaje,
+      comentario: this.valoracionForm.value.comentario,
+      fecha: new Date(),
+      propiedad_id: this.idLocal,
+      cliente_id: this.usuario?.id // Puede ser undefined si no hay sesión
+    };
+    try {
+      await this.apiService.createValoracion(valoracion);
+      this.valoracionForm.reset({ puntaje: 0, comentario: '' });
+    } catch (e) {
+      // Manejar error
+    }
+    this.isSendingValoracion = false;
   }
 
   ngOnDestroy() {

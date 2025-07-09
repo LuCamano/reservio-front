@@ -32,7 +32,7 @@ export interface Local {
 
 export interface Valoracion {
     id?: string;
-    fecha: string;
+    fecha: Date;
     puntaje: number;
     comentario?: string;
     cliente_id?: string;
