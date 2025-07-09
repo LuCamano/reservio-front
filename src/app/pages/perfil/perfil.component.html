@@ -209,10 +209,11 @@
 
         <!-- Reservas realizadas -->
         <div *ngIf="(!esPropietario && historialTabIndex === 0) || (esPropietario && historialTabIndex === 1)">
-          <div *ngIf="reservasRealizadas.length === 0" class="text-gray-500 text-center py-8">
+          <div *ngIf="isLoadingReservas" class="spinner"><div class="spinner-icon"></div></div>
+          <div *ngIf="!isLoadingReservas && reservasRealizadas.length === 0" class="text-gray-500 text-center py-8">
             No has realizado reservas aún.
           </div>
-          <div class="overflow-x-auto rounded-xl shadow bg-white" *ngIf="reservasRealizadas.length > 0">
+          <div class="overflow-x-auto rounded-xl shadow bg-white" *ngIf="!isLoadingReservas && reservasRealizadas.length > 0">
             <table class="min-w-full divide-y divide-gray-200 text-sm">
               <thead class="bg-gray-50">
                 <tr>
