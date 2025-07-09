@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { lastValueFrom } from 'rxjs';
 import { Comuna, Local, Region, Reserva, Usuario, Valoracion } from '../models/models.interface';
+import { PagosService } from './pagos.service';
 
 interface GetRequest {
   endpoint: Endpoint;
@@ -20,6 +21,7 @@ type Endpoint = 'usuarios/' | 'regiones/' | 'comunas/' | 'propiedades/' | 'reser
 export class ApiService {
   // Inyecciones
   private http = inject(HttpClient);
+  private pagosService = inject(PagosService);
 
   private readonly api_url = `${environment.apiUrl}/api/v1/`;
 
@@ -162,6 +164,11 @@ export class ApiService {
     return this.delete('propiedades/', id);
   }
 
+  cambiarEstadoActivoLocal(id: string) {
+    const url = `${this.api_url}propiedades/${id}/toggle-active`;
+    return lastValueFrom(this.http.post(url, {}));
+  }
+
   // Crud de valoraciones
   // Esto probablemente cambiará
   getValoraciones(offset: number = 0, limit: number = 20, order_by?: string): Promise<Valoracion[]> {
@@ -199,8 +206,15 @@ export class ApiService {
     return this.getOne<Reserva>('reservas/', id);
   }
 
-  createReserva(reserva: Reserva): Promise<Reserva> {
-    return this.post<Reserva>('reservas/', reserva);
+  async createReserva(reserva: Reserva): Promise<Reserva> {
+    const reservia = await this.post<Reserva>('reservas/', reserva);
+    const prefResponse = await this.pagosService.crearPreferenciaPago(reserva.id!);
+    if (prefResponse.success) {
+      window.location.href = prefResponse.data.init_point;
+    } else {
+      console.error('Error al crear la preferencia de pago:', prefResponse.message);
+    }
+    return reservia;
   }
 
   updateReserva(id: string, reserva: Reserva): Promise<Reserva> {
