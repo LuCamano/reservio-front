@@ -35,6 +35,18 @@ export class UsuariosAdmComponent {
   errorBloqueo: string = '';
   loadingBloqueo: boolean = false;
   adminId: string | null = null;
+  mostrarModalNuevoUsuario: boolean = false;
+  nuevoUsuario: any = {
+    email: '',
+    rut: '',
+    nombres: '',
+    appaterno: '',
+    apmaterno: '',
+    fecha_nacimiento: '',
+    password: ''
+  };
+  errorNuevoUsuario: string = '';
+  nuevoUsuarioCargando: boolean = false;
 
   constructor() {
     this.authSvc.getCurrentUser().subscribe((user: Usuario | null) => {
@@ -239,6 +251,76 @@ export class UsuariosAdmComponent {
       console.log('Usuario desbloqueado correctamente');
     } catch (error) {
       console.error('Error al desbloquear usuario');
+    }
+  }
+
+  abrirModalNuevoUsuario(): void {
+    this.mostrarModalNuevoUsuario = true;
+    this.nuevoUsuario = {
+      email: '',
+      rut: '',
+      nombres: '',
+      appaterno: '',
+      apmaterno: '',
+      fecha_nacimiento: '',
+      password: ''
+    };
+    this.errorNuevoUsuario = '';
+    this.nuevoUsuarioCargando = false;
+  }
+
+  cerrarModalNuevoUsuario(): void {
+    this.mostrarModalNuevoUsuario = false;
+    this.errorNuevoUsuario = '';
+    this.nuevoUsuarioCargando = false;
+  }
+
+  async registrarNuevoUsuario() {
+    this.errorNuevoUsuario = '';
+    this.nuevoUsuarioCargando = true;
+    // Validaciones básicas
+    if (!this.nuevoUsuario.email || !this.nuevoUsuario.rut || !this.nuevoUsuario.nombres || !this.nuevoUsuario.appaterno || !this.nuevoUsuario.apmaterno || !this.nuevoUsuario.fecha_nacimiento || !this.nuevoUsuario.password) {
+      this.errorNuevoUsuario = 'Todos los campos son obligatorios.';
+      this.nuevoUsuarioCargando = false;
+      return;
+    }
+    if (this.nuevoUsuario.password.length < 6) {
+      this.errorNuevoUsuario = 'La contraseña debe tener al menos 6 caracteres.';
+      this.nuevoUsuarioCargando = false;
+      return;
+    }
+    // Validar edad >= 18
+    const fechaNacimientoDate = new Date(this.nuevoUsuario.fecha_nacimiento);
+    const hoy = new Date();
+    let edad = hoy.getFullYear() - fechaNacimientoDate.getFullYear();
+    const mes = hoy.getMonth() - fechaNacimientoDate.getMonth();
+    if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNacimientoDate.getDate())) {
+      edad--;
+    }
+    if (edad < 18) {
+      this.errorNuevoUsuario = 'El usuario debe ser mayor de 18 años.';
+      this.nuevoUsuarioCargando = false;
+      return;
+    }
+    // Construir objeto usuario
+    const usuario = {
+      email: this.nuevoUsuario.email,
+      rut: this.nuevoUsuario.rut,
+      nombres: this.nuevoUsuario.nombres,
+      appaterno: this.nuevoUsuario.appaterno,
+      apmaterno: this.nuevoUsuario.apmaterno,
+      fecha_nacimiento: fechaNacimientoDate,
+      password: this.nuevoUsuario.password,
+      tipo: 'cliente' as 'cliente' // Por defecto, no editable aquí
+    };
+    try {
+      await this.authSvc.register(usuario);
+      await this.cargarUsuarios();
+      this.cerrarModalNuevoUsuario();
+    } catch (error: any) {
+      this.errorNuevoUsuario = error?.error?.message || 'Error al registrar usuario.';
+    } finally {
+      this.nuevoUsuarioCargando = false;
     }
   }
 }
