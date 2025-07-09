@@ -17,7 +17,7 @@ export interface Pago {
     total_pendiente: number;
 }
 
-interface Datum {
+export interface Datum {
     id: string;
     monto: number;
     estado: string;
